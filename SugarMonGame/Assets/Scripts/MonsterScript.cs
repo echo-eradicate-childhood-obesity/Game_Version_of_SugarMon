@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿//This file was created by Mark Botaish
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MonsterScript : MonoBehaviour
 {
 
+    #region PRIVATE_VARS
     private Vector3 _cameraPosition;
     private Vector3 _forwardDirection;
     private float _radius;
@@ -13,6 +16,7 @@ public class MonsterScript : MonoBehaviour
     private int _MoveCounter = 0;
     private int _ChargeAtMove;
     private SpawnMonsters sm;
+    #endregion
 
     public void Start()
     {
@@ -21,30 +25,40 @@ public class MonsterScript : MonoBehaviour
         _ChargeAtMove = Random.Range(2,7);
     }
 
+    /*
+     * Init the variables need for the monster AI to work. Pos is the postion of the camera and the radius
+     * is the max distance the monster can travel from the camera
+     * <This file gets called from the MonsterSciprt>
+     */
     public void InitMonster(Vector3 pos, float radius)
     {
         _cameraPosition = pos;
-        Vector3 temp = new Vector3(transform.position.x, pos.y, transform.position.z);
+
+        //Create a position that is at the same height of the camera
+        Vector3 temp = new Vector3(transform.position.x, pos.y, transform.position.z); 
+
+        //Create a horizontal ray from the camera to the the spawn point
         _forwardDirection = (temp - pos).normalized;
         _radius = radius;
         _hasBeenInitted = true; 
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (_hasBeenInitted)
         {
             if(_MoveCounter < _ChargeAtMove)
                 checkPosition();
-            else
-            {
-                _rigid.velocity = (_cameraPosition - transform.position).normalized * 3.0f;
-            }
-        }
-       
+            else           
+                _rigid.velocity = (_cameraPosition - transform.position).normalized * 3.0f;    
+        }      
     }
-
+    /*
+     * This function stops the monsters from going out of view of the camera. A new velocity is set
+     * when the distance is outside of the radius, the monster position is behind the camera and 
+     * when the monster is not in the correct downward/upward view
+     * <This function gets called from the Update function>
+     */
     void checkPosition()
     {
         if((transform.position - _cameraPosition).sqrMagnitude >= (_radius * _radius) || Vector3.Dot(_forwardDirection, transform.position - _cameraPosition) < 0 )//|| !TestPoint(gameObject.transform.position))
@@ -62,6 +76,11 @@ public class MonsterScript : MonoBehaviour
         }
     }
 
+    /*
+     * This function is determines if the position is inside of the roaming area, specifically
+     * the downward/upward view
+     * <This function gets called from the checkPosition function>
+    */
     bool TestPoint(Vector3 pos)
     {
         float mag = equation(new Vector2(pos.x, pos.z).magnitude);
@@ -72,7 +91,10 @@ public class MonsterScript : MonoBehaviour
         return false;
     }
 
-    //y = x
+    /* This function is to get the y value from an x value of an equation. This current equation 
+     * y = x, but can easily be changed later
+     * <This fucntion gets called from the TestPoint function>
+    */
     float equation(float x)
     {
         return x;
