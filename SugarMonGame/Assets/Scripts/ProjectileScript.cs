@@ -1,32 +1,33 @@
-﻿using System.Collections;
+﻿/**
+ * ProjectileScript.cs - determines the behavior of a projectile from when it was created until it is destroyed
+ * Created by Aidan Lee on 6/11/2019
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterScript : MonoBehaviour
+public class ProjectileScript : MonoBehaviour
 {
-
     private Vector3 _cameraPosition;
     private Vector3 _forwardDirection;
     private float _radius;
     private Rigidbody _rigid;
-    private bool _hasBeenInitted = false;
+    private bool _hasBeenInitted = false; 
     private int _MoveCounter = 0;
-    private int _ChargeAtMove;
-    private SpawnMonsters sm;
+    private SpawnProjectile sp;
 
     public void Start()
     {
         _rigid = GetComponent<Rigidbody>();
-        sm = SpawnMonsters.instance;
-        _ChargeAtMove = Random.Range(2,7);
+        sm = SpawnProjectile.instance;
     }
 
-    public void InitMonster(Vector3 pos, float radius)
+    public void InitProjectile(Vector3 pos, float radius)
     {
         _cameraPosition = pos;
-        Vector3 temp = new Vector3(transform.position.x, pos.y, transform.position.z);
-        _forwardDirection = (temp - pos).normalized;
         _radius = radius;
+        _forwardDirection = sm._cameraTransform.foreward;
         _hasBeenInitted = true; 
     }
 
@@ -60,22 +61,6 @@ public class MonsterScript : MonoBehaviour
             }
             _MoveCounter++;
         }
-    }
-
-    bool TestPoint(Vector3 pos)
-    {
-        float mag = equation(new Vector2(pos.x, pos.z).magnitude);
-
-        if (pos.y < mag && pos.y > -mag)
-            return true;
-
-        return false;
-    }
-
-    //y = x
-    float equation(float x)
-    {
-        return x;
     }
 
 }
