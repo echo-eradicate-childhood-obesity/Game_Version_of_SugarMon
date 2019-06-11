@@ -1,36 +1,46 @@
-﻿//This file was created by Mark Botaish
+﻿//This file was created by Mark Botaish on June 7th
 
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MonsterScript : MonoBehaviour
 {
-
     #region PRIVATE_VARS
-    private Vector3 _cameraPosition;
-    private Vector3 _forwardDirection;
-    private float _radius;
-    private Rigidbody _rigid;
-    private bool _hasBeenInitted = false;
-    private int _MoveCounter = 0;
-    private int _ChargeAtMove;
-    private SpawnMonsters sm;
+    private Vector3 _cameraPosition;        //The position of the camera in the scene
+    private Vector3 _forwardDirection;      // The forward direction of the camera based on the spawn location
+    private Vector3 _frontClippingSpace;    //The position infront of the camera where monsters can't wonder beyond
+    private float _radius;                  // Raidus of the AI movement distance
+    
+    private int _moveCounter = 0;           //The number bounces off the edge of the movement space
+    private int _chargeAtMove;              //The number of boucnes off the edgge of the movement space before charging the player
+    private float _health;                  //The current health of the monster
+    private float _maxHealth;               //The max health of the monster
+
+    private SpawnMonsters sm;               //The instance to the SpawnMonster script
+    private Rigidbody _rigid;               //The Rigid body of this gameobject
+
+    private GameObject _redFill;            //A reference to the slider on the canvas
+    private GameObject _canvas;             //A reference to the canvas on the monster
     #endregion
 
     public void Start()
     {
         _rigid = GetComponent<Rigidbody>();
         sm = SpawnMonsters.instance;
-        _ChargeAtMove = Random.Range(2,7);
+        _chargeAtMove = Random.Range(5,15);
+        _canvas = transform.Find("Canvas").gameObject;
+        _redFill = _canvas.transform.Find("Red").gameObject;        
     }
 
-    /*
-     * Init the variables need for the monster AI to work. Pos is the postion of the camera and the radius
-     * is the max distance the monster can travel from the camera
-     * <This file gets called from the MonsterSciprt>
-     */
-    public void InitMonster(Vector3 pos, float radius)
+    /// <summary>
+    ///  Init the variables need for the monster AI to work. Pos is the postion of the camera. The radius
+    ///  is the max distance from the spawn point the monster can get and the health is the health of the 
+    ///  monster.
+    /// </summary>
+    /// -This file gets called from the SpawnMonsters script-
+    public void InitMonster(Vector3 pos, float radius, float health = 100.0f)
     {
         _cameraPosition = pos;
 
@@ -39,51 +49,55 @@ public class MonsterScript : MonoBehaviour
 
         //Create a horizontal ray from the camera to the the spawn point
         _forwardDirection = (temp - pos).normalized;
+        _frontClippingSpace = _cameraPosition + _forwardDirection * 2;
+
         _radius = radius;
-        _hasBeenInitted = true; 
+
+        _health = _maxHealth = health;
     }
 
     void FixedUpdate()
-    {
-        if (_hasBeenInitted)
-        {
-            if(_MoveCounter < _ChargeAtMove)
-                checkPosition();
-            else           
-                _rigid.velocity = (_cameraPosition - transform.position).normalized * 3.0f;    
-        }      
+    {        
+        if (_moveCounter < _chargeAtMove)
+            checkPosition();
+        else
+            _rigid.velocity = (_cameraPosition - transform.position).normalized * 3.0f;
+
+        _canvas.transform.LookAt(_cameraPosition);              
     }
-    /*
-     * This function stops the monsters from going out of view of the camera. A new velocity is set
-     * when the distance is outside of the radius, the monster position is behind the camera and 
-     * when the monster is not in the correct downward/upward view
-     * <This function gets called from the Update function>
-     */
+
+    /// <summary>
+    /// This function stops the monsters from going out of view of the camera. A new velocity is set
+    /// when the distance is outside of the radius, the monster position is behind the camera and/or 
+    /// when the monster is not in the correct downward/upward view.
+    /// </summary>
+    /// -This function gets called from the Update function-
     void checkPosition()
-    {
-        if((transform.position - _cameraPosition).sqrMagnitude >= (_radius * _radius) || Vector3.Dot(_forwardDirection, transform.position - _cameraPosition) < 0 )//|| !TestPoint(gameObject.transform.position))
+    { 
+        //Check the raidus || check the front clipping space || check the downward/upward views
+        if((transform.position - _frontClippingSpace).sqrMagnitude >= (_radius * _radius) || Vector3.Dot(_forwardDirection, transform.position - _frontClippingSpace) < 0 || !TestPoint(gameObject.transform.position))
         {
             if(sm.GetNumOfMonstersAlive() > 1)
             {
-                Vector3 vel = (sm.GetNewPosition(gameObject) - transform.position).normalized * Random.Range(2,10);
+                Vector3 vel = (sm.GetNewPosition(gameObject) - transform.position).normalized * Random.Range(1,4);
                 _rigid.velocity = vel;
             }
             else
             {
                 _rigid.velocity = -_rigid.velocity;
             }
-            _MoveCounter++;
+            _moveCounter++;
         }
     }
 
-    /*
-     * This function is determines if the position is inside of the roaming area, specifically
-     * the downward/upward view
-     * <This function gets called from the checkPosition function>
-    */
+    /// <summary>
+    ///  This function determines if the position is inside of the roaming area, specifically
+    ///  the downward/upward view using straight line functions
+    /// </summary>
+    /// -This function gets called from the checkPosition function-
     bool TestPoint(Vector3 pos)
     {
-        float mag = equation(new Vector2(pos.x, pos.z).magnitude);
+        float mag = CheckEquation(new Vector2(pos.x, pos.z).magnitude);
 
         if (pos.y < mag && pos.y > -mag)
             return true;
@@ -91,13 +105,43 @@ public class MonsterScript : MonoBehaviour
         return false;
     }
 
-    /* This function is to get the y value from an x value of an equation. This current equation 
-     * y = x, but can easily be changed later
-     * <This fucntion gets called from the TestPoint function>
-    */
-    float equation(float x)
+    /// <summary> 
+    /// This function is to get the y value from an x value of an equation. The current equation
+    /// y = x, but can easily be changed later 
+    /// </summary> 
+    /// -This fucntion gets called from the TestPoint function-
+    float CheckEquation(float x)
     {
         return x;
     }
+
+    /// <summary>
+    /// This is a test function to "shoot" at the monsters.
+    /// TODO: Delete this function 
+    /// </summary>
+    private void OnMouseDown()
+    {
+        DealDamage(50);
+    }
+
+    /// <summary>
+    /// This function is to deal damage to the monster and update the UI slider.
+    /// </summary>
+    /// -This function gets called from the OnMouseDown as of now-
+    public void DealDamage(float damage)
+    {
+        _health -= damage;       
+
+        if(_health <= 0) 
+            Destroy(gameObject);        
+        else        
+            _redFill.transform.localScale = new Vector3(_health / _maxHealth, 1,1);
+    }
+
+    /// <summary>
+    /// This function automatically gets called when this GameObject gets destoryed.
+    /// This function removes the monster from the list in the SpawnMonster script.
+    /// </summary>
+    private void OnDestroy() { sm.RemoveMonster(gameObject); }
 
 }
