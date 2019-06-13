@@ -1,4 +1,4 @@
-﻿//This file was created by Mark Botaish on June 7th
+﻿//This file was created by Mark Botaish on June 7th, 2019
 
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ public class SpawnMonsters : MonoBehaviour
     #endregion
 
     #region PRIVATE_VARS
-    private Transform _cameraTransform;                             // The transfrom of the camera in the scene
+    private Transform _cameraTransform;                              // The transfrom of the camera in the scene
     private int _counter = 0;                                        // The counter of monsters that have been spawned in the scene
     private List<GameObject> _monsters = new List<GameObject>();     // The list of monsters
     #endregion
