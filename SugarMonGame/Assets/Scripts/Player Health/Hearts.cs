@@ -32,11 +32,10 @@ public class Hearts : MonoBehaviour
     void Start()
     {
         numberOfHearts = totalNumberOfHearts;
-        //Image heart = Instantiate(heartPrefab, this.transform);
         for (int i = 0; i < totalNumberOfHearts; i++)
         {
             Image heart = Instantiate(heartPrefab, transform);
-            heart.rectTransform.position = new Vector2(i * heart.rectTransform.rect.width, 0);
+            heart.rectTransform.position = new Vector2(i * heart.rectTransform.rect.width, 100);
             hearts.Add(heart);
         }
     }

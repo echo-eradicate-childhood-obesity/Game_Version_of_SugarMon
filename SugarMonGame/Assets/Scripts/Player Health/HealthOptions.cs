@@ -74,6 +74,7 @@ public class HealthOptions : MonoBehaviour
     void RestoreFullHealth()
     {
         health = startingHealth;
+        UpdateHealth();
     }
     /// <summary>
     /// Updates anything that depends on the player health value
@@ -84,5 +85,6 @@ public class HealthOptions : MonoBehaviour
         float percentageHealth = (float)health / startingHealth;
         Debug.Log("Percentage Health is " + percentageHealth);
         this.transform.GetChild(0).gameObject.GetComponent<Hearts>().UpdateHealth(percentageHealth);
+        this.transform.GetChild(1).gameObject.GetComponent<HealthBar>().UpdateHealth(percentageHealth);
     }
 }
