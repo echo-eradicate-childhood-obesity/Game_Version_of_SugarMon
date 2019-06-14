@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿//This file was created by Zakir Chaudry on June 12, 2019
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,27 +54,31 @@ public class Hearts : MonoBehaviour
     /// <param name="healthPercentage">Percentage of starting health the player currently has</param>
     public void UpdateHealth(float healthPercentage)
     {
-        if(healthPercentage > 1)
+        if (healthPercentage >= 1)
         {
             numberOfHearts = totalNumberOfHearts;
-        } else
+        }
+        else
         {
             if (healthPercentage <= 0)
             {
                 numberOfHearts = 0;
-            } else
+            }
+            else
             {
                 numberOfHearts = ((int)(healthPercentage * totalNumberOfHearts) + 1);
             }
-            Debug.Log("number of hearts: " + numberOfHearts);
-            for (int i = 0; i < numberOfHearts; i++)
-            {
-                hearts[i].GetComponent<Image>().color = Color.white;
-            }
-            for (int i = numberOfHearts; i < totalNumberOfHearts; i++)
-            {
-                hearts[i].GetComponent<Image>().color = Color.black;
-            }
+            //Debug.Log("i should be less than number of hearts: " + numberOfHearts);
+        }
+        for (int i = 0; i < numberOfHearts; i++)
+        {
+            //Debug.Log("Trying to get [" + i + "]");
+            hearts[i].GetComponent<Image>().color = Color.white;
+        }
+        for (int i = numberOfHearts; i < totalNumberOfHearts; i++)
+        {
+            //Debug.Log("Now we're doing black hearts");
+            hearts[i].GetComponent<Image>().color = Color.black;
         }
     }
 }

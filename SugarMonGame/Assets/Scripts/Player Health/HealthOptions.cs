@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿//This file was created by Zakir Chaudry on June 12, 2019
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
@@ -26,7 +28,7 @@ public class HealthOptions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateHealth();
     }
     /// <summary>
     /// Player takes the specified amount of damage.
@@ -83,8 +85,9 @@ public class HealthOptions : MonoBehaviour
     void UpdateHealth()
     {
         float percentageHealth = (float)health / startingHealth;
-        Debug.Log("Percentage Health is " + percentageHealth);
+        //Debug.Log("Percentage Health is " + percentageHealth);
         this.transform.GetChild(0).gameObject.GetComponent<Hearts>().UpdateHealth(percentageHealth);
         this.transform.GetChild(1).gameObject.GetComponent<HealthBar>().UpdateHealth(percentageHealth);
+        this.transform.GetChild(2).gameObject.GetComponent<HealthNumbers>().UpdateHealth(health);
     }
 }
