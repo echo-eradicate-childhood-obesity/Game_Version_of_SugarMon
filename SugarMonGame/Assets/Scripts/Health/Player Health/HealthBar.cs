@@ -17,7 +17,7 @@ public class HealthBar : MonoBehaviour
     /// Size of health bar
     /// </summary>
     [Tooltip("Size of health bar")]
-    public Vector2 size = new Vector2(60, 20);
+    public Vector2 size = new Vector2(400, 20);
     /// <summary>
     /// Percent of total health player has
     /// </summary>

@@ -82,10 +82,11 @@ public class HealthOptions : MonoBehaviour
     /// Updates anything that depends on the player health value
     /// </summary>
     [ContextMenu("Update Health Values")]
-    void UpdateHealth()
+    public virtual void UpdateHealth()
     {
         float percentageHealth = (float)health / startingHealth;
         //Debug.Log("Percentage Health is " + percentageHealth);
+        Debug.Log("it didn;t work");
         this.transform.GetChild(0).gameObject.GetComponent<Hearts>().UpdateHealth(percentageHealth);
         this.transform.GetChild(1).gameObject.GetComponent<HealthBar>().UpdateHealth(percentageHealth);
         this.transform.GetChild(2).gameObject.GetComponent<HealthNumbers>().UpdateHealth(health);
