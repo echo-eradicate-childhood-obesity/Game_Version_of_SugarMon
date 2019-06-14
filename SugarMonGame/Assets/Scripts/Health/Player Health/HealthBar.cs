@@ -33,11 +33,6 @@ public class HealthBar : MonoBehaviour
     /// </summary>
     [Tooltip("Material for filled part of health bar")]
     public Material filledBar;
-    ///// <summary>
-    ///// How long it takes for health bar to update
-    ///// </summary>
-    //[Tooltip("How long it takes for health bar to update")]
-    //public float timeToChangeHealth = 1f;
 
 
 
@@ -45,12 +40,6 @@ public class HealthBar : MonoBehaviour
     void Start()
     {
         healthPercent = 1;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     private void OnGUI()

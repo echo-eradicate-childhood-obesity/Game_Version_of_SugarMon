@@ -23,7 +23,7 @@ public class HealthNumbers : MonoBehaviour
     [Tooltip("The current amount of health the player has")]
     public int currentHealth;
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         totalHealth = this.transform.parent.gameObject.GetComponent<HealthOptions>().startingHealth; //Gets starting health from HealthOptions
         currentHealth = totalHealth;
@@ -47,7 +47,7 @@ public class HealthNumbers : MonoBehaviour
     /// <summary>
     /// Updates the health numbers with current player health
     /// </summary>
-    void UpdateHealth()
+    public void UpdateHealth()
     {
         text.text = currentHealth.ToString() + "/" + totalHealth.ToString();
     }

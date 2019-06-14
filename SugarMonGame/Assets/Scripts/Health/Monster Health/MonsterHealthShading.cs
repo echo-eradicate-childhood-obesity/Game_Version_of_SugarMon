@@ -13,21 +13,19 @@ public class MonsterHealthShading : MonoBehaviour
     /// The percentage health the monster currently has
     /// </summary>
     [Tooltip("The percentage health the monster currently has")]
-    float healthPercent;
-    Image monster;
+    public float healthPercent;
+    /// <summary>
+    /// The monster image that the shading is happening to
+    /// </summary>
+    [Tooltip("The monster image that the shading is happening to")]
+    public Image monster;
     // Start is called before the first frame update
     void Start()
     {
         healthPercent = 1;
-        monster = this.transform.GetChild(0).gameObject.GetComponent<Image>();
         monster.color = new Color(1, 1, 1);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     /// <summary>
     /// Updates the shading of the monster based on current monster health
     /// </summary>

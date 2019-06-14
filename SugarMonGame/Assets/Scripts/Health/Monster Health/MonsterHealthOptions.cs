@@ -25,5 +25,8 @@ public class MonsterHealthOptions : HealthOptions
     {
         float healthPercent = (float)health / startingHealth;
         this.transform.GetChild(0).GetComponent<MonsterHealthShading>().UpdateHealth(healthPercent);
+        this.transform.GetChild(1).GetComponent<MonsterHealthBar>().UpdateHealth(healthPercent);
+        this.transform.GetChild(2).GetComponent<MonsterHealthNumbers>().UpdateHealth(health);
+
     }
 }
