@@ -4,34 +4,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MonsterScript : MonoBehaviour
 {
     #region PRIVATE_VARS
-    private Vector3 _cameraPosition;        //The position of the camera in the scene
+    private Vector3 _cameraPosition;        // The position of the camera in the scene
     private Vector3 _forwardDirection;      // The forward direction of the camera based on the spawn location
-    private Vector3 _frontClippingSpace;    //The position infront of the camera where monsters can't wonder beyond
+    private Vector3 _frontClippingSpace;    // The position infront of the camera where monsters can't wonder beyond
     private float _radius;                  // Raidus of the AI movement distance
     
-    private int _moveCounter = 0;           //The number bounces off the edge of the movement space
-    private int _chargeAtMove;              //The number of boucnes off the edgge of the movement space before charging the player
-    private float _health;                  //The current health of the monster
-    private float _maxHealth;               //The max health of the monster
+    private int _moveCounter = 0;           // The number bounces off the edge of the movement space
+    private int _chargeAtMove;              // The number of boucnes off the edgge of the movement space before charging the player
+    private float _health;                  // The current health of the monster
+    private float _maxHealth;               // The max health of the monster
 
-    private SpawnMonsters sm;               //The instance to the SpawnMonster script
-    private Rigidbody _rigid;               //The Rigid body of this gameobject
+    private SpawnMonsters _sm;              // The instance to the SpawnMonster script
+    private Rigidbody _rigid;               // The Rigid body of this gameobject
 
-    private GameObject _redFill;            //A reference to the slider on the canvas
-    private GameObject _canvas;             //A reference to the canvas on the monster
+    private GameObject _redFill;            // A reference to the slider on the canvas
+    private GameObject _canvas;             // A reference to the canvas on the monster
+    private GameObject _damageText;         // The prefab to spawn when a projectile has hit the enemy
+
+    private PlayerScript _player;           // Singleton of the player script
+    private Camera _camera;
     #endregion
 
     public void Start()
     {
+        _damageText = Resources.Load("UI/DamageText") as GameObject;
         _rigid = GetComponent<Rigidbody>();
-        sm = SpawnMonsters.instance;
+        _sm = SpawnMonsters.instance;
         _chargeAtMove = Random.Range(5,15);
-        _canvas = transform.Find("Canvas").gameObject;
-        _redFill = _canvas.transform.Find("Red").gameObject;        
+        _canvas = transform.Find("MonsterCanvas").gameObject;
+        _redFill = _canvas.transform.Find("Red").gameObject;
+        _player = PlayerScript.instance;
+        _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
     }
 
     /// <summary>
@@ -77,9 +85,9 @@ public class MonsterScript : MonoBehaviour
         //Check the raidus || check the front clipping space || check the downward/upward views
         if((transform.position - _frontClippingSpace).sqrMagnitude >= (_radius * _radius) || Vector3.Dot(_forwardDirection, transform.position - _frontClippingSpace) < 0 || !TestPoint(gameObject.transform.position))
         {
-            if(sm.GetNumOfMonstersAlive() > 1)
+            if(_sm.GetNumOfMonstersAlive() > 1)
             {
-                Vector3 vel = (sm.GetNewPosition(gameObject) - transform.position).normalized * Random.Range(1,4);
+                Vector3 vel = (_sm.GetNewPosition(gameObject) - transform.position).normalized * Random.Range(1,4);
                 _rigid.velocity = vel;
             }
             else
@@ -116,15 +124,6 @@ public class MonsterScript : MonoBehaviour
     }
 
     /// <summary>
-    /// This is a test function to "shoot" at the monsters.
-    /// TODO: Delete this function 
-    /// </summary>
-    private void OnMouseDown()
-    {
-        DealDamage(50);
-    }
-
-    /// <summary>
     /// This function is to deal damage to the monster and update the UI slider.
     /// </summary>
     /// -This function gets called from the OnMouseDown as of now-
@@ -138,10 +137,23 @@ public class MonsterScript : MonoBehaviour
             _redFill.transform.localScale = new Vector3(_health / _maxHealth, 1,1);
     }
 
-    /// <summary>
-    /// This function automatically gets called when this GameObject gets destoryed.
-    /// This function removes the monster from the list in the SpawnMonster script.
-    /// </summary>
-    private void OnDestroy() { sm.RemoveMonster(gameObject); }
+    
+    private void OnDestroy() { _sm.RemoveMonster(gameObject); }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Bullet")
+        {
+            DealDamage(_player._damage); //Deal the proper damage to the enemy
+
+            GameObject obj = Instantiate(_damageText, other.transform.position, Quaternion.identity); //Spawn 3D text
+            obj.transform.LookAt(_cameraPosition); // Look at the camera
+            obj.GetComponent<TextMeshPro>().text = "-" + _player._damage; // Update the 3D text damage
+            obj.GetComponent<Rigidbody>().velocity = Vector3.up + Vector3.right; // Set the velocity of going up 
+
+            //Clean up the projectile and the text
+            Destroy(other.gameObject);
+            Destroy(obj,1);
+        }
+    }
 
 }

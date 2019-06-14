@@ -203,6 +203,7 @@
     <Compile Include="Assets\GoogleARCore\SDK\Scripts\XPTrackingState.cs" />
     <Compile Include="Assets\Scripts\LevelUIManager.cs" />
     <Compile Include="Assets\Scripts\MonsterScript.cs" />
+    <Compile Include="Assets\Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\SpawnMonsters.cs" />
     <Compile Include="Assets\Scripts\Tools\GenerateIconScript.cs" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />

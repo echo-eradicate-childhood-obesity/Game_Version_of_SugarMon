@@ -64,8 +64,9 @@ public class LevelUIManager : MonoBehaviour
         buttonGroups[index]._currentButton.transform.GetChild(0).gameObject.SetActive(true); // Enables the check mark
         buttonGroups[index]._currentButton.transform.GetChild(1).gameObject.SetActive(false);  //Removes the red square
 
+        //Updates the titles of the sugar groups
         Transform child = titleHead.GetChild(index);
-        child.GetComponent<Text>().text = child.name + " - " + (buttonGroups[index]._currentButtonIndex + 1) + "/" + buttonGroups[index]._buttonCount; //Updates the title
+        child.GetComponent<Text>().text = child.name + " - " + (buttonGroups[index]._currentButtonIndex + 1) + "/" + buttonGroups[index]._buttonCount; 
 
         //Changes the tint of the button to gold
         ColorBlock block = buttonGroups[index]._currentButton.colors; 

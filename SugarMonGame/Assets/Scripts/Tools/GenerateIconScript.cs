@@ -10,9 +10,9 @@ using UnityEditor;
 
 public class GenerateIconScript : MonoBehaviour
 {
-    static Transform _currentPanel;                                     //The current sugar group panel
-    static Transform _panel;                                            //The SugarPanels object. Its the panel that contains all the other sugar group panels
-    static List<Sprite> sprites;                                        //The list of sprite icons in the folder
+    static Transform _currentPanel;     //The current sugar group panel
+    static Transform _panel;            //The SugarPanels object. Its the panel that contains all the other sugar group panels
+    static List<Sprite> sprites;        //The list of sprite icons in the folder
 
     static List<string> iconLocation = new List<string>(new string[] {  //This a list of all of the sugar icon locations
         "Icons/Cane",
