@@ -796,14 +796,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1756878348}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2f6b4910ecd64445a42d911b8a4e5c2, type: 3}
+  m_Script: {fileID: 11500000, guid: 2397bb574054c644197c6165a906c2d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 20, y: 40}
   size: {x: 400, y: 20}
-  healthPercent: 1
-  emptyBar: {fileID: 2100000, guid: 64a071aeb4180a0459a18fc848394cb7, type: 2}
-  filledBar: {fileID: 2100000, guid: 8d2f10b7940eb6e4383b4e0be7385cd1, type: 2}
+  healthPercent: 0
+  emptyBar: {fileID: 0}
+  filledBar: {fileID: 0}
 --- !u!114 &1756878351
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,6 +25,7 @@ public class HealthNumbers : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
+        text = this.transform.gameObject.GetComponentInChildren<TextMeshProUGUI>();
         totalHealth = this.transform.parent.gameObject.GetComponent<HealthOptions>().startingHealth; //Gets starting health from HealthOptions
         currentHealth = totalHealth;
         UpdateHealth();

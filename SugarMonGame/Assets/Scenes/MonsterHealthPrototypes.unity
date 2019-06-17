@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 141931723}
   - component: {fileID: 141931722}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Health Numbers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -596,9 +596,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1203078748}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 112cb9df0b40ede4db7ecc35302ee190, type: 3}
+  m_Script: {fileID: 11500000, guid: dd7a1522f98297144a35d98b40c7d41f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  text: {fileID: 0}
+  totalHealth: 0
+  currentHealth: 0
 --- !u!114 &1203078751
 MonoBehaviour:
   m_ObjectHideFlags: 0

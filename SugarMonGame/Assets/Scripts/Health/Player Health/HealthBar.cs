@@ -40,17 +40,23 @@ public class HealthBar : MonoBehaviour
     void Start()
     {
         healthPercent = 1;
+        emptyBar = Resources.Load<Material>("Health Materials/EmptyBar");
+        filledBar = Resources.Load<Material>("Health Materials/FillBar"); //Apparently these don't really do anything I guess
     }
 
     private void OnGUI()
     {
+        
         GUI.BeginGroup(new Rect(position, size));
             GUI.Box(new Rect(new Vector2(0, 0), size), emptyBar.mainTexture);
 
             GUI.BeginGroup(new Rect(0, 0, size.x * healthPercent, size.y));
+                Color oldColor = GUI.color;
+                GUI.color = Color.red;
                 GUI.Box(new Rect(new Vector2(0, 0), size), filledBar.mainTexture);
+                GUI.color = oldColor;
             GUI.EndGroup();
-
+        
         GUI.EndGroup();
 
     }
