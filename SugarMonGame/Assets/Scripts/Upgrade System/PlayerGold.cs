@@ -80,6 +80,8 @@ public class PlayerGold : MonoBehaviour
     void UpdateGold()
     {
         this.transform.GetChild(0).GetComponent<LevelUpgradeScreen>().UpdateScreen();
+        this.transform.GetChild(1).GetComponent<NumberUpgradeScreen>().UpdateScreen();
+
     }
 
     [ContextMenu("Set Gold to Zero")]

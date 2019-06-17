@@ -27,6 +27,53 @@ public class Upgrades : MonoBehaviour
     readonly int[] costs = { 50, 100, 150, 200 };
 
     /// <summary>
+    /// Info for the number upgrades
+    /// </summary>
+    [Tooltip("Info for the number upgrade system")]
+    public Dictionary<string, Dictionary<string, float>> numCosts = new Dictionary<string, Dictionary<string, float>>();
+
+    /// <summary>
+    /// How much each upgrade is initially (number based)
+    /// </summary>
+    readonly int initialCost = 50;
+
+    /// <summary>
+    /// How much is added to each number based cost after an upgrade
+    /// </summary>
+    [Tooltip("How much is added to each number based cost after an upgrade")]
+    public readonly int addedCost = 50;
+
+    /// <summary>
+    /// How much gold you intially get per monster
+    /// </summary>
+    readonly int initialGold = 1;
+
+    /// <summary>
+    /// How much is added after upgrading gold
+    /// </summary>
+    public readonly float addedGold = 0.25f;
+
+    /// <summary>
+    /// How much damage you intially do
+    /// </summary>
+    readonly int initialGun = 50;
+
+    /// <summary>
+    /// How much damage you increase by after each gun upgrade
+    /// </summary>
+    readonly int addedGun = 15;
+
+    /// <summary>
+    /// How much health you intially start with
+    /// </summary>
+    readonly int initialHealth = 100;
+
+    /// <summary>
+    /// How much health is added after each health upgrade
+    /// </summary>
+    readonly int addedHealth = 30;
+
+    /// <summary>
     /// The filenames/locations for each item image
     /// </summary>
     readonly string[] fileLocations = { "Bazooka", "Heart", "Gold" };
@@ -87,6 +134,22 @@ public class Upgrades : MonoBehaviour
 
         currIndex = 0;
         curr = items[currIndex];
+
+        Dictionary<string, float> goldCost = new Dictionary<string, float>();
+        goldCost.Add("cost", initialCost);
+        goldCost.Add("current", initialGold);
+        goldCost.Add("added", addedGold);
+        Dictionary<string, float> gunCost = new Dictionary<string, float>();
+        gunCost.Add("cost", initialCost);
+        gunCost.Add("current", initialGun);
+        gunCost.Add("added", addedGun);
+        Dictionary<string, float> healthCost = new Dictionary<string, float>();
+        healthCost.Add("cost", initialCost);
+        healthCost.Add("current", initialHealth);
+        healthCost.Add("added", addedHealth);
+        numCosts.Add("Gold", goldCost);
+        numCosts.Add("Gun", gunCost);
+        numCosts.Add("Health", healthCost);
     }
 
     // Update is called once per frame
@@ -101,6 +164,7 @@ public class Upgrades : MonoBehaviour
     void UpdateUpgrades()
     {
         this.transform.GetChild(0).gameObject.GetComponent<LevelUpgradeScreen>().UpdateScreen();
+        this.transform.GetChild(1).gameObject.GetComponent<NumberUpgradeScreen>().UpdateScreen();
     }
 
     /// <summary>
