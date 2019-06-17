@@ -3,6 +3,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+
 /// <summary>
 /// Provides structural background for gold related mechanics.
 /// </summary>
@@ -22,6 +24,7 @@ public class PlayerGold : MonoBehaviour
     void AddGold (int newGold)
     {
         gold += newGold;
+        UpdateGold();
     }
     
     /// <summary>
@@ -55,7 +58,7 @@ public class PlayerGold : MonoBehaviour
     /// Spends specified amount of gold
     /// </summary>
     /// <param name="spentGold">How much gold is being spent</param>
-    void SpendGold(int spentGold)
+    public void SpendGold(int spentGold)
     {
         if (spentGold > gold)
         {
@@ -67,13 +70,22 @@ public class PlayerGold : MonoBehaviour
         {
             gold -= spentGold;
         }
+        UpdateGold();
     }
 
     /// <summary>
     /// Updates anything that relies on current player gold amount
     /// </summary>
+    [ContextMenu("Update Gold")]
     void UpdateGold()
     {
-        ///
+        this.transform.GetChild(0).GetComponent<LevelUpgradeScreen>().UpdateScreen();
+    }
+
+    [ContextMenu("Set Gold to Zero")]
+    void SetGoldToZero()
+    {
+        gold = 0;
+        UpdateGold();
     }
 }
