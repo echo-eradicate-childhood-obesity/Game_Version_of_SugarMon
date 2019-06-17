@@ -15,8 +15,8 @@ public class SpawnMonsters : MonoBehaviour
 
     #region PRIVATE_VARS
     private Transform _cameraTransform;                              // The transfrom of the camera in the scene
-    private int _counter = 0;                                        // The counter of monsters that have been spawned in the scene
     private List<GameObject> _monsters = new List<GameObject>();     // The list of monsters
+    private bool _shouldSpawn = true;
     #endregion
 
     private void Awake()
@@ -33,13 +33,23 @@ public class SpawnMonsters : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(++_counter < 10)
+        if (_shouldSpawn)
+            SpawnMonster();
+    }
+
+    void SpawnMonster()
+    {
+        if (_monsters.Count < 10)
         {
             GameObject monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
             Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
             monster.GetComponent<Rigidbody>().velocity = vel;
             monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius);
             _monsters.Add(monster);
+        }
+        else
+        {
+            _shouldSpawn = false;
         }
     }
 
@@ -64,7 +74,11 @@ public class SpawnMonsters : MonoBehaviour
     /// This function is used to remove a destroyed monster from the list.
     /// </summary>
     /// -This function gets called from the MonterScript-
-    public void RemoveMonster(GameObject obj){_monsters.Remove(obj);}
+    public void RemoveMonster(GameObject obj){
+        _monsters.Remove(obj);
+        if (_monsters.Count <= 0)
+            _shouldSpawn = true;
+    }
 
     /// <summary>
     /// This function is used to determine the currebt number of alive monsters in the scene.
