@@ -599,9 +599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 112cb9df0b40ede4db7ecc35302ee190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 141931722}
-  totalHealth: 0
-  currentHealth: 0
 --- !u!114 &1203078751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -867,7 +864,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1756878348}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9ae744989d39314e8d9ec6d300537ca, type: 3}
+  m_Script: {fileID: 11500000, guid: 17f88f4d4e0b8084886ee1d19ed154d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   position: {x: 20, y: 40}
