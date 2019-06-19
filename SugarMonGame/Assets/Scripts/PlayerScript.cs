@@ -64,6 +64,12 @@ public class PlayerScript : MonoBehaviour
     /// </summary>
     void Shoot()
     {
+        Transform trans;
+        if (_IsTesting)
+            trans = transform;
+        else
+            trans = transform.GetChild(0);
+
         //If between shots update the timer
         if (!_canShoot) 
         {
@@ -76,14 +82,14 @@ public class PlayerScript : MonoBehaviour
         //If you can shoot and you are holding the left mouse button down
         if (_canShoot && (Input.touchCount > 0 || Input.GetMouseButton(0))) 
         {
-            Vector3 shootPos = transform.position - transform.up * 0.25f + transform.forward * 0.1f; //Shooting the projectile slightly below and infront of the camera
+            Vector3 shootPos = trans.position - trans.up * 0.25f + trans.forward * 0.1f; //Shooting the projectile slightly below and infront of the camera
             GameObject obj = Instantiate(_projectile, shootPos, Quaternion.identity); //Spawn the projectil
 
             //This makes it look like the projectile it moving at the crosshair location
-            if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, Mathf.Infinity, 9)) //If the crosshair hits something move the projectile to that postion
+            if (Physics.Raycast(trans.position, trans.forward, out RaycastHit hit, Mathf.Infinity, 9)) //If the crosshair hits something move the projectile to that postion
                 obj.GetComponent<Rigidbody>().velocity = (hit.point - shootPos).normalized * _projectileSpeed;
             else // Move the projectile at a position that is 60 meters direction in the path of the crosshair
-                obj.GetComponent<Rigidbody>().velocity = ((transform.forward * 60 + transform.position) - transform.position).normalized * _projectileSpeed;
+                obj.GetComponent<Rigidbody>().velocity = ((trans.forward * 60 + trans.position) - trans.position).normalized * _projectileSpeed;
             
             
             _canShoot = false;//Enable the day 

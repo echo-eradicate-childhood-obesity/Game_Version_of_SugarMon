@@ -39,7 +39,7 @@ public class MonsterScript : MonoBehaviour
         _canvas = transform.Find("MonsterCanvas").gameObject;
         _redFill = _canvas.transform.Find("Red").gameObject;
         _player = PlayerScript.instance;
-        _camera = GameObject.Find("Main Camera").GetComponent<Camera>();
+        _camera = GameObject.Find("ARCore Device").GetComponentInChildren<Camera>();
     }
 
     /// <summary>

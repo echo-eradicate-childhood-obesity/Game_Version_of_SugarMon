@@ -4,5 +4,23 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/TempMenuScene.unity
+    guid: 7ab9019c28ac8844ab803ecf45c9e0d9
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Prototypes/UIScene.unity
+    guid: c4265945abc374245b4439dbda52cd43
+  - enabled: 1
+    path: Assets/Scenes/MonsterHealthPrototypes.unity
+    guid: 90b344621eea32c488dabc4540e90d87
+  - enabled: 1
+    path: Assets/Scenes/PlayerHealthPrototypes.unity
+    guid: b7869d079727d51429acb45f4295aa4f
+  - enabled: 1
+    path: Assets/Scenes/UpgradeScreenPrototypes.unity
+    guid: 3ffc48038bd44ee439bc64963b1834cf
   m_configObjects: {}

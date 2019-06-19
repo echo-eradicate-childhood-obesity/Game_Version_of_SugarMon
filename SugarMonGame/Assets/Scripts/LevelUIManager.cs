@@ -4,9 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LevelUIManager : MonoBehaviour
 {
+    #region   STRUCTS/CLASSES
     //The infomation needed for each sugar group
     [System.Serializable]
     public class SugarButton
@@ -26,12 +28,15 @@ public class LevelUIManager : MonoBehaviour
             _currentButton = panel.transform.GetChild(index).gameObject.GetComponent<Button>();
         }
     }
+    #endregion
 
-    private List<SugarButton> buttonGroups = new List<SugarButton>();  //This is the list of SugarButtons, which contains all the information needed for the sugar group
-    private GameObject _allPanels;
-    private GameObject _backButton;
-    private GameObject _currentLevels;
-    private GameObject _buttonPanel;
+    #region PRIVATE_VARS
+    private List<SugarButton> buttonGroups = new List<SugarButton>();   // This is the list of SugarButtons, which contains all the information needed for the sugar group
+    private GameObject _allPanels;                                      // This is a reference to the Head of the sugar panels
+    private GameObject _backButton;                                     // This is a reference to the back button in the scene
+    private GameObject _currentLevels;                                  // This is a reference to the current active panel 
+    private GameObject _buttonPanel;                                    // This is a reference to the back button in the scene
+    #endregion
 
     private void Start()
     {
@@ -95,12 +100,15 @@ public class LevelUIManager : MonoBehaviour
         }       
     }
 
+    /// <summary>
+    /// This function is used to toggle the Sugar Group button panels
+    /// </summary>
+    public void ToggleButtons(){_buttonPanel.SetActive(!_buttonPanel.activeSelf);}
 
-    public void ToggleButtons()
-    {
-        _buttonPanel.SetActive(!_buttonPanel.activeSelf);
-    }
-
+    /// <summary>
+    /// This function is used to activate the correct sugar group panel 
+    /// </summary>
+    /// <param name="num"></param>
     public void ActivatePanel(int num)
     {
         _currentLevels = _allPanels.transform.GetChild(num).gameObject;
@@ -108,6 +116,10 @@ public class LevelUIManager : MonoBehaviour
         ToggleButtons();
     }
 
+    /// <summary>
+    /// This function is used to go back to the sugar group buttons and disable
+    /// the current sugar buttons panel
+    /// </summary>
     public void GoBack()
     {
         if(_currentLevels != null)
@@ -116,6 +128,9 @@ public class LevelUIManager : MonoBehaviour
             _currentLevels = null;
             ToggleButtons();
         }
-       
+        else
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }

@@ -27,7 +27,7 @@ public class SpawnMonsters : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _cameraTransform = GameObject.Find("Main Camera").transform;
+        _cameraTransform = GameObject.Find("ARCore Device").transform.GetChild(0);
     }
 
     // Update is called once per frame
@@ -37,6 +37,10 @@ public class SpawnMonsters : MonoBehaviour
             SpawnMonster();
     }
 
+    /// <summary>
+    /// This fucntion is used to spawn 10 monsters. This function will get called when 
+    /// all have died or the game has just started.
+    /// </summary>
     void SpawnMonster()
     {
         if (_monsters.Count < 10)
