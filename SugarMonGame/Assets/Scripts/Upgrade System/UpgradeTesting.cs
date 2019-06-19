@@ -17,6 +17,9 @@ public class UpgradeTesting : MonoBehaviour
     {
         SwapScreen();
     }
+    /// <summary>
+    /// Swaps screen
+    /// </summary>
     public void SwapScreen()
     {
         swap = !swap;
