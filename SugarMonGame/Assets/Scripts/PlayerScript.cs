@@ -74,7 +74,7 @@ public class PlayerScript : MonoBehaviour
         }
 
         //If you can shoot and you are holding the left mouse button down
-        if (_canShoot && Input.GetMouseButton(0)) 
+        if (_canShoot && (Input.touchCount > 0 || Input.GetMouseButton(0))) 
         {
             Vector3 shootPos = transform.position - transform.up * 0.25f + transform.forward * 0.1f; //Shooting the projectile slightly below and infront of the camera
             GameObject obj = Instantiate(_projectile, shootPos, Quaternion.identity); //Spawn the projectil
