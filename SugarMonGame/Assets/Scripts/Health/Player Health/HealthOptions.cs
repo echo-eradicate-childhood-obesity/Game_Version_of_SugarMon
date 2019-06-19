@@ -49,7 +49,7 @@ public class HealthOptions : MonoBehaviour
     /// Player takes 1 damage.
     /// </summary>
     [ContextMenu("Take 1 Damage")]
-    void TakeOneDamage()
+    public void TakeOneDamage()
     {
         TakeDamage(1);
     }
@@ -57,7 +57,7 @@ public class HealthOptions : MonoBehaviour
     /// Player takes 10 damage.
     /// </summary>
     [ContextMenu("Take 10 Damage")]
-    void TakeTenDamage()
+    public void TakeTenDamage()
     {
         TakeDamage(10);
     }
@@ -65,7 +65,7 @@ public class HealthOptions : MonoBehaviour
     /// Player takes 30 damage.
     /// </summary>
     [ContextMenu("Take 30 Damage")]
-    void TakeThirtyDamage()
+    public void TakeThirtyDamage()
     {
         TakeDamage(30);
     }
@@ -73,7 +73,7 @@ public class HealthOptions : MonoBehaviour
     /// Fully restores the player's health to the starting health amount.
     /// </summary>
     [ContextMenu("Restore Full Health")]
-    void RestoreFullHealth()
+    public void RestoreFullHealth()
     {
         health = startingHealth;
         UpdateHealth();

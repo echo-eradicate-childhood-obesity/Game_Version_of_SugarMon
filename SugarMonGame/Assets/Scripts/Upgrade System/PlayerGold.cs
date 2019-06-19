@@ -31,7 +31,7 @@ public class PlayerGold : MonoBehaviour
     /// Adds 10 gold to current player amount
     /// </summary>
     [ContextMenu("Add 10 Gold")]
-    void AddTenGold ()
+    public void AddTenGold ()
     {
         AddGold(10);
     }
@@ -40,7 +40,7 @@ public class PlayerGold : MonoBehaviour
     /// Add 50 gold to current player amount
     /// </summary>
     [ContextMenu("Add 50 Gold")]
-    void AddFiftyGold ()
+    public void AddFiftyGold ()
     {
         AddGold(50);
     }
@@ -49,7 +49,7 @@ public class PlayerGold : MonoBehaviour
     /// Adds 100 gold to current player amount
     /// </summary>
     [ContextMenu("Add 100 Gold")]
-    void AddOneHundredGold()
+    public void AddOneHundredGold()
     {
         AddGold(100);
     }
@@ -77,7 +77,7 @@ public class PlayerGold : MonoBehaviour
     /// Updates anything that relies on current player gold amount
     /// </summary>
     [ContextMenu("Update Gold")]
-    void UpdateGold()
+    public void UpdateGold()
     {
         this.transform.GetChild(0).GetComponent<LevelUpgradeScreen>().UpdateScreen();
         this.transform.GetChild(1).GetComponent<NumberUpgradeScreen>().UpdateScreen();
@@ -85,7 +85,7 @@ public class PlayerGold : MonoBehaviour
     }
 
     [ContextMenu("Set Gold to Zero")]
-    void SetGoldToZero()
+    public void SetGoldToZero()
     {
         gold = 0;
         UpdateGold();
