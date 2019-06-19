@@ -33,6 +33,12 @@ public class MonsterHealthShading : MonoBehaviour
     public void UpdateHealth(float newHealthPercent)
     {
         healthPercent = newHealthPercent;
-        monster.color = new Color(healthPercent, healthPercent, healthPercent); ///Color(1,1,1) = white, Color(0,0,0) = black. Any decimal is somewhere between.
+        float shadingPercent = healthPercent;
+        if (shadingPercent > 0 && shadingPercent < 1)
+        {
+            shadingPercent = ((90 * shadingPercent) + 10)/100;
+        }
+        monster.color = new Color(shadingPercent, shadingPercent, shadingPercent); ///Color(1,1,1) = white, Color(0,0,0) = black. Any decimal is somewhere between.
+
     }
 }
