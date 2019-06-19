@@ -79,8 +79,15 @@ public class PlayerGold : MonoBehaviour
     [ContextMenu("Update Gold")]
     public void UpdateGold()
     {
-        this.transform.GetChild(0).GetComponent<LevelUpgradeScreen>().UpdateScreen();
-        this.transform.GetChild(1).GetComponent<NumberUpgradeScreen>().UpdateScreen();
+        if (this.transform.GetChild(0).gameObject.activeInHierarchy)
+        {
+            this.transform.GetChild(0).GetComponent<LevelUpgradeScreen>().UpdateScreen();
+
+        } else
+        {
+            this.transform.GetChild(1).GetComponent<NumberUpgradeScreen>().UpdateScreen();
+
+        }
 
     }
 

@@ -29,7 +29,7 @@ public class NumberUpgradeScreen : MonoBehaviour
     /// <summary>
     /// Dictionary of Items to File Locations
     /// </summary>
-    Dictionary<string, string> itemToFile = new Dictionary<string, string>();
+    public Dictionary<string, string> itemToFile = new Dictionary<string, string>();
 
     /// <summary>
     /// Current Selected Item
@@ -109,9 +109,15 @@ public class NumberUpgradeScreen : MonoBehaviour
     /// </summary>
     public void UpdateScreen()
     {
-        curr = this.gameObject.GetComponentInParent<Upgrades>().curr;
 
+        curr = this.gameObject.GetComponentInParent<Upgrades>().curr;
+        Debug.Log("curr is " + curr);
+        foreach (KeyValuePair<string, string> entry in itemToFile)
+        {
+            Debug.Log(entry.Key + entry.Value);
+        }
         itemImage.sprite = Resources.Load<Sprite>(itemToFile[curr]);
+        
         itemName.text = curr;
         itemDescription.text = itemToDescription[curr];
 

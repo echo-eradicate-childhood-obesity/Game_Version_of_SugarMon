@@ -159,6 +159,7 @@ public class LevelUpgradeScreen : MonoBehaviour
     {
         this.gameObject.GetComponentInParent<PlayerGold>().SpendGold(int.Parse(itemCost.text.Substring(6)));
         itemToStatus[curr] = levels[Mathf.Min(levelToIndex[itemToStatus[curr]] + 1, levels.Length - 1)];
+        Debug.Log("current item status should be " + itemToStatus[curr]);
         UpdateScreen();
     }
 }
