@@ -142,7 +142,7 @@ public class LevelUpgradeScreen : MonoBehaviour
             upgradeButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Max Level";
             itemCost.text = "Cost: N/A";
         }
-        else if (gold <= int.Parse(itemCost.text.Substring(6)))
+        else if (gold < int.Parse(itemCost.text.Substring(6)))
         {
             upgradeButton.interactable = false;
             upgradeButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Not Enough Gold";

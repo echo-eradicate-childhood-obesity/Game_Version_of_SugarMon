@@ -120,7 +120,7 @@ public class NumberUpgradeScreen : MonoBehaviour
 
         gold = this.gameObject.GetComponentInParent<PlayerGold>().gold;
         goldNumber.text = "Gold: " + gold.ToString();
-        if (gold <= int.Parse(itemCost.text.Substring(6)))
+        if (gold < int.Parse(itemCost.text.Substring(6)))
         {
             upgradeButton.interactable = false;
             upgradeButton.gameObject.GetComponentInChildren<TextMeshProUGUI>().text = "Not Enough Gold";

@@ -182,7 +182,11 @@ public class Upgrades : MonoBehaviour
     /// </summary>
     public void GoToPrev()
     {
-        currIndex = (currIndex - 1) % items.Length;
+        currIndex -= 1;
+        if (currIndex < 0)
+        {
+            currIndex = items.Length - 1;
+        }
         curr = items[currIndex];
         UpdateUpgrades();
     }
