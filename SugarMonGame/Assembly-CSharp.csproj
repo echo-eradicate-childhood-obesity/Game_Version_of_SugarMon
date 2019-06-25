@@ -213,6 +213,7 @@
     <Compile Include="Assets\Scripts\MonsterScript.cs" />
     <Compile Include="Assets\Scripts\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\PrototypeMenuScript.cs" />
+    <Compile Include="Assets\Scripts\ReturnToMenu.cs" />
     <Compile Include="Assets\Scripts\SpawnMonsters.cs" />
     <Compile Include="Assets\Scripts\Upgrade System\LevelUpgradeScreen.cs" />
     <Compile Include="Assets\Scripts\Upgrade System\NumberUpgradeScreen.cs" />

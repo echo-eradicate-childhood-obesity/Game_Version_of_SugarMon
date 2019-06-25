@@ -27,7 +27,7 @@ public class MonsterScript : MonoBehaviour
     private GameObject _damageText;         // The prefab to spawn when a projectile has hit the enemy
 
     private PlayerScript _player;           // Singleton of the player script
-    private Camera _camera;
+    private Camera _camera;                 // A reference to the main camera
     #endregion
 
     public void Start()

@@ -11,10 +11,8 @@ using UnityEditor;
 public class GenerateIconScript : MonoBehaviour
 {
 
-    #region STATIC_VARS
+     #region STATIC_VARS
 
-    static Transform _currentPanel;     //The current sugar group panel
-    static Transform _panel;            //The SugarPanels object. Its the panel that contains all the other sugar group panels
     static List<Sprite> sprites;        //The list of sprite icons in the folder
 
     //This a list of all of the sugar icon locations
@@ -27,22 +25,26 @@ public class GenerateIconScript : MonoBehaviour
         "Icons/Strange",
         "Icons/Syrup"
     });
+
+    static List<Sprite> maps = new List<Sprite>(new Sprite[] {
+        Resources.Load("UI/Map", typeof(Sprite)) as Sprite,
+        Resources.Load("UI/Map", typeof(Sprite)) as Sprite,
+        Resources.Load("UI/Map", typeof(Sprite)) as Sprite,
+        Resources.Load("UI/Map", typeof(Sprite)) as Sprite,
+        Resources.Load("UI/Map", typeof(Sprite)) as Sprite,
+        Resources.Load("UI/Map", typeof(Sprite)) as Sprite,
+        Resources.Load("UI/Map", typeof(Sprite)) as Sprite
+    });
+
+    static Color buttonColor = new Color(1, 0, 1, 1);
+    static Color changeButtonColor = new Color(0, 1, 0, 1);
+
+    static GameObject canvas = GameObject.Find("Canvas");
+    static GameObject sugarPanels = GameObject.Find("SugarPanels");
+
+    static GameObject _buttonPrefab = Resources.Load("UI/Button") as GameObject; //Get the prefab    
+    static float _mapScale = 4.0f;
     #endregion
-
-    /// <summary>
-    /// This function is used to generate all of the buttons in all of the sugar groups
-    /// </summary>
-    [MenuItem("Tools/Generate UI/All Buttons")]
-    static void GenerateAll()
-    {
-        print("Generating...");
-
-        for (int i = 0 ; i < iconLocation.Count; i++) //Loop through the sugar groups
-            CreateButtons(i);
-
-        print("<color=green>Generation complete!</color>");
-
-    }
 
     /// <summary>
     /// This function is used to clear all of the panel. Panels can be found under the SugarPanels GameObject
@@ -52,15 +54,15 @@ public class GenerateIconScript : MonoBehaviour
     {
         print("Clearing...");
 
-        List<GameObject> list = GameObject.FindGameObjectsWithTag("LevelButton").ToList<GameObject>();
-
-        int size = list.Count;
-        for (int i = 0; i < size; i++)
+        if(sugarPanels != null)
         {
-            DestroyImmediate(list[i]);  
+            DestroyImmediate(sugarPanels);
+            print("<color=green>Clearing all panels was successful!</color>");
         }
-        print("<color=green>Clearing all panels was successful!</color>");
-
+        else
+        {
+            print("<color=red>Could not find the GameObject <SugarPanels>!</red>");
+        }            
     }
 
     /// <summary>
@@ -72,14 +74,8 @@ public class GenerateIconScript : MonoBehaviour
         string name = iconLocation[index].Substring(6) + "Panel";
 
         print(name);
-        _currentPanel = GameObject.Find(name).transform.GetChild(1).GetChild(0);
-        int size = _currentPanel.childCount;
-
-        for (int i = size - 1; i >= 0; i--)
-        {
-            DestroyImmediate(_currentPanel.GetChild(i).gameObject);
-        }
-
+        DestroyImmediate(GameObject.Find(name));
+       
         print("<color=green>Clearing of the <" + name + "> panel was successful!</color>");
     }
 
@@ -89,12 +85,11 @@ public class GenerateIconScript : MonoBehaviour
     /// <param name="index"></param>
     static void ClearPanel(Transform panel)
     {
-        _currentPanel = panel;
-        int size = _currentPanel.childCount;
+        int size = panel.childCount;
 
         for (int i = size - 1; i >= 0; i--)
         {
-            DestroyImmediate(_currentPanel.GetChild(i).gameObject);
+            DestroyImmediate(panel.GetChild(i).gameObject);
         }
     }
 
@@ -103,26 +98,26 @@ public class GenerateIconScript : MonoBehaviour
      * generate buttons based on those icons. 
     */
     #region INDIVIDUAL_GENERATION
-    [MenuItem("Tools/Generate UI/Indv. Generation/Cane Buttons")]
-    static void GenerateCane(){ CreateButtons(0); print("<color=green>Done!</color>"); }
+    [MenuItem("Tools/Generate UI/Indv. Generation/Cane Map")]
+    static void GenerateCane(){ Mapping(0); print("<color=green>Done!</color>"); }
 
-    [MenuItem("Tools/Generate UI/Indv. Generation/Concentrate Buttons")]
-    static void GenerateConcentrate(){ CreateButtons(1); print("<color=green>Done!</color>"); }
+    [MenuItem("Tools/Generate UI/Indv. Generation/Concentrate Map")]
+    static void GenerateConcentrate(){ Mapping(1); print("<color=green>Done!</color>"); }
 
-    [MenuItem("Tools/Generate UI/Indv. Generation/Dextrin Buttons")]
-    static void GenerateDextrin(){ CreateButtons(2); print("<color=green>Done!</color>"); }
+    [MenuItem("Tools/Generate UI/Indv. Generation/Dextrin Map")]
+    static void GenerateDextrin(){ Mapping(2); print("<color=green>Done!</color>"); }
 
-    [MenuItem("Tools/Generate UI/Indv. Generation/Obvious Buttons")]
-    static void GenerateObvious(){ CreateButtons(3); print("<color=green>Done!</color>"); }
+    [MenuItem("Tools/Generate UI/Indv. Generation/Obvious Map")]
+    static void GenerateObvious(){ Mapping(3); print("<color=green>Done!</color>"); }
 
-    [MenuItem("Tools/Generate UI/Indv. Generation/OSE Buttons")]
-    static void GenerateOSE(){ CreateButtons(4); print("<color=green>Done!</color>"); }
+    [MenuItem("Tools/Generate UI/Indv. Generation/OSE Map")]
+    static void GenerateOSE(){ Mapping(4); print("<color=green>Done!</color>"); }
 
-    [MenuItem("Tools/Generate UI/Indv. Generation/Strange Buttons")]
-    static void GenerateStrange(){ CreateButtons(5); print("<color=green>Done!</color>"); }
+    [MenuItem("Tools/Generate UI/Indv. Generation/Strange Map")]
+    static void GenerateStrange(){ Mapping(5); print("<color=green>Done!</color>"); }
 
-    [MenuItem("Tools/Generate UI/Indv. Generation/Syrup Buttons")]
-    static void GenerateSyrup(){ CreateButtons(6); print("<color=green>Done!</color>"); }
+    [MenuItem("Tools/Generate UI/Indv. Generation/Syrup Map")]
+    static void GenerateSyrup(){ Mapping(6); print("<color=green>Done!</color>"); }
     #endregion
 
     /*
@@ -152,94 +147,163 @@ public class GenerateIconScript : MonoBehaviour
     #endregion
 
     /// <summary>
-    /// This function takes each of the sprite in the given list and creates a button with that icon and that name. 
+    /// This function is used to generate all of the maps for all of the sugar types.
     /// </summary>
-    static void generate(int index, Transform panel = null)
+    [MenuItem("Tools/Generate UI/Gerenate Maps")]
+    static void GenerateAllMaps()
     {
-        sprites = Resources.LoadAll(iconLocation[index], typeof(Sprite)).Cast<Sprite>().ToList(); //Load all the sprites from the folder
+        print("Generating maps...");
+        for (int i = 0; i < iconLocation.Count; i++) //Loop through the sugar groups
+            Mapping(i);
 
-        GameObject _buttonPrefab = Resources.Load("UI/Button") as GameObject; //Get the prefab
-        //_currentPanel = _panel.GetChild(index); //Set the current panel to the correct sugar panel
-        _currentPanel = panel;
-
-        //Loop through each of the sprites from the folder and make button out of them 
-        foreach (Sprite sprite in sprites)
-        {
-            GameObject button = Instantiate(_buttonPrefab, _currentPanel);
-            button.GetComponent<Image>().sprite = sprite;
-            button.name = Regex.Replace(sprite.name, @"(^\w)|(\s\w)", m => m.Value.ToUpper()) + " Button"; // Each words starts with an uppercase
-            button.tag = "LevelButton";
-        }
-        _currentPanel.GetChild(0).GetComponent<Button>().interactable = true; //Set the first button to be interactable
-
+        print("<color=green>Generation complete!</color>");
     }
 
     /// <summary>
-    /// This function is used to create the panels and buttons of sugar groups. 
-    /// This function will create GameObjects, Panels, Text, etc. to generate the 
-    /// proper heirarchy.
+    /// This function is used to generate a single map.
     /// </summary>
     /// <param name="index"></param>
-    static void CreateButtons(int index) {
-        string name = iconLocation[index].Substring(6) + "Panel"; //Remove the "Icon/" from the name and add "Panel" to the end
-
-        GameObject sugarPanels = GameObject.Find("SugarPanels");
-
-        GameObject obj = GameObject.Find(name);
-        GameObject panel = null;
-
-        sprites = Resources.LoadAll(iconLocation[index], typeof(Sprite)).Cast<Sprite>().ToList(); //Load all the sprites from the folder
-
-        if (obj == null) //If the correct sugar panel doesn't exist, then make one
-        {
-            panel = CreateGroup(name);
-            obj = panel.transform.parent.parent.gameObject;
-        }
-        else // If it does exist, then clear all of the buttons in that panel 
-        {
-            panel = obj.transform.GetChild(1).GetChild(0).gameObject;
-            ClearPanel(panel.transform);
-        }
-
-        //Generate the buttons
-        generate(index, panel.transform);
-
-        //If the SugarPanel does not exist, then make one
+    /// <returns></returns>
+    static GameObject Mapping(int index)
+    {
         if (sugarPanels == null)
-        { 
+        {
             sugarPanels = new GameObject("SugarPanels");
-            sugarPanels.transform.SetParent(GameObject.Find("Canvas").transform, false);
+            sugarPanels.transform.SetParent(canvas.transform, false);
+        }
+      
+        sprites = Resources.LoadAll(iconLocation[index], typeof(Sprite)).Cast<Sprite>().ToList(); //Load all the sprites from the folder
+      
+
+        Vector3 size = new Vector3(maps[index].rect.width, maps[index].rect.height, 1);
+        Vector2 offset = (new Vector2((size.x - 1.0f), (size.y - 1.0f)) / 2.0f) * _mapScale;
+
+        string groupName = iconLocation[index].Substring(6);
+        string mapName = groupName + "Map";
+        string scrollerName = groupName + "Scroller";
+
+        Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
+        GameObject scroller = CreateScroller(scrollerName, sugarPanels.transform, new Vector2(canvasSize.x, canvasSize.y));
+
+        GameObject panel = CreatePanel(mapName, size * _mapScale, scroller.transform);
+        scroller.GetComponent<ScrollRect>().content = panel.GetComponent<RectTransform>();
+
+        CreateText(groupName + " - 0/0", scroller.transform);
+
+        Texture2D copyMap = new Texture2D(maps[index].texture.width, maps[index].texture.height, maps[index].texture.format, true);
+        copyMap.filterMode = FilterMode.Point;
+       
+        panel.GetComponent<Image>().sprite = Sprite.Create(copyMap, maps[index].rect, maps[index].pivot, maps[index].pixelsPerUnit);
+        //int spriteIndex = sprites.Count - 1;
+        int spriteIndex = 0;
+        for (int i = (int)size.y-1; i >= 0; i--)
+        {
+            for (int j = 0; j < size.x; j++)
+            {
+                Color colr = maps[index].texture.GetPixel(j, i);
+                if(colr == buttonColor && copyMap.GetPixel(j, i) != changeButtonColor)
+                {                    
+                    copyMap.SetPixel(j,i, changeButtonColor);                                
+                 
+                    Vector2 center = SetButtonColor(j, i, maps[index].texture, copyMap, buttonColor ,changeButtonColor) * _mapScale;
+                    Vector2 position = new Vector2(j * _mapScale - offset.x + (center.x / 2.0f) - (0.5f * _mapScale), i * _mapScale - offset.y - (center.y / 2.0f) - (0.5f * _mapScale));
+                    if(spriteIndex >= sprites.Count)
+                    {
+                        GameObject panel2 = CreatePanel("---UNKNOWN---", new Vector3(center.x, center.y, 1) * 2f, canvas.transform);
+                        panel2.GetComponent<RectTransform>().anchoredPosition = position;
+                        panel2.GetComponent<Image>().color = Color.black;
+                        panel2.transform.SetParent(panel.transform, false);
+                    }
+                    else
+                    {
+                        GameObject button = CreateButton(sprites[spriteIndex], position, center, panel.transform);
+                        button.name = Regex.Replace(sprites[spriteIndex].name, @"(^\w)|(\s\w)", m => m.Value.ToUpper()) + " Button"; // Each words starts with an uppercase
+                        button.tag = "LevelButton";
+                        button.transform.localScale = button.transform.localScale * 2;
+
+                        if(spriteIndex == 0)
+                            button.GetComponent<Button>().interactable = true;
+
+                    }
+
+                    spriteIndex++;                    
+                }
+                else
+                {
+                    if (colr != buttonColor)
+                    {
+                        copyMap.SetPixel(j, i, maps[index].texture.GetPixel(j, i));
+                    }
+                }
+                
+            }           
         }
 
-        //Set the parent to the SugarPanel
-        obj.transform.SetParent(sugarPanels.transform, false);
-        
+        if (spriteIndex < sprites.Count)
+            print("<color=red>Could not fit all buttons on the " + mapName + " !</color>");
+
+        copyMap.Apply();
+        return panel;
     }
 
     /// <summary>
-    /// This function is used to create the panel for each sugar group. The panel 
-    /// will automatically resize depending on the number of added sugars icons.
+    /// This function is used to create the various buttons of each sugar group.
     /// </summary>
-    /// <param name="name"></param>
+    /// <param name="sprite"></param>
+    /// <param name="position"></param>
+    /// <param name="size"></param>
+    /// <param name="trans"></param>
     /// <returns></returns>
-    static GameObject CreateGroup(string name)
+    static GameObject CreateButton(Sprite sprite, Vector2 position, Vector2 size, Transform trans)
     {
-        // Set the inital size of the panel. Probably will need to change
-        GameObject obj = CreatePanel(name, new Vector2(600, 500), GameObject.Find("Canvas").transform); 
+        GameObject button = new GameObject();
+        button.AddComponent<Image>().sprite = sprite;
+        button.AddComponent<Button>().interactable = false;
+        button.GetComponent<RectTransform>().sizeDelta = size * 1.5f;
+        button.GetComponent<RectTransform>().anchoredPosition = position;
+        button.transform.SetParent(trans, false);
 
-        obj.GetComponent<Image>().color = Color.black;
-        CreateText(name + " - 0/0", obj.transform); //Create the header for each of the buttons
+        ColorBlock colorBlock = button.GetComponent<Button>().colors;
+        colorBlock.highlightedColor = Color.red;
+        colorBlock.disabledColor = Color.black;
+        button.GetComponent<Button>().colors = colorBlock;
 
-        //Create the scroll size and the button panel 
-        Vector3 size = new Vector3(600, Mathf.CeilToInt(Mathf.Max( sprites.Count,26) / 6.0f) * 100);
-        GameObject scroll = CreateScroller(obj.transform, new Vector2(600, 450));
-        GameObject buttonPanel = CreatePanel("Btns - " + name, size, scroll.transform, true);
-
-        //Set the scroll contents and position
-        buttonPanel.GetComponent<RectTransform>().position -= new Vector3(0, size.y / 6);
-        scroll.GetComponent<ScrollRect>().content = buttonPanel.GetComponent<RectTransform>();
-        return buttonPanel;
+        return button;
     }
+
+    /// <summary>
+    /// This function is used to change different pixels to a certain color. When the mapping reads the 
+    /// target color, this function takes that pixel and gets all of the pixels near by of that same color
+    /// and changes that color so the change color. This ensures that squares are not counted more than once
+    /// and the dimensions of the buttons is gathers correctly.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="map"></param>
+    /// <param name="copyMap"></param>
+    /// <param name="buttonColor"></param>
+    /// <param name="changeButtonColor"></param>
+    /// <returns></returns>
+    static Vector2 SetButtonColor(int x, int y, Texture2D map, Texture2D copyMap, Color buttonColor, Color changeButtonColor)
+    {
+        int widthIndex = 0;
+        int heightIndex = 0;
+
+        while(map.GetPixel(x, y - heightIndex) == buttonColor)
+        {
+            widthIndex = 0;
+            while(map.GetPixel(x + widthIndex,y - heightIndex) == buttonColor)
+            {
+                copyMap.SetPixel(x + widthIndex, y - heightIndex, changeButtonColor);
+                widthIndex++;
+            }
+            heightIndex++;
+        }
+
+        return new Vector2(widthIndex, heightIndex);
+    }
+
+    #region CREATE_UI_ELEMENTS
 
     /// <summary>
     /// This function is used to create the scroller GameObject
@@ -247,18 +311,17 @@ public class GenerateIconScript : MonoBehaviour
     /// <param name="transform"></param>
     /// <param name="size"></param>
     /// <returns></returns>
-    static GameObject CreateScroller(Transform transform, Vector3 size)
+    static GameObject CreateScroller(string name, Transform transform, Vector3 size)
     {
         //create the gameobject
-        GameObject scroll = new GameObject("Scroll");
+        GameObject scroll = new GameObject(name);
         scroll.AddComponent<CanvasRenderer>();
         scroll.AddComponent<RectTransform>();
-        scroll.AddComponent<Image>();
+        scroll.AddComponent<Image>().color = Color.black;
         scroll.AddComponent<Mask>();
 
         //Init the size and position. Might need to change in the future 
         scroll.GetComponent<RectTransform>().sizeDelta = size;
-        scroll.GetComponent<RectTransform>().position -= new Vector3(0, 25, 0);
         
         //Apply scroller settings
         ScrollRect rect = scroll.AddComponent<ScrollRect>();
@@ -308,7 +371,7 @@ public class GenerateIconScript : MonoBehaviour
     {
         //Create the object
         GameObject text = new GameObject("Text");
-        text.AddComponent<Text>();
+        text.AddComponent<Text>().color = Color.red;
         text.transform.SetParent(parent, false);
 
         //Set the text settings
@@ -320,10 +383,18 @@ public class GenerateIconScript : MonoBehaviour
 
         //Set the position and size settings
         RectTransform rectSettings = text.GetComponent<RectTransform>();
-        rectSettings.position = new Vector3(-200, 225, 0);
-        rectSettings.anchoredPosition = new Vector3(-200, 225, 0);
+        RectTransform parentSettings = parent.GetComponent<RectTransform>();
+        //rectSettings.position = new Vector3(-parentSettings.sizeDelta.x/.0f, parentSettings.sizeDelta.y, 0);
         rectSettings.sizeDelta = new Vector2(160, 30);
+        Vector2 pos = new Vector2(-parentSettings.sizeDelta.x / 2.0f, (parentSettings.sizeDelta.y / 2.0f));
+        pos.x += (rectSettings.sizeDelta.x/2.0f);
+        pos.y -= (rectSettings.sizeDelta.y/2.0f);
+
+        rectSettings.anchoredPosition = new Vector3(pos.x, pos.y, 0);
+      
     }
+
+    #endregion
 
     private void Start()
     {

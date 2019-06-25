@@ -36,33 +36,43 @@ public class LevelUIManager : MonoBehaviour
     private GameObject _backButton;                                     // This is a reference to the back button in the scene
     private GameObject _currentLevels;                                  // This is a reference to the current active panel 
     private GameObject _buttonPanel;                                    // This is a reference to the back button in the scene
+    private GameObject _selectionPanel;                                 // This is a reference to the selection panel in the scene
+
+    int _currentSelection = 0;                                          // This is a current button index that is showing on screen
+    float _selectionOffset;                                             // This is the offset position of the first button
+    float _targetLocation;                                              // This is the current target position       
+    Coroutine _selectionAnim = null;                                    // This is a reference to the current coroutine running the animation 
     #endregion
 
     private void Start()
     {
+        //Get all of the references in the game
         _buttonPanel = GameObject.Find("Buttons");
         _allPanels = GameObject.Find("SugarPanels");
         _backButton = GameObject.Find("BackButton");
+        _selectionPanel = GameObject.Find("Selection");       
+   
         _currentLevels = null;
 
         int size = _allPanels.transform.childCount;
-        
+
         //Loop through the sugar groups
         for(int i = 0; i < size; i++)
         {
             SugarButton group = new SugarButton();
-            Transform panel = _allPanels.transform.GetChild(i).Find("Scroll").GetChild(0);
-            group.init(panel.gameObject, panel.childCount, panel.parent.parent.name.Remove(panel.parent.parent.name.Length - 5)); //Init the sugar group
-            group._currentButton.onClick.AddListener(() => Unlock(panel.parent.parent.GetSiblingIndex())); //Set the current button to be active
-            group._currentButton.gameObject.transform.GetChild(1).gameObject.SetActive(true); //Set the current button to have the red square
-            buttonGroups.Add(group); 
-            
+            Transform panel = _allPanels.transform.GetChild(i).GetChild(0);
+            group.init(panel.gameObject, panel.childCount, panel.name.Remove(panel.name.Length - 3)); //Init the sugar group
+            group._currentButton.onClick.AddListener(() => Unlock(panel.parent.GetSiblingIndex())); //Set the current button to be active
+            buttonGroups.Add(group);
+
             //Update the titles
-            Transform child = panel.parent.parent.GetChild(0);
+            Transform child = panel.parent.Find("Text");
             child.GetComponent<Text>().text = buttonGroups[i]._name + " - " + (buttonGroups[i]._currentButtonIndex) + "/" + buttonGroups[i]._buttonCount;
-            _allPanels.transform.GetChild(i).gameObject.SetActive(false);
-        }     
-        
+            //_allPanels.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        _selectionOffset = -_selectionPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta.x / buttonGroups.Count;
+        _targetLocation = -_selectionPanel.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().anchoredPosition.x;
+
     }
 
     /// <summary>
@@ -73,19 +83,15 @@ public class LevelUIManager : MonoBehaviour
     /// <param name="index"></param>
     public void Unlock(int index)
     {
-        print(index);
-
         buttonGroups[index]._currentButton.interactable = false; //Disables the button
-        buttonGroups[index]._currentButton.transform.GetChild(0).gameObject.SetActive(true); // Enables the check mark
-        buttonGroups[index]._currentButton.transform.GetChild(1).gameObject.SetActive(false);  //Removes the red square
 
         //Updates the titles of the sugar groups
-        Transform child = buttonGroups[index]._currentGroup.transform.parent.parent.GetChild(0);
+        Transform child = buttonGroups[index]._currentGroup.transform.parent.Find("Text");
         child.GetComponent<Text>().text = buttonGroups[index]._name + " - " + (buttonGroups[index]._currentButtonIndex + 1) + "/" + buttonGroups[index]._buttonCount; 
 
         //Changes the tint of the button to gold
         ColorBlock block = buttonGroups[index]._currentButton.colors; 
-        block.disabledColor = Color.yellow;
+        block.disabledColor = Color.green;
         buttonGroups[index]._currentButton.colors = block;
 
         //If the button was not the last button in the group update the next button
@@ -96,7 +102,6 @@ public class LevelUIManager : MonoBehaviour
             button.GetComponent<Button>().interactable = true; //Enables the button
             button.GetComponent<Button>().onClick.AddListener(() => Unlock(index)); //Set the OnClick functionality
             buttonGroups[index]._currentButton = button.GetComponent<Button>();
-            buttonGroups[index]._currentButton.transform.GetChild(1).gameObject.SetActive(true); //Enables the red square
         }       
     }
 
@@ -132,5 +137,49 @@ public class LevelUIManager : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
+    }
+
+    /// <summary>
+    /// This function is used to move the selection screen to the correct button. This function should be called
+    /// by the arrows in the scene.
+    /// </summary>
+    /// <param name="dir"></param>
+    public void MoveSelectionScreen(int dir)
+    {
+        dir = (dir / Mathf.Abs(dir)); //Ensure that die is either -1 or 1
+        int prev = _currentSelection; //Get the currently selected
+        _currentSelection = Mathf.Clamp(_currentSelection + dir,0 , buttonGroups.Count -1); //Change selection but clamp the values
+
+        if (prev != _currentSelection) //If the two selections are different move the panel
+        {
+            _targetLocation += dir * _selectionOffset;
+            if (_selectionAnim != null)
+                StopCoroutine(_selectionAnim);
+            _selectionAnim = StartCoroutine(MoveSelection(_selectionPanel.transform.GetChild(0).GetComponent<RectTransform>()));
+        }
+
+    }
+
+
+    /// <summary>
+    /// This fucntion is to lerp between the two postions to create a smooth animation 
+    /// when transitioning between buttons.
+    /// </summary>
+    /// <param name="panel"></param>
+    /// <returns></returns>
+    IEnumerator MoveSelection(RectTransform panel)
+    {
+        float timer = 0;
+        float timeToComplete = 1;
+
+        while (panel.anchoredPosition.x != _targetLocation)
+        {
+            float x = Mathf.Lerp(panel.anchoredPosition.x, _targetLocation, timer/ timeToComplete);
+            panel.anchoredPosition = new Vector2(x, panel.anchoredPosition.y);
+            timer += Time.deltaTime;            
+
+            yield return null;
+        }
+        _selectionAnim = null;
     }
 }
