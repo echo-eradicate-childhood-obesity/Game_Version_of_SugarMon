@@ -24,7 +24,7 @@ public class LevelUIManager : MonoBehaviour
             _name = name;
             _buttonCount = size;
             _currentButtonIndex = index;
-            _currentGroup = panel;
+            _currentGroup = panel;            
             _currentButton = panel.transform.GetChild(index).gameObject.GetComponent<Button>();
         }
     }
@@ -56,11 +56,12 @@ public class LevelUIManager : MonoBehaviour
 
         int size = _allPanels.transform.childCount;
 
-        //Loop through the sugar groups
+        //Loop through the sugar groups panels
         for(int i = 0; i < size; i++)
         {
             SugarButton group = new SugarButton();
             Transform panel = _allPanels.transform.GetChild(i).GetChild(0);
+            _allPanels.transform.GetChild(i).GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
             group.init(panel.gameObject, panel.childCount, panel.name.Remove(panel.name.Length - 3)); //Init the sugar group
             group._currentButton.onClick.AddListener(() => Unlock(panel.parent.GetSiblingIndex())); //Set the current button to be active
             buttonGroups.Add(group);
@@ -68,8 +69,11 @@ public class LevelUIManager : MonoBehaviour
             //Update the titles
             Transform child = panel.parent.Find("Text");
             child.GetComponent<Text>().text = buttonGroups[i]._name + " - " + (buttonGroups[i]._currentButtonIndex) + "/" + buttonGroups[i]._buttonCount;
-            //_allPanels.transform.GetChild(i).gameObject.SetActive(false);
+
+            panel.parent.gameObject.SetActive(false);
         }
+
+        //Settings for the "map" selection animatoin s
         _selectionOffset = -_selectionPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta.x / buttonGroups.Count;
         _targetLocation = -_selectionPanel.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().anchoredPosition.x;
 
@@ -108,7 +112,7 @@ public class LevelUIManager : MonoBehaviour
     /// <summary>
     /// This function is used to toggle the Sugar Group button panels
     /// </summary>
-    public void ToggleButtons(){_buttonPanel.SetActive(!_buttonPanel.activeSelf);}
+    void ToggleButtons(){ _selectionPanel.SetActive(!_selectionPanel.activeSelf);}
 
     /// <summary>
     /// This function is used to activate the correct sugar group panel 
@@ -159,7 +163,6 @@ public class LevelUIManager : MonoBehaviour
         }
 
     }
-
 
     /// <summary>
     /// This fucntion is to lerp between the two postions to create a smooth animation 

@@ -11,7 +11,7 @@ using UnityEditor;
 public class GenerateIconScript : MonoBehaviour
 {
 
-     #region STATIC_VARS
+    #region STATIC_VARS
 
     static List<Sprite> sprites;        //The list of sprite icons in the folder
 
@@ -207,14 +207,7 @@ public class GenerateIconScript : MonoBehaviour
                  
                     Vector2 center = SetButtonColor(j, i, maps[index].texture, copyMap, buttonColor ,changeButtonColor) * _mapScale;
                     Vector2 position = new Vector2(j * _mapScale - offset.x + (center.x / 2.0f) - (0.5f * _mapScale), i * _mapScale - offset.y - (center.y / 2.0f) - (0.5f * _mapScale));
-                    if(spriteIndex >= sprites.Count)
-                    {
-                        GameObject panel2 = CreatePanel("---UNKNOWN---", new Vector3(center.x, center.y, 1) * 2f, canvas.transform);
-                        panel2.GetComponent<RectTransform>().anchoredPosition = position;
-                        panel2.GetComponent<Image>().color = Color.black;
-                        panel2.transform.SetParent(panel.transform, false);
-                    }
-                    else
+                    if(spriteIndex < sprites.Count)                   
                     {
                         GameObject button = CreateButton(sprites[spriteIndex], position, center, panel.transform);
                         button.name = Regex.Replace(sprites[spriteIndex].name, @"(^\w)|(\s\w)", m => m.Value.ToUpper()) + " Button"; // Each words starts with an uppercase
