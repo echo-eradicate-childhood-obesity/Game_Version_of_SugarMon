@@ -19,10 +19,10 @@ public class LevelUIManager : MonoBehaviour
         public int _buttonCount;
         public string _name;
 
-        public void init(GameObject panel, int size, string name, int index = 0)
+        public void init(GameObject panel, int index)
         {
-            _name = name;
-            _buttonCount = size;
+            _name = panel.name.Remove(panel.name.Length - 3);
+            _buttonCount = panel.transform.childCount;
             _currentButtonIndex = index;
             _currentGroup = panel;            
             _currentButton = panel.transform.GetChild(index).gameObject.GetComponent<Button>();
@@ -61,10 +61,15 @@ public class LevelUIManager : MonoBehaviour
         {
             SugarButton group = new SugarButton();
             Transform panel = _allPanels.transform.GetChild(i).GetChild(0);
-            _allPanels.transform.GetChild(i).GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
-            group.init(panel.gameObject, panel.childCount, panel.name.Remove(panel.name.Length - 3)); //Init the sugar group
+
+            _allPanels.transform.GetChild(i).GetComponent<ScrollRect>().verticalNormalizedPosition = 1; //Automatically scroll to the top
+            group.init(panel.gameObject , 5); //Init the sugar group
             group._currentButton.onClick.AddListener(() => Unlock(panel.parent.GetSiblingIndex())); //Set the current button to be active
+            group._currentButton.interactable = true;
             buttonGroups.Add(group);
+
+            //Update the buttons to be at the location last saved (Future: From the save file)
+            UpdateButtons(buttonGroups[i]);
 
             //Update the titles
             Transform child = panel.parent.Find("Text");
@@ -78,6 +83,8 @@ public class LevelUIManager : MonoBehaviour
         _targetLocation = -_selectionPanel.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().anchoredPosition.x;
 
     }
+    
+    #region  PUBLIC FUNCTIONS
 
     /// <summary>
     /// This function is called when a button is clicked. This changes the current button to have a green check mark on it
@@ -91,28 +98,23 @@ public class LevelUIManager : MonoBehaviour
 
         //Updates the titles of the sugar groups
         Transform child = buttonGroups[index]._currentGroup.transform.parent.Find("Text");
-        child.GetComponent<Text>().text = buttonGroups[index]._name + " - " + (buttonGroups[index]._currentButtonIndex + 1) + "/" + buttonGroups[index]._buttonCount; 
+        child.GetComponent<Text>().text = buttonGroups[index]._name + " - " + (buttonGroups[index]._currentButtonIndex + 1) + "/" + buttonGroups[index]._buttonCount;
 
         //Changes the tint of the button to gold
-        ColorBlock block = buttonGroups[index]._currentButton.colors; 
+        ColorBlock block = buttonGroups[index]._currentButton.colors;
         block.disabledColor = Color.green;
         buttonGroups[index]._currentButton.colors = block;
 
         //If the button was not the last button in the group update the next button
         if (buttonGroups[index]._currentButtonIndex < buttonGroups[index]._currentGroup.transform.childCount - 1)
         {
-            buttonGroups[index]._currentButtonIndex++; 
+            buttonGroups[index]._currentButtonIndex++;
             GameObject button = buttonGroups[index]._currentGroup.transform.GetChild(buttonGroups[index]._currentButtonIndex).gameObject; //Gets the next button
             button.GetComponent<Button>().interactable = true; //Enables the button
             button.GetComponent<Button>().onClick.AddListener(() => Unlock(index)); //Set the OnClick functionality
             buttonGroups[index]._currentButton = button.GetComponent<Button>();
-        }       
+        }
     }
-
-    /// <summary>
-    /// This function is used to toggle the Sugar Group button panels
-    /// </summary>
-    void ToggleButtons(){ _selectionPanel.SetActive(!_selectionPanel.activeSelf);}
 
     /// <summary>
     /// This function is used to activate the correct sugar group panel 
@@ -131,7 +133,7 @@ public class LevelUIManager : MonoBehaviour
     /// </summary>
     public void GoBack()
     {
-        if(_currentLevels != null)
+        if (_currentLevels != null)
         {
             _currentLevels.SetActive(false);
             _currentLevels = null;
@@ -152,7 +154,7 @@ public class LevelUIManager : MonoBehaviour
     {
         dir = (dir / Mathf.Abs(dir)); //Ensure that die is either -1 or 1
         int prev = _currentSelection; //Get the currently selected
-        _currentSelection = Mathf.Clamp(_currentSelection + dir,0 , buttonGroups.Count -1); //Change selection but clamp the values
+        _currentSelection = Mathf.Clamp(_currentSelection + dir, 0, buttonGroups.Count - 1); //Change selection but clamp the values
 
         if (prev != _currentSelection) //If the two selections are different move the panel
         {
@@ -164,25 +166,57 @@ public class LevelUIManager : MonoBehaviour
 
     }
 
+    #endregion
+
+    #region PRIVATE FUNCTIONS
+
+    /// <summary>
+    /// This function is used to turn all of the buttons green before the current buttons. 
+    /// This will visually show that the levels have been completed in the past. 
+    /// This should be used in conjunction with a saved file.
+    /// </summary>
+    /// <param name="group"></param>
+    private void UpdateButtons(SugarButton group)
+    {
+        Transform trans = group._currentGroup.transform;
+        int size = group._currentButtonIndex;
+        for (int i = 0; i < size; i++)
+        {
+            Button but = trans.GetChild(i).GetComponent<Button>();
+
+            ColorBlock block = but.colors;
+            block.disabledColor = Color.green;
+            but.colors = block;
+        }
+    }
+
+    /// <summary>
+    /// This function is used to toggle the Sugar Group button panels
+    /// </summary>
+    private void ToggleButtons() { _selectionPanel.SetActive(!_selectionPanel.activeSelf); }
+
     /// <summary>
     /// This fucntion is to lerp between the two postions to create a smooth animation 
     /// when transitioning between buttons.
     /// </summary>
     /// <param name="panel"></param>
     /// <returns></returns>
-    IEnumerator MoveSelection(RectTransform panel)
+    private IEnumerator MoveSelection(RectTransform panel)
     {
         float timer = 0;
         float timeToComplete = 1;
 
         while (panel.anchoredPosition.x != _targetLocation)
         {
-            float x = Mathf.Lerp(panel.anchoredPosition.x, _targetLocation, timer/ timeToComplete);
+            float x = Mathf.Lerp(panel.anchoredPosition.x, _targetLocation, timer / timeToComplete);
             panel.anchoredPosition = new Vector2(x, panel.anchoredPosition.y);
-            timer += Time.deltaTime;            
+            timer += Time.deltaTime;
 
             yield return null;
         }
         _selectionAnim = null;
     }
+
+    #endregion
+
 }

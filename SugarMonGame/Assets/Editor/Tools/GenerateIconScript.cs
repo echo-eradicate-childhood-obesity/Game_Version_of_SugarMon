@@ -37,7 +37,6 @@ public class GenerateIconScript : MonoBehaviour
     });
 
     static Color buttonColor = new Color(1, 0, 1, 1);
-    static Color changeButtonColor = new Color(0, 1, 0, 1);
 
     static GameObject canvas = GameObject.Find("Canvas");
     static GameObject sugarPanels = GameObject.Find("SugarPanels");
@@ -63,34 +62,6 @@ public class GenerateIconScript : MonoBehaviour
         {
             print("<color=red>Could not find the GameObject <SugarPanels>!</red>");
         }            
-    }
-
-    /// <summary>
-    /// This function is used to clear a panel given a specific sugar group index.
-    /// <param name="index"></param>
-    static void ClearPanel(int index)
-    {
-        print("Clearing...");
-        string name = iconLocation[index].Substring(6) + "Panel";
-
-        print(name);
-        DestroyImmediate(GameObject.Find(name));
-       
-        print("<color=green>Clearing of the <" + name + "> panel was successful!</color>");
-    }
-
-    /// <summary>
-    /// The function is used to clear a certain panel. The panel must be given in the parameters
-    /// </summary>
-    /// <param name="index"></param>
-    static void ClearPanel(Transform panel)
-    {
-        int size = panel.childCount;
-
-        for (int i = size - 1; i >= 0; i--)
-        {
-            DestroyImmediate(panel.GetChild(i).gameObject);
-        }
     }
 
     /*
@@ -164,65 +135,70 @@ public class GenerateIconScript : MonoBehaviour
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    static GameObject Mapping(int index)
+    static void Mapping(int index)
     {
+       //Determine if the sugarPanel exists
         if (sugarPanels == null)
         {
             sugarPanels = new GameObject("SugarPanels");
             sugarPanels.transform.SetParent(canvas.transform, false);
         }
-      
-        sprites = Resources.LoadAll(iconLocation[index], typeof(Sprite)).Cast<Sprite>().ToList(); //Load all the sprites from the folder
-      
-
-        Vector3 size = new Vector3(maps[index].rect.width, maps[index].rect.height, 1);
-        Vector2 offset = (new Vector2((size.x - 1.0f), (size.y - 1.0f)) / 2.0f) * _mapScale;
-
-        string groupName = iconLocation[index].Substring(6);
-        string mapName = groupName + "Map";
-        string scrollerName = groupName + "Scroller";
-
-        Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
-        GameObject scroller = CreateScroller(scrollerName, sugarPanels.transform, new Vector2(canvasSize.x, canvasSize.y));
-
-        GameObject panel = CreatePanel(mapName, size * _mapScale, scroller.transform);
-        scroller.GetComponent<ScrollRect>().content = panel.GetComponent<RectTransform>();
-
-        CreateText(groupName + " - 0/0", scroller.transform);
-
-        Texture2D copyMap = new Texture2D(maps[index].texture.width, maps[index].texture.height, maps[index].texture.format, true);
-        copyMap.filterMode = FilterMode.Point;
+        else
+        {
+            ClearPanel(index); //Clear the panel if it exists
+        }
        
-        panel.GetComponent<Image>().sprite = Sprite.Create(copyMap, maps[index].rect, maps[index].pivot, maps[index].pixelsPerUnit);
-        //int spriteIndex = sprites.Count - 1;
+        Color changeButtonColor = maps[index].texture.GetPixel(0, 0);                           //The bottom left pixel on the map will be the color to replace the button color on the map
+
+        Vector3 size = new Vector3(maps[index].rect.width, maps[index].rect.height, 1);         // Get the size of the map
+        Vector2 offset = (new Vector2((size.x - 1.0f), (size.y - 1.0f)) / 2.0f) * _mapScale;    // Calculate the offset of position/pixel
+        Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;                    // Get the size of the canvas
+
+        string groupName = iconLocation[index].Substring(6);                                    // Get the name of the sugar group and remove the path locations
+        string mapName = groupName + "Map";                                                     // Creates the string <SugarName>Map
+        string scrollerName = groupName + "Scroller";                                           // Creates the string <SugarName>Scroller
+
+        GameObject scroller = CreateScroller(scrollerName, sugarPanels.transform, new Vector2(canvasSize.x, canvasSize.y)); //Create a scroller
+        GameObject panel = CreatePanel(mapName, size * _mapScale, scroller.transform);                                      //Create the panel for the scroller to be a child of
+
+        Texture2D copyMap = new Texture2D(maps[index].texture.width, maps[index].texture.height, maps[index].texture.format, true); //Create a texture to copy the maps to
+
+        scroller.GetComponent<ScrollRect>().content = panel.GetComponent<RectTransform>(); //Set the contents of the scroll
+        CreateText(groupName + " - 0/0", scroller.transform); //Create the text that is in the top left of the screen
+        copyMap.filterMode = FilterMode.Point;  //Ensures that the new texture is no distorted in anyway. 
+        panel.GetComponent<Image>().sprite = Sprite.Create(copyMap, maps[index].rect, maps[index].pivot, maps[index].pixelsPerUnit); //Create a sprite that holds the newly created texture
+        sprites = Resources.LoadAll(iconLocation[index], typeof(Sprite)).Cast<Sprite>().ToList(); //Load all the sprites from the folder
+
         int spriteIndex = 0;
+
+        //Loop through all of the pixels in the map (Top left to bottom right)
         for (int i = (int)size.y-1; i >= 0; i--)
         {
             for (int j = 0; j < size.x; j++)
             {
                 Color colr = maps[index].texture.GetPixel(j, i);
-                if(colr == buttonColor && copyMap.GetPixel(j, i) != changeButtonColor)
+                //If the pixel on the map is equal to the button pixel and the copy texture does not equal changeButtonColor
+                //Then gather the pixel group with that color and set it to the changeButtonColor and spawn a button
+                if(colr == buttonColor && copyMap.GetPixel(j, i) != changeButtonColor) 
                 {                    
                     copyMap.SetPixel(j,i, changeButtonColor);                                
-                 
+                    
+                    //Get the size and position of the button based on the map
                     Vector2 center = SetButtonColor(j, i, maps[index].texture, copyMap, buttonColor ,changeButtonColor) * _mapScale;
                     Vector2 position = new Vector2(j * _mapScale - offset.x + (center.x / 2.0f) - (0.5f * _mapScale), i * _mapScale - offset.y - (center.y / 2.0f) - (0.5f * _mapScale));
-                    if(spriteIndex < sprites.Count)                   
+                    if(spriteIndex < sprites.Count)   //If there is a sprite to spawn create a button                
                     {
                         GameObject button = CreateButton(sprites[spriteIndex], position, center, panel.transform);
                         button.name = Regex.Replace(sprites[spriteIndex].name, @"(^\w)|(\s\w)", m => m.Value.ToUpper()) + " Button"; // Each words starts with an uppercase
                         button.tag = "LevelButton";
-                        button.transform.localScale = button.transform.localScale * 2;
-
-                        if(spriteIndex == 0)
-                            button.GetComponent<Button>().interactable = true;
-
+                        button.transform.localScale = button.transform.localScale;
                     }
 
                     spriteIndex++;                    
                 }
                 else
                 {
+                    //If the color does not equal the button color copy the map texture to the created texture
                     if (colr != buttonColor)
                     {
                         copyMap.SetPixel(j, i, maps[index].texture.GetPixel(j, i));
@@ -232,11 +208,11 @@ public class GenerateIconScript : MonoBehaviour
             }           
         }
 
+        //Create an error if not all of the buttons could fit on the map
         if (spriteIndex < sprites.Count)
             print("<color=red>Could not fit all buttons on the " + mapName + " !</color>");
 
-        copyMap.Apply();
-        return panel;
+        copyMap.Apply(); //Apply the changes to the create texture
     }
 
     /// <summary>
@@ -294,6 +270,37 @@ public class GenerateIconScript : MonoBehaviour
         }
 
         return new Vector2(widthIndex, heightIndex);
+    }
+
+    /// <summary>
+    /// This function is used to clear a panel given a specific sugar group index.
+    /// <param name="index"></param>
+    static void ClearPanel(int index)
+    {
+        string name = iconLocation[index].Substring(6) + "Scroller";
+        GameObject obj = GameObject.Find(name);
+
+        if (obj != null)
+        {
+            print("Clearing...");
+            print(name);
+            DestroyImmediate(obj);
+            print("<color=green>Clearing of the <" + name + "> panel was successful!</color>");
+        }
+    }
+
+    /// <summary>
+    /// The function is used to clear a certain panel. The panel must be given in the parameters
+    /// </summary>
+    /// <param name="index"></param>
+    static void ClearPanel(Transform panel)
+    {
+        int size = panel.childCount;
+
+        for (int i = size - 1; i >= 0; i--)
+        {
+            DestroyImmediate(panel.GetChild(i).gameObject);
+        }
     }
 
     #region CREATE_UI_ELEMENTS
