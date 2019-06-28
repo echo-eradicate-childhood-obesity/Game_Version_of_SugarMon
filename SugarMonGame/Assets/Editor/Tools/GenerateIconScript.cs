@@ -48,7 +48,7 @@ public class GenerateIconScript : MonoBehaviour
     /// <summary>
     /// This function is used to clear all of the panel. Panels can be found under the SugarPanels GameObject
     /// </summary>
-    [MenuItem("Tools/Generate UI/Clear All Buttons")]
+    [MenuItem("Tools/Generate UI/Clear All Maps")]
     static void ClearAll()
     {
         print("Clearing...");

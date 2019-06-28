@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class LevelUIManager : MonoBehaviour
 {
@@ -32,16 +33,21 @@ public class LevelUIManager : MonoBehaviour
 
     #region PRIVATE_VARS
     private List<SugarButton> buttonGroups = new List<SugarButton>();   // This is the list of SugarButtons, which contains all the information needed for the sugar group
+    private List<GameObject> _panelOrder = new List<GameObject>();
     private GameObject _allPanels;                                      // This is a reference to the Head of the sugar panels
     private GameObject _backButton;                                     // This is a reference to the back button in the scene
     private GameObject _currentLevels;                                  // This is a reference to the current active panel 
     private GameObject _buttonPanel;                                    // This is a reference to the back button in the scene
     private GameObject _selectionPanel;                                 // This is a reference to the selection panel in the scene
+    private GameObject _skillsPanel;
+    private GameObject _mainMenuPanel;
 
     int _currentSelection = 0;                                          // This is a current button index that is showing on screen
     float _selectionOffset;                                             // This is the offset position of the first button
     float _targetLocation;                                              // This is the current target position       
-    Coroutine _selectionAnim = null;                                    // This is a reference to the current coroutine running the animation 
+    Coroutine _selectionAnim = null;                                    // This is a reference to the current coroutine running the animation
+
+    private PlayerInfoScript info;
     #endregion
 
     private void Start()
@@ -50,9 +56,17 @@ public class LevelUIManager : MonoBehaviour
         _buttonPanel = GameObject.Find("Buttons");
         _allPanels = GameObject.Find("SugarPanels");
         _backButton = GameObject.Find("BackButton");
-        _selectionPanel = GameObject.Find("Selection");       
-   
-        _currentLevels = null;
+        _selectionPanel = GameObject.Find("Selection");
+        _skillsPanel = GameObject.Find("SkillsPanel");
+        _mainMenuPanel = GameObject.Find("MainMenu");
+       
+        _allPanels.SetActive(false);   
+        _selectionPanel.SetActive(false);        
+        _skillsPanel.SetActive(false);   
+
+        info = PlayerInfoScript.instance;
+
+        _currentLevels = _mainMenuPanel;
 
         int size = _allPanels.transform.childCount;
 
@@ -63,7 +77,7 @@ public class LevelUIManager : MonoBehaviour
             Transform panel = _allPanels.transform.GetChild(i).GetChild(0);
 
             _allPanels.transform.GetChild(i).GetComponent<ScrollRect>().verticalNormalizedPosition = 1; //Automatically scroll to the top
-            group.init(panel.gameObject , 5); //Init the sugar group
+            group.init(panel.gameObject,0);//Init the sugar group
             group._currentButton.onClick.AddListener(() => Unlock(panel.parent.GetSiblingIndex())); //Set the current button to be active
             group._currentButton.interactable = true;
             buttonGroups.Add(group);
@@ -122,7 +136,9 @@ public class LevelUIManager : MonoBehaviour
     /// <param name="num"></param>
     public void ActivatePanel(int num)
     {
+        _panelOrder.Add(_currentLevels);
         _currentLevels = _allPanels.transform.GetChild(num).gameObject;
+        _currentLevels.transform.parent.gameObject.SetActive(true);
         _currentLevels.SetActive(true);
         ToggleButtons();
     }
@@ -133,16 +149,16 @@ public class LevelUIManager : MonoBehaviour
     /// </summary>
     public void GoBack()
     {
-        if (_currentLevels != null)
+        _currentLevels.SetActive(false);
+        if (_panelOrder.Count > 0)
         {
-            _currentLevels.SetActive(false);
-            _currentLevels = null;
-            ToggleButtons();
-        }
+            _currentLevels = _panelOrder[_panelOrder.Count - 1];
+            _panelOrder.RemoveAt(_panelOrder.Count - 1);
+        }           
         else
-        {
-            SceneManager.LoadScene(0);
-        }
+            _currentLevels = _mainMenuPanel;
+        
+        _currentLevels.SetActive(true);
     }
 
     /// <summary>
@@ -164,6 +180,45 @@ public class LevelUIManager : MonoBehaviour
             _selectionAnim = StartCoroutine(MoveSelection(_selectionPanel.transform.GetChild(0).GetComponent<RectTransform>()));
         }
 
+    }
+
+    public void IncreaseLevel(TextMeshProUGUI text)
+    {
+        string name = text.gameObject.transform.parent.name;
+
+        switch (name)
+        {
+            case "Health":
+                info.AddHealthLevel();
+                text.text = "Level " + info.GetHealthLevel();
+                break;
+            case "Damage":
+                info.AddDamageLevel();
+                text.text = "Level " + info.GetDamageLevel();
+                break;
+            case "Armour":
+                info.AddArmourLevel();
+                text.text = "Level " + info.GetArmourLevel();
+                break;
+            default:
+                Debug.LogError("Couold not find level to increase");
+                break;
+        }        
+       
+    }
+
+    public void GoToLevelSelectScreen()
+    {
+        _currentLevels.SetActive(false);
+        _currentLevels = _selectionPanel;
+        _currentLevels.SetActive(true);
+    }
+
+    public void GoToSkillsScreen()
+    {
+        _currentLevels.SetActive(false);
+        _currentLevels = _skillsPanel;
+        _currentLevels.SetActive(true);
     }
 
     #endregion
