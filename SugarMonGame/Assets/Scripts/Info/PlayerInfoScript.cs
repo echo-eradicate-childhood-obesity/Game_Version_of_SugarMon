@@ -234,6 +234,7 @@ public class PlayerInfoScript : MonoBehaviour
 
     #endregion
 
+
     public void SetLevel(int level) { _level = level; _xpForNextLevel = (int)(_xpForNextLevel * Mathf.Pow(_nextLevelXPMultiplier, _level)); }
     public void SetXP(int xp) { _xp = xp; }
     public void SetCoins(int coins) { _coins = coins; }

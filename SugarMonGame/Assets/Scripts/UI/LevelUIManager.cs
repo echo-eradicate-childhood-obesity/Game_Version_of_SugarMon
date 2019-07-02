@@ -234,6 +234,10 @@ public class LevelUIManager : MonoBehaviour
 
     #region PRIVATE FUNCTIONS
 
+    /// <summary>
+    /// This function is used to check to see if buttons need to be unlocked.
+    /// </summary>
+    /// <param name="level"></param>
     private void UpdatePowers(int level)
     {
         for(int i = 0; i < powers.Count; i++)
@@ -296,6 +300,10 @@ public class LevelUIManager : MonoBehaviour
         _selectionAnim = null;
     }
 
+    /// <summary>
+    /// This function is used to increase the players xp and update various UI elements.
+    /// </summary>
+    /// <param name="xp"></param>
     private void IncreaseXP(int xp)
     {
         int prevLevel = info.GetLevel();
@@ -310,6 +318,10 @@ public class LevelUIManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This function is used to increase the coin count and update various UI elements.
+    /// </summary>
+    /// <param name="coins"></param>
     private void IncreaseCoinCount(int coins)
     {
         info.AddCoins(coins);

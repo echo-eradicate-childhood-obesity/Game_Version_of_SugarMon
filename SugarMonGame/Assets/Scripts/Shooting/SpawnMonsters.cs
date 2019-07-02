@@ -48,7 +48,7 @@ public class SpawnMonsters : MonoBehaviour
             GameObject monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
             Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
             monster.GetComponent<Rigidbody>().velocity = vel;
-            monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius);
+            monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
             _monsters.Add(monster);
         }
         else

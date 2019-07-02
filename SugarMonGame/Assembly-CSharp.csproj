@@ -210,7 +210,9 @@
     <Compile Include="Assets\Scripts\Health\Player Health\HealthOptions.cs" />
     <Compile Include="Assets\Scripts\Health\Player Health\Hearts.cs" />
     <Compile Include="Assets\Scripts\Info\PlayerInfoScript.cs" />
-    <Compile Include="Assets\Scripts\Shooting\MonsterScript.cs" />
+    <Compile Include="Assets\Scripts\Shooting\Monsters\ChargingMonsterScript.cs" />
+    <Compile Include="Assets\Scripts\Shooting\Monsters\MonsterScript.cs" />
+    <Compile Include="Assets\Scripts\Shooting\Monsters\ShootingMonsterScript.cs" />
     <Compile Include="Assets\Scripts\Shooting\PlayerScript.cs" />
     <Compile Include="Assets\Scripts\Shooting\SpawnMonsters.cs" />
     <Compile Include="Assets\Scripts\UI\LevelUIManager.cs" />
