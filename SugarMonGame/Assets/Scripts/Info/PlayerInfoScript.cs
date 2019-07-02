@@ -46,6 +46,7 @@ public class PlayerInfoScript : MonoBehaviour
     private int _level = 0;                         // The current level of the player
     private int _xp = 0;                            // The current xp of the player
     private int _xpForNextLevel = 100;              // The xp needed to reach the next level
+    private int _prevXP = 0;
     private float _nextLevelXPMultiplier = 1.3f;    // The multiplier to determine the xp needed for the next level
 
     private Dictionary<string, int> powerupsDict = new Dictionary<string, int>(); //A dictionary from name to index in the powerup list
@@ -234,13 +235,15 @@ public class PlayerInfoScript : MonoBehaviour
     public void SetLevel(int level) { _level = level; _xpForNextLevel = (int)(_xpForNextLevel * Mathf.Pow(_nextLevelXPMultiplier, _level)); }
     public void SetXP(int xp) { _xp = xp; }
     public void SetCoins(int coins) { _coins = coins; }
+    public void SetPrevXp(int xp) { _prevXP = xp; }
 
     public void AddCoins(int coins) { _coins += coins; }
     public void AddXp(int xp)
     {
         _xp += xp;
-        if (_xp >= _xpForNextLevel)
+        while (_xp >= _xpForNextLevel)
         {
+            _prevXP = _xpForNextLevel;
             _level++;
             _xpForNextLevel = (int)(_xpForNextLevel * _nextLevelXPMultiplier);
         }
@@ -249,6 +252,7 @@ public class PlayerInfoScript : MonoBehaviour
     public int GetCoinCount(){return _coins;}
     public int GetLevel() { return _level; }
     public int GetXp() { return _xp; }
+    public float GetPercentageToNextLevel() { return ((float)(_xp - _prevXP)) / ((float)(_xpForNextLevel - _prevXP)); }
 
 
 }

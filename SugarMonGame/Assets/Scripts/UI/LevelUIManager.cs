@@ -55,10 +55,11 @@ public class LevelUIManager : MonoBehaviour
     private GameObject _skillsPanel;
     private GameObject _mainMenuPanel;
 
-    int _currentSelection = 0;                                          // This is a current button index that is showing on screen
-    float _selectionOffset;                                             // This is the offset position of the first button
-    float _targetLocation;                                              // This is the current target position       
-    Coroutine _selectionAnim = null;                                    // This is a reference to the current coroutine running the animation
+    private int _currentSelection = 0;                                          // This is a current button index that is showing on screen
+    private float _selectionOffset;                                             // This is the offset position of the first button
+    private float _targetLocation;                                              // This is the current target position       
+    private Coroutine _selectionAnim = null;                                    // This is a reference to the current coroutine running the animation
+    private Image _xpSlider;
 
     private PlayerInfoScript info;
     #endregion
@@ -72,12 +73,15 @@ public class LevelUIManager : MonoBehaviour
         _selectionPanel = GameObject.Find("Selection");
         _skillsPanel = GameObject.Find("SkillsPanel");
         _mainMenuPanel = GameObject.Find("MainMenu");
-       
+
+        _xpSlider = tempLevel.transform.parent.transform.Find("Fill").GetChild(0).GetComponent<Image>();
+
         _allPanels.SetActive(false);   
         _selectionPanel.SetActive(false);        
         _skillsPanel.SetActive(false);   
 
         info = PlayerInfoScript.instance;
+        _xpSlider.fillAmount = info.GetPercentageToNextLevel() ;
 
         _currentLevels = _mainMenuPanel;
 
@@ -296,6 +300,7 @@ public class LevelUIManager : MonoBehaviour
     {
         int prevLevel = info.GetLevel();
         info.AddXp(xp);
+        _xpSlider.fillAmount = info.GetPercentageToNextLevel();
         int currentLevel = info.GetLevel();
 
         tempLevel.text = "" + currentLevel;
