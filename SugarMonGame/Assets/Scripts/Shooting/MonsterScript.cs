@@ -32,7 +32,7 @@ public class MonsterScript : MonoBehaviour
 
     public void Start()
     {
-        _damageText = Resources.Load("UI/DamageText") as GameObject;
+        _damageText = Resources.Load("InWorldUI/DamageText") as GameObject;
         _rigid = GetComponent<Rigidbody>();
         _sm = SpawnMonsters.instance;
         _chargeAtMove = Random.Range(5,15);
