@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿//This script was created by Mark Botaish on June 2nd 2019
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
