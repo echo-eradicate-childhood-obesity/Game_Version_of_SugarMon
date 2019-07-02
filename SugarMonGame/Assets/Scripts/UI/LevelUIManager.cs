@@ -29,6 +29,19 @@ public class LevelUIManager : MonoBehaviour
             _currentButton = panel.transform.GetChild(index).gameObject.GetComponent<Button>();
         }
     }
+
+    [System.Serializable]
+    public struct Powers
+    {
+        public Button _powerup;
+        public int _levelToUnlock;
+    }
+    #endregion
+
+    #region PUBLIC_VARS
+    public List<Powers> powers;
+    public TextMeshProUGUI tempCoins;
+    public TextMeshProUGUI tempLevel;
     #endregion
 
     #region PRIVATE_VARS
@@ -182,29 +195,21 @@ public class LevelUIManager : MonoBehaviour
 
     }
 
-    public void IncreaseLevel(TextMeshProUGUI text)
+    public void IncreasePowerLevel(TextMeshProUGUI text)
     {
         string name = text.gameObject.transform.parent.name;
+        int coins = info.BuyLevel(name);
 
-        switch (name)
+        if(coins > 0)
         {
-            case "Health":
-                info.AddHealthLevel();
-                text.text = "Level " + info.GetHealthLevel();
-                break;
-            case "Damage":
-                info.AddDamageLevel();
-                text.text = "Level " + info.GetDamageLevel();
-                break;
-            case "Armour":
-                info.AddArmourLevel();
-                text.text = "Level " + info.GetArmourLevel();
-                break;
-            default:
-                Debug.LogError("Couold not find level to increase");
-                break;
-        }        
-       
+            text.text = "Level " + info.GetPowerLevel(name) + " \n(<color=green>"+ info.GetBuyAmmount(name) + "</color>)";
+            tempCoins.text = info.GetCoinCount().ToString("00000000");
+        }
+        else
+        {
+            print("NO ENOUGH COINS");
+        }
+
     }
 
     public void GoToLevelSelectScreen()
@@ -224,6 +229,21 @@ public class LevelUIManager : MonoBehaviour
     #endregion
 
     #region PRIVATE FUNCTIONS
+
+    private void UpdatePowers(int level)
+    {
+        for(int i = 0; i < powers.Count; i++)
+        {
+            if(level >= powers[i]._levelToUnlock)
+            {
+                string name = powers[i]._powerup.name;
+                powers[i]._powerup.interactable = true;
+                powers[i]._powerup.transform.Find("Level").GetComponent<TextMeshProUGUI>().text = "Level 0" + " \n(<color=green>" + info.GetBuyAmmount(name) + "</color>)";
+                powers.RemoveAt(i);
+                i--;
+            }
+        }
+    }
 
     /// <summary>
     /// This function is used to turn all of the buttons green before the current buttons. 
@@ -272,6 +292,40 @@ public class LevelUIManager : MonoBehaviour
         _selectionAnim = null;
     }
 
+    private void IncreaseXP(int xp)
+    {
+        int prevLevel = info.GetLevel();
+        info.AddXp(xp);
+        int currentLevel = info.GetLevel();
+
+        tempLevel.text = "" + currentLevel;
+
+        if (powers.Count > 0 && prevLevel < currentLevel)
+            UpdatePowers(currentLevel);
+
+    }
+
+    private void IncreaseCoinCount(int coins)
+    {
+        info.AddCoins(coins);
+        tempCoins.text = info.GetCoinCount().ToString("00000000");
+    }
+
     #endregion
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            print("ADDING COINS");
+            IncreaseCoinCount(100);
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            print("ADDING XP");
+            IncreaseXP(100);
+        }
+    }
 
 }
