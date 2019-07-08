@@ -66,7 +66,7 @@ public abstract class MonsterScript : MonoBehaviour
 
     void FixedUpdate()
     {
-        Attack();
+        Attack();   
         _canvas.transform.LookAt(_cameraPosition);              
     }
 
@@ -134,7 +134,6 @@ public abstract class MonsterScript : MonoBehaviour
         else        
             _redFill.transform.localScale = new Vector3(_health / _maxHealth, 1,1);
     }
-
     
     private void OnDestroy() { _sm.RemoveMonster(gameObject); }
     private void OnTriggerEnter(Collider other)

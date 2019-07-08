@@ -849,14 +849,13 @@ GameObject:
   - component: {fileID: 4181694687771787909}
   - component: {fileID: 1957007149252327272}
   - component: {fileID: 5371744419724473448}
-  - component: {fileID: 7432334818454549089}
   m_Layer: 8
   m_Name: MonsterCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8253911910377660208
 RectTransform:
   m_ObjectHideFlags: 0
@@ -865,7 +864,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3582970777409432438}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.1270001}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.0004, y: 0.0004, z: 0.2}
   m_Children:
   - {fileID: 2372232433991271125}
@@ -938,18 +937,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &7432334818454549089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3582970777409432438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93312f6fcf997dc47b184f2abd73daa4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &3843387244296702166
 GameObject:
   m_ObjectHideFlags: 0
@@ -1050,8 +1037,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4050299024428850936}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.12124028, y: 0.023619518, z: -0.08865692}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.16150597, y: 0.16150597, z: 0.16150597}
   m_Children:
   - {fileID: 3019129001629035657}
@@ -1074,7 +1061,7 @@ Transform:
   - {fileID: 736008792555188154}
   m_Father: {fileID: 9218291064196923865}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &4080926028788964503
 GameObject:
   m_ObjectHideFlags: 0
@@ -1316,9 +1303,9 @@ GameObject:
   m_Component:
   - component: {fileID: 9218291064196923865}
   - component: {fileID: 2601628201064460740}
-  - component: {fileID: 2370411759121591030}
   - component: {fileID: 3428256043308917463}
   - component: {fileID: 8094734497952936435}
+  - component: {fileID: 8077442921970923577}
   m_Layer: 8
   m_Name: Monster
   m_TagString: Untagged
@@ -1359,19 +1346,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &2370411759121591030
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5311621072671175626}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &3428256043308917463
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1421,6 +1395,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93312f6fcf997dc47b184f2abd73daa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!135 &8077442921970923577
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5311621072671175626}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.08
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6176244298781830760
 GameObject:
   m_ObjectHideFlags: 0
@@ -1523,13 +1510,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6193425763633610683}
-  m_LocalRotation: {x: 0.043733258, y: 0.13865605, z: -0.08957239, w: 0.9853115}
-  m_LocalPosition: {x: -0.11037009, y: 0.011724001, z: -0.043782257}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: -0.01073, y: -0.0054, z: -0.0457}
   m_LocalScale: {x: 0.116865575, y: 0.10666192, z: 0.05647823}
   m_Children: []
   m_Father: {fileID: 9218291064196923865}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &3476665239422006396
 MeshFilter:
   m_ObjectHideFlags: 0
