@@ -20,8 +20,12 @@ public class PlayerScript : MonoBehaviour
     [Header("Shooting Settings")]
     [Tooltip("The projectile prefab")]                      public GameObject _projectile;                        
     [Tooltip("How fast the projectile is shot")]            public float _projectileSpeed = 10;        
-    [Tooltip("The delay between shots")]                    public float _bulletDelay = 0.15f;         
+    [Tooltip("The delay between shots")]                    public float _bulletDelay = 0.15f;
 
+    [Header("UI")]
+    [Tooltip("The Health bar image")]                       public GameObject _redHealthImage;
+    [Tooltip("The red panel to flash when damaged")]        public GameObject _damageHealthImage;
+    [Tooltip("A reference to the death panel")]             public GameObject _deathPanel;
     #endregion
 
     #region PRIVATE_VARS
@@ -36,9 +40,6 @@ public class PlayerScript : MonoBehaviour
     private float _health;                          // The current Health of the player from the PlayerInfoScript
     private float _startingHealth;
     private float _damage;                          // The current Damage of the player from the PlayerInfoScript
-
-    public GameObject _redHealthImage;
-    public GameObject _damageHealthImage;
     #endregion
 
     private void Awake()
@@ -47,7 +48,7 @@ public class PlayerScript : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (_IsTesting) //If you are using a computer, lock the mouse to the middle of the Game window
             Cursor.lockState = CursorLockMode.Locked;
@@ -69,7 +70,7 @@ public class PlayerScript : MonoBehaviour
         _startingHealth = _health;
     }
 
-    void Update()
+    private void Update()
     {
         if (_IsTesting) //If you are testing on computer, then the camera moves with the mouse
         {
@@ -84,7 +85,7 @@ public class PlayerScript : MonoBehaviour
     /// <summary>
     /// This function is used to shoot a projectile. For now, holding/clicking the left mouse button will shoot.
     /// </summary>
-    void Shoot()
+    private void Shoot()
     {
         Transform trans;
         if (_IsTesting)
@@ -124,35 +125,50 @@ public class PlayerScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.tag == "Monster")         
+
+        if(collision.gameObject.tag == "Monster")     //If the collider belongs to a monster deal damage    
            TakeDamage( collision.gameObject.GetComponent<MonsterScript>().GetDamage(), collision.gameObject);
-        if(collision.gameObject.tag == "EnemyBullet")
-        {
-            TakeDamage(collision.gameObject.GetComponent<EnemyBulletScript>()._damage, collision.gameObject);
-            Destroy(collision.gameObject);
-        }
-            
+        if(collision.gameObject.tag == "EnemyBullet") //If the collider belongs to an enemy bullet deal damage
+            TakeDamage(collision.gameObject.GetComponent<EnemyBulletScript>()._damage, collision.gameObject);              
     }
 
-    void TakeDamage(float damage, GameObject obj)
+    /// <summary>
+    /// This function is used to subtract the damage from the health and
+    /// to update the health bar.
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="obj"></param>
+    private void TakeDamage(float damage, GameObject obj)
     {
         _health -= damage;
-        StartCoroutine(Damage());
+        
         Destroy(obj);
-        if (_health <= 0)
+        if (_health <= 0) //If dead
         {
-            print("You are dead!");
+            _deathPanel.SetActive(true);
+            if (_IsTesting) //If you are using a computer, unlock the mouse.
+                Cursor.lockState = CursorLockMode.None;
+            this.enabled = false;
             _health = 0;
         }
-        _redHealthImage.transform.localScale = new Vector3(_health / _startingHealth, 1, 1);
+        StartCoroutine(Damage()); //flash red on screen
+        _redHealthImage.transform.localScale = new Vector3(_health / _startingHealth, 1, 1); //Update the x scale of health bar
     }
 
-    IEnumerator Damage()
+    /// <summary>
+    /// This function is used to flash the screen red when the player has take damage.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Damage()
     {
         _damageHealthImage.SetActive(true);
         yield return new WaitForSeconds(0.1f);
         _damageHealthImage.SetActive(false);
     }
 
+    /// <summary>
+    /// Return the damage a player can do.
+    /// </summary>
+    /// <returns></returns>
     public float GetDamage() { return _damage; }
 }

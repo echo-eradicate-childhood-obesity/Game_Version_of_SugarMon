@@ -6,12 +6,21 @@ using UnityEngine;
 
 public class ShootingMonsterScript : MonsterScript
 {
-    public GameObject _bulletPrefab;
-    public float _bulletSpeed;
+    #region PUBLIC_VAR
+    public GameObject _bulletPrefab;        // A reference to the bullet prefab the monster will shoot
+    public float _bulletSpeed;              // The bullet speed of the monsters
+    #endregion
 
-    private bool _isTurning = false;
-    private bool _canShoot = false;
+    #region PRIVATE_VARS
+    private bool _isTurning = false;            // Check to see if the monster is turning towards the player
+    private bool _canShoot = false;             // Check to see if the monster is ready to shoot or not
+    #endregion
 
+    /// <summary>
+    /// The attack for the shooting monster. 
+    /// If the monster has stop bouncing, turn towards the player 
+    /// and fire two shots. Then continue moving.
+    /// </summary>
     public override void Attack()
     {
         if (_moveCounter < _chargeAtMove)
@@ -34,6 +43,10 @@ public class ShootingMonsterScript : MonsterScript
         }            
     }
 
+    /// <summary>
+    /// This function is used to lerp the rotation to face the player
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator TurnToPlayer()
     {
         _isTurning = true;
@@ -48,6 +61,10 @@ public class ShootingMonsterScript : MonsterScript
         _canShoot = true;
     }
 
+    /// <summary>
+    /// This function is used to shoot twice at the player with a delay.
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator Shoot()
     {
         _canShoot = false;
@@ -56,7 +73,7 @@ public class ShootingMonsterScript : MonsterScript
             GameObject bullet = Instantiate(_bulletPrefab, gameObject.transform.position, Quaternion.identity);
             bullet.GetComponent<Rigidbody>().velocity = (_cameraPosition - gameObject.transform.position).normalized * _bulletSpeed;
             bullet.GetComponent<EnemyBulletScript>()._damage = _damage;
-            StartCoroutine(CanvasScript.instance.CreateWarning(bullet));
+            CanvasScript.instance.CreateWarningFromObject(bullet);
             yield return new WaitForSeconds(1.0f);
         }
 

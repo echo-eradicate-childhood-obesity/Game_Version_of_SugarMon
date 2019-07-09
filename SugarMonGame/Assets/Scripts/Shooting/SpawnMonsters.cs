@@ -16,8 +16,8 @@ public class SpawnMonsters : MonoBehaviour
     #region PRIVATE_VARS
     private Transform _cameraTransform;                              // The transfrom of the camera in the scene
     private List<GameObject> _monsters = new List<GameObject>();     // The list of monsters
-    private bool _shouldSpawn = true;
-    private GameObject _canvas;
+    private bool _shouldSpawn = true;                                // Test to see if the spawner should spawn monsters
+    private GameObject _canvas;                                      // A reference to the canvas
     #endregion
 
     private void Awake()

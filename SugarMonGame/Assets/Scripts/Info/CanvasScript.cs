@@ -1,15 +1,18 @@
-﻿using System.Collections;
+﻿//This file was create by Mark Botaish on July 9th, 2019
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CanvasScript : MonoBehaviour
 {
     public static CanvasScript instance;
-    public GameObject _warningIndicationPrefab;
 
+    public GameObject _warningIndicationPrefab;         // A reference to the warning UI image prefab 
 
-    private Vector2 dim;
-    private Vector2 offset = new Vector2(10, 20);
+    private Vector2 dim;                                // The dimensions of the screen
+    private Vector2 offset = new Vector2(10, 20);       // The offset of the screen so the UI image is not cut off
 
     // Start is called before the first frame update
     void Awake()
@@ -19,7 +22,16 @@ public class CanvasScript : MonoBehaviour
 
     }
 
-    public IEnumerator CreateWarning(GameObject obj)
+    public void CreateWarningFromObject(GameObject obj) { StartCoroutine(CreateWarning(obj)); } 
+
+    /// <summary>
+    /// Creates the warning on screen for the object. 
+    /// If the object is on screen, then display the warning, else dont. 
+    /// When the object is destroyed, destroy the warning.
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
+    IEnumerator CreateWarning(GameObject obj)
     { 
         GameObject _warningIndication = Instantiate(_warningIndicationPrefab, transform);
         while (obj != null)
@@ -43,4 +55,7 @@ public class CanvasScript : MonoBehaviour
         }
         Destroy(_warningIndication);
     }
+
+    public void PlayAgain() { SceneManager.LoadScene(SceneManager.GetActiveScene().name); }
+    public void GoToMenu() { SceneManager.LoadScene("UIScene"); }
 }

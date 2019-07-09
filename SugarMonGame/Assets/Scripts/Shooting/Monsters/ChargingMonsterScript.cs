@@ -8,6 +8,10 @@ public class ChargingMonsterScript : MonsterScript
 {
     private bool _sendNot = false;
 
+    /// <summary>
+    /// The charge attack for this monster. 
+    /// After a certain number of bounces, charge the player.
+    /// </summary>
     public override void Attack()
     {
         gameObject.transform.LookAt(_cameraPosition);
@@ -15,9 +19,9 @@ public class ChargingMonsterScript : MonsterScript
             checkPosition();
         else
         {
-            if (!_sendNot)
+            if (!_sendNot) //Send the notification to the canvas to alert the player
             {
-                StartCoroutine(CanvasScript.instance.CreateWarning(gameObject));
+                CanvasScript.instance.CreateWarningFromObject(gameObject);
                 _sendNot = true;
             }
             _rigid.velocity = (_cameraPosition - transform.position).normalized * 3.0f;

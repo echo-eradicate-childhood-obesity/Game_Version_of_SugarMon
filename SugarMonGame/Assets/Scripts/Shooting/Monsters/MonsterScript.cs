@@ -73,6 +73,10 @@ public abstract class MonsterScript : MonoBehaviour
         Attack();    
     }
 
+    /// <summary>
+    /// An abtract class that all enemies need to have. Used 
+    /// to determine how an enemy can attack 
+    /// </summary>
     public abstract void Attack();
 
     /// <summary>
@@ -156,6 +160,10 @@ public abstract class MonsterScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Get the damage the monster can deal 
+    /// </summary>
+    /// <returns></returns>
     public float GetDamage() { return _damage; }
 
 }

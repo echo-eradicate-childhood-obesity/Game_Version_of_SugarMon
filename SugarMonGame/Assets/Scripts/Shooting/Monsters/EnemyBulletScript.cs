@@ -10,8 +10,10 @@ public class EnemyBulletScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //If the players bullets hits this GameObject, destroy this object and the other
         if (other.tag == "Bullet")
         {
+            Destroy(other.gameObject);
             Destroy(gameObject);
         }
     }
