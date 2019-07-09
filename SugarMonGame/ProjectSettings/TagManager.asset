@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bullet
   - LevelButton
+  - Monster
   layers:
   - Default
   - TransparentFX

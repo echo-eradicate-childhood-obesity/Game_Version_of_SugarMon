@@ -1037,7 +1037,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4050299024428850936}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.16150597, y: 0.16150597, z: 0.16150597}
   m_Children:
@@ -1061,7 +1061,7 @@ Transform:
   - {fileID: 736008792555188154}
   m_Father: {fileID: 9218291064196923865}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4080926028788964503
 GameObject:
   m_ObjectHideFlags: 0
@@ -1304,11 +1304,11 @@ GameObject:
   - component: {fileID: 9218291064196923865}
   - component: {fileID: 2601628201064460740}
   - component: {fileID: 3428256043308917463}
-  - component: {fileID: 8094734497952936435}
   - component: {fileID: 8077442921970923577}
+  - component: {fileID: 3109324934140118164}
   m_Layer: 8
   m_Name: Monster
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1345,7 +1345,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!23 &3428256043308917463
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1383,18 +1383,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &8094734497952936435
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5311621072671175626}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93312f6fcf997dc47b184f2abd73daa4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!135 &8077442921970923577
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1408,6 +1396,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.08
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3109324934140118164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5311621072671175626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbc7c9a567306a49bf6978ca2d052ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bulletPrefab: {fileID: 1705858148795005202, guid: 27202609ab1b7ee4192353d85d522534,
+    type: 3}
+  _bulletSpeed: 5
 --- !u!1 &6176244298781830760
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,16 +18,18 @@ public abstract class MonsterScript : MonoBehaviour
     protected int _chargeAtMove;              // The number of boucnes off the edgge of the movement space before charging the player
     protected float _health;                  // The current health of the monster
     protected float _maxHealth;               // The max health of the monster
+    protected float _damage;                  //The damage given to the player
 
     protected SpawnMonsters _sm;              // The instance to the SpawnMonster script
     protected Rigidbody _rigid;               // The Rigid body of this gameobject
 
     protected GameObject _redFill;            // A reference to the slider on the canvas
-    protected GameObject _canvas;             // A reference to the canvas on the monster
+    protected GameObject _monsterCanvas;             // A reference to the canvas on the monster
     protected GameObject _damageText;         // The prefab to spawn when a projectile has hit the enemy
 
     protected PlayerScript _player;           // Singleton of the player script
     protected Camera _camera;                 // A reference to the main camera
+    protected GameObject _canvas;
     #endregion
 
     public void Start()
@@ -35,9 +37,9 @@ public abstract class MonsterScript : MonoBehaviour
         _damageText = Resources.Load("InWorldUI/DamageText") as GameObject;
         _rigid = GetComponent<Rigidbody>();
         _sm = SpawnMonsters.instance;
-        _chargeAtMove = Random.Range(5,15);
-        _canvas = transform.Find("MonsterCanvas").gameObject;
-        _redFill = _canvas.transform.Find("Red").gameObject;
+        _chargeAtMove = Random.Range(5,10);
+        _monsterCanvas = transform.Find("MonsterCanvas").gameObject;
+        _redFill = _monsterCanvas.transform.Find("Red").gameObject;
         _player = PlayerScript.instance;
         _camera = GameObject.Find("ARCore Device").GetComponentInChildren<Camera>();
     }
@@ -48,7 +50,7 @@ public abstract class MonsterScript : MonoBehaviour
     ///  monster.
     /// </summary>
     /// -This file gets called from the SpawnMonsters script-
-    public void InitMonster(Vector3 pos, float radius, float health = 100.0f)
+    public void InitMonster(Vector3 pos, float radius, GameObject canvas, float health = 100.0f, float damage = 25f)
     {
         _cameraPosition = pos;
 
@@ -62,12 +64,13 @@ public abstract class MonsterScript : MonoBehaviour
         _radius = radius;
 
         _health = _maxHealth = health;
+        _damage = damage;
+        _canvas = canvas;
     }
 
     void FixedUpdate()
     {
-        Attack();   
-        _canvas.transform.LookAt(_cameraPosition);              
+        Attack();    
     }
 
     public abstract void Attack();
@@ -140,11 +143,11 @@ public abstract class MonsterScript : MonoBehaviour
     {
         if (other.tag == "Bullet")
         {
-            DealDamage(_player._damage); //Deal the proper damage to the enemy
+            DealDamage(_player.GetDamage()); //Deal the proper damage to the enemy
 
             GameObject obj = Instantiate(_damageText, other.transform.position, Quaternion.identity); //Spawn 3D text
             obj.transform.LookAt(_cameraPosition); // Look at the camera
-            obj.GetComponent<TextMeshPro>().text = "-" + _player._damage; // Update the 3D text damage
+            obj.GetComponent<TextMeshPro>().text = "-" + _player.GetDamage(); // Update the 3D text damage
             obj.GetComponent<Rigidbody>().velocity = Vector3.up + Vector3.right; // Set the velocity of going up 
 
             //Clean up the projectile and the text
@@ -152,5 +155,7 @@ public abstract class MonsterScript : MonoBehaviour
             Destroy(obj,1);
         }
     }
+
+    public float GetDamage() { return _damage; }
 
 }

@@ -17,6 +17,7 @@ public class SpawnMonsters : MonoBehaviour
     private Transform _cameraTransform;                              // The transfrom of the camera in the scene
     private List<GameObject> _monsters = new List<GameObject>();     // The list of monsters
     private bool _shouldSpawn = true;
+    private GameObject _canvas;
     #endregion
 
     private void Awake()
@@ -28,6 +29,7 @@ public class SpawnMonsters : MonoBehaviour
     void Start()
     {
         _cameraTransform = GameObject.Find("ARCore Device").transform.GetChild(0);
+        _canvas = GameObject.Find("Canvas");
     }
 
     // Update is called once per frame
@@ -46,10 +48,11 @@ public class SpawnMonsters : MonoBehaviour
         if (_monsters.Count < 10)
         {
             GameObject monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
-            Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
+            Vector3 vel = Random.onUnitSphere * Random.Range(2, 5);
             monster.GetComponent<Rigidbody>().velocity = vel;
-            monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
-            _monsters.Add(monster);
+            monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius, _canvas);
+            monster.transform.LookAt(_cameraTransform.position);
+            _monsters.Add(monster);            
         }
         else
         {
@@ -65,13 +68,19 @@ public class SpawnMonsters : MonoBehaviour
     public Vector3 GetNewPosition(GameObject obj)
     {
         GameObject newObj = null;
-
-        do
+        if (_monsters.Count > 1)
         {
-            newObj = _monsters[Random.Range(0, _monsters.Count)];
-        } while (obj == newObj);
+            do
+            {
+                newObj = _monsters[Random.Range(0, _monsters.Count)];
+            } while (obj == newObj);
+        }
+        else
+            newObj = gameObject;
         
+
         return newObj.transform.position;
+
     }
 
     /// <summary>
