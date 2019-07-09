@@ -10,6 +10,7 @@ public class SpawnMonsters : MonoBehaviour
     public static SpawnMonsters instance;
 
     [Tooltip("The minions prefab of a monster")]                        public GameObject _monsterPrefab;
+    [Tooltip("The minions prefab of a monster v 2")]                    public GameObject _monsterPrefab2;
     [Tooltip("The max distance from the camera a monster can get")]     public float _radius = 10;
     #endregion
 
@@ -45,11 +46,24 @@ public class SpawnMonsters : MonoBehaviour
     {
         if (_monsters.Count < 10)
         {
-            GameObject monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
-            Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
-            monster.GetComponent<Rigidbody>().velocity = vel;
-            monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
-            _monsters.Add(monster);
+            System.Random rnd = new System.Random();
+            int monType = rnd.Next(1, 7);
+            if (monType > 3)
+            {
+                GameObject monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
+                Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
+                monster.GetComponent<Rigidbody>().velocity = vel;
+                monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
+                _monsters.Add(monster);
+            }
+            else
+            {
+                GameObject monster = Instantiate(_monsterPrefab2, transform.position, Quaternion.identity);
+                Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
+                monster.GetComponent<Rigidbody>().velocity = vel;
+                monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
+                _monsters.Add(monster);
+            }
         }
         else
         {
@@ -69,6 +83,7 @@ public class SpawnMonsters : MonoBehaviour
         do
         {
             newObj = _monsters[Random.Range(0, _monsters.Count)];
+
         } while (obj == newObj);
         
         return newObj.transform.position;
