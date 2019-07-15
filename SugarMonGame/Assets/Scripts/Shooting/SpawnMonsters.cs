@@ -11,12 +11,12 @@ public class SpawnMonsters : MonoBehaviour
 
     [Tooltip("The minions prefab of a monster")]                        public GameObject _monsterPrefab;
     [Tooltip("The max distance from the camera a monster can get")]     public float _radius = 10;
+    [Tooltip("Win Panel reference")]                                    public GameObject _winPanel;
     #endregion
 
     #region PRIVATE_VARS
     private Transform _cameraTransform;                              // The transfrom of the camera in the scene
-    private List<GameObject> _monsters = new List<GameObject>();     // The list of monsters
-    private bool _shouldSpawn = true;                                // Test to see if the spawner should spawn monsters
+    private List<GameObject> _monsters = new List<GameObject>();     // The list of monsters    
     private GameObject _canvas;                                      // A reference to the canvas
     #endregion
 
@@ -30,34 +30,24 @@ public class SpawnMonsters : MonoBehaviour
     {
         _cameraTransform = GameObject.Find("ARCore Device").transform.GetChild(0);
         _canvas = GameObject.Find("Canvas");
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (_shouldSpawn)
-            SpawnMonster();
+        StartCoroutine(SpawnEnemies(10));
     }
 
     /// <summary>
-    /// This fucntion is used to spawn 10 monsters. This function will get called when 
-    /// all have died or the game has just started.
+    /// This fucntion is used to spawn a number of monsters.
     /// </summary>
-    void SpawnMonster()
+    IEnumerator SpawnEnemies(int num)
     {
-        if (_monsters.Count < 10)
+        while(_monsters.Count < num)
         {
             GameObject monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
             Vector3 vel = Random.onUnitSphere * Random.Range(2, 5);
             monster.GetComponent<Rigidbody>().velocity = vel;
             monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius, _canvas);
             monster.transform.LookAt(_cameraTransform.position);
-            _monsters.Add(monster);            
-        }
-        else
-        {
-            _shouldSpawn = false;
-        }
+            _monsters.Add(monster);
+            yield return null;
+        }       
     }
 
     /// <summary>
@@ -89,8 +79,15 @@ public class SpawnMonsters : MonoBehaviour
     /// -This function gets called from the MonterScript-
     public void RemoveMonster(GameObject obj){
         _monsters.Remove(obj);
-        if (_monsters.Count <= 0)
-            _shouldSpawn = true;
+        if (_monsters.Count <= 0 && !PlayerScript.instance.IsDead())
+        {
+            if (PlayerScript.instance._IsTesting) //If you are using a computer, lock the mouse to the middle of the Game window
+                Cursor.lockState = CursorLockMode.None;
+
+            PlayerInfoScript.instance.AddLevelInSugarGroup();
+            _winPanel.SetActive(true);
+        }
+            
     }
 
     /// <summary>
