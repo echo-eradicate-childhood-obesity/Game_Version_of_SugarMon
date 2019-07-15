@@ -40,6 +40,7 @@ public class PlayerScript : MonoBehaviour
     private float _health;                          // The current Health of the player from the PlayerInfoScript
     private float _startingHealth;
     private float _damage;                          // The current Damage of the player from the PlayerInfoScript
+    private bool _hasDied = false;
     #endregion
 
     private void Awake()
@@ -145,6 +146,8 @@ public class PlayerScript : MonoBehaviour
         Destroy(obj);
         if (_health <= 0) //If dead
         {
+            RemoveAllEnemies();
+            _hasDied = true;
             _deathPanel.SetActive(true);
             if (_IsTesting) //If you are using a computer, unlock the mouse.
                 Cursor.lockState = CursorLockMode.None;
@@ -153,6 +156,20 @@ public class PlayerScript : MonoBehaviour
         }
         StartCoroutine(Damage()); //flash red on screen
         _redHealthImage.transform.localScale = new Vector3(_health / _startingHealth, 1, 1); //Update the x scale of health bar
+    }
+
+
+    /// <summary>
+    /// This function is used to remove all monsters in the scene. MUST BE TAGGED -Monster-
+    /// </summary>
+    private void RemoveAllEnemies()
+    {
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+
+        foreach(GameObject enemy in monsters)
+        {
+            Destroy(enemy);
+        }
     }
 
     /// <summary>
@@ -171,4 +188,10 @@ public class PlayerScript : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     public float GetDamage() { return _damage; }
+
+    /// <summary>
+    /// Return true if the player is considered dead (health <= 0)
+    /// </summary>
+    /// <returns></returns>
+    public bool IsDead() { return _hasDied; }
 }

@@ -51,10 +51,12 @@ public class PlayerInfoScript : MonoBehaviour
     private int _prevXP = 0;
     private float _nextLevelXPMultiplier = 1.3f;    // The multiplier to determine the xp needed for the next level
 
-    private Dictionary<string, int> powerupsDict = new Dictionary<string, int>(); //A dictionary from name to index in the powerup list
+    private Dictionary<string, int> powerupsDict = new Dictionary<string, int>(); // A dictionary from name to index in the powerup list
+    private int[] _currentLevelInGroup = {0,0,0,0,0,0,0};                         // The current level of each sugar group in the game
+    private int _currentSugarGroup = 0;                                           // The current sugar group the player is playing
 
     #endregion
-
+     
     private void Awake()
     {
         if (instance == null)
@@ -239,6 +241,7 @@ public class PlayerInfoScript : MonoBehaviour
     public void SetXP(int xp) { _xp = xp; }
     public void SetCoins(int coins) { _coins = coins; }
     public void SetPrevXp(int xp) { _prevXP = xp; }
+    public void SetCurrentSugarGroup(int level) { _currentSugarGroup = level; }
 
     public void AddCoins(int coins) { _coins += coins; }
     public void AddXp(int xp)
@@ -251,11 +254,11 @@ public class PlayerInfoScript : MonoBehaviour
             _xpForNextLevel = (int)(_xpForNextLevel * _nextLevelXPMultiplier);
         }
     }
+    public void AddLevelInSugarGroup() { _currentLevelInGroup[_currentSugarGroup]++; }
 
     public int GetCoinCount(){return _coins;}
     public int GetLevel() { return _level; }
     public int GetXp() { return _xp; }
     public float GetPercentageToNextLevel() { return ((float)(_xp - _prevXP)) / ((float)(_xpForNextLevel - _prevXP)); }
-
-
+    public int GetLevelInSugarGroup(int index) { return _currentLevelInGroup[index]; }
 }

@@ -25,8 +25,10 @@ public class LevelUIManager : MonoBehaviour
             _name = panel.name.Remove(panel.name.Length - 3);
             _buttonCount = panel.transform.childCount;
             _currentButtonIndex = index;
-            _currentGroup = panel;            
-            _currentButton = panel.transform.GetChild(index).gameObject.GetComponent<Button>();
+            _currentGroup = panel;    
+            
+            if(_currentButtonIndex < panel.transform.childCount)
+                _currentButton = panel.transform.GetChild(_currentButtonIndex).gameObject.GetComponent<Button>();
         }
     }
 
@@ -94,22 +96,34 @@ public class LevelUIManager : MonoBehaviour
             Transform panel = _allPanels.transform.GetChild(i).GetChild(0);
 
             _allPanels.transform.GetChild(i).GetComponent<ScrollRect>().verticalNormalizedPosition = 1; //Automatically scroll to the top
-            group.init(panel.gameObject,0);//Init the sugar group
-            group._currentButton.onClick.AddListener(() => Unlock(panel.parent.GetSiblingIndex())); //Set the current button to be active
-            group._currentButton.interactable = true;
+            group.init(panel.gameObject,PlayerInfoScript.instance.GetLevelInSugarGroup(i));//Init the sugar group
+
             buttonGroups.Add(group);
+
+            //Update the titles
+            Transform child = panel.parent.Find("Text");
+            
+            if (group._currentButton)
+            {
+                group._currentButton.onClick.AddListener(() => PlayLevel(panel.parent.GetSiblingIndex())); //Set the current button to be active
+                group._currentButton.interactable = true;
+                child.GetComponent<Text>().text = buttonGroups[i]._name + " - " + (buttonGroups[i]._currentButtonIndex) + "/" + buttonGroups[i]._buttonCount;
+            }
+            else
+            {
+                child.GetComponent<Text>().text = buttonGroups[i]._name + " - " + (buttonGroups[i]._buttonCount) + "/" + buttonGroups[i]._buttonCount;
+            }       
+        
 
             //Update the buttons to be at the location last saved (Future: From the save file)
             UpdateButtons(buttonGroups[i]);
 
-            //Update the titles
-            Transform child = panel.parent.Find("Text");
-            child.GetComponent<Text>().text = buttonGroups[i]._name + " - " + (buttonGroups[i]._currentButtonIndex) + "/" + buttonGroups[i]._buttonCount;
+           
 
             panel.parent.gameObject.SetActive(false);
         }
 
-        //Settings for the "map" selection animatoin s
+        //Settings for the "map" selection animations
         _selectionOffset = -_selectionPanel.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta.x / buttonGroups.Count;
         _targetLocation = -_selectionPanel.transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().anchoredPosition.x;
 
@@ -118,33 +132,14 @@ public class LevelUIManager : MonoBehaviour
     #region  PUBLIC FUNCTIONS
 
     /// <summary>
-    /// This function is called when a button is clicked. This changes the current button to have a green check mark on it
-    /// along with have the icon turn gold. It takes the next button an activates it and places a red square around the icon.
-    /// Index is the sugar group index as each group has it's own progression.
+    /// This function is called when a level button has been clicked. 
+    /// This sets the current settings for the level to load.
     /// </summary>
     /// <param name="index"></param>
-    public void Unlock(int index)
+    public void PlayLevel(int index)
     {
-        buttonGroups[index]._currentButton.interactable = false; //Disables the button
-
-        //Updates the titles of the sugar groups
-        Transform child = buttonGroups[index]._currentGroup.transform.parent.Find("Text");
-        child.GetComponent<Text>().text = buttonGroups[index]._name + " - " + (buttonGroups[index]._currentButtonIndex + 1) + "/" + buttonGroups[index]._buttonCount;
-
-        //Changes the tint of the button to gold
-        ColorBlock block = buttonGroups[index]._currentButton.colors;
-        block.disabledColor = Color.green;
-        buttonGroups[index]._currentButton.colors = block;
-
-        //If the button was not the last button in the group update the next button
-        if (buttonGroups[index]._currentButtonIndex < buttonGroups[index]._currentGroup.transform.childCount - 1)
-        {
-            buttonGroups[index]._currentButtonIndex++;
-            GameObject button = buttonGroups[index]._currentGroup.transform.GetChild(buttonGroups[index]._currentButtonIndex).gameObject; //Gets the next button
-            button.GetComponent<Button>().interactable = true; //Enables the button
-            button.GetComponent<Button>().onClick.AddListener(() => Unlock(index)); //Set the OnClick functionality
-            buttonGroups[index]._currentButton = button.GetComponent<Button>();
-        }
+        info.SetCurrentSugarGroup(index);
+        SceneManager.LoadScene("SampleScene");
     }
 
     /// <summary>
@@ -261,8 +256,8 @@ public class LevelUIManager : MonoBehaviour
     /// <param name="group"></param>
     private void UpdateButtons(SugarButton group)
     {
-        Transform trans = group._currentGroup.transform;
-        int size = group._currentButtonIndex;
+        Transform trans = group._currentGroup.transform;       
+        int size = Mathf.Clamp(group._currentButtonIndex, 0, trans.childCount);
         for (int i = 0; i < size; i++)
         {
             Button but = trans.GetChild(i).GetComponent<Button>();
