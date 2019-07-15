@@ -1456,22 +1456,31 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.22535133
+        value: 0.94366264
+        inSlope: -2.26181
+        outSlope: -2.26181
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.33333334
+        outWeight: 0.39534953
+      - serializedVersion: 3
+        time: 0.47252664
+        value: 0.15493011
         inSlope: 0
         outSlope: 0
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
+        inWeight: 0
+        outWeight: 0
       - serializedVersion: 3
-        time: 0.9120866
+        time: 1
         value: 0
-        inSlope: 0.15535636
-        outSlope: 0.15535636
+        inSlope: 0.46342713
+        outSlope: 0.46342713
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.44594595
-        outWeight: 0
+        inWeight: 1
+        outWeight: 0.48676786
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
