@@ -461,9 +461,6 @@
     <Reference Include="nunit.framework">
       <HintPath>/Applications/Unity 2019.1.2/Unity.app/Contents/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="Vuforia.UnityExtensions">
-      <HintPath>/Applications/Unity 2019.1.2/PlaybackEngines/VuforiaSupport/Managed/Runtime/Vuforia.UnityExtensions.dll</HintPath>
-    </Reference>
     <Reference Include="Google.Protobuf">
       <HintPath>/Users/erinmittmann/Documents/GitHub/Game_Version_of_SugarMon/SugarMonGame/Assets/GoogleARCore/SDK/Plugins/Google.Protobuf.dll</HintPath>
     </Reference>

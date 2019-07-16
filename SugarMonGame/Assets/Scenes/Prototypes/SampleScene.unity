@@ -649,9 +649,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc3be763d4e602845860946802149159, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _monsterPrefab: {fileID: 3650833269785551419, guid: d30e6d30282ff4514a1f646e3f6b173f,
+  _monsterPrefab: {fileID: 5311621072671175626, guid: f875b0a18aa1640739b306b5f9279104,
     type: 3}
-  _monsterPrefab2: {fileID: 5311621072671175626, guid: f875b0a18aa1640739b306b5f9279104,
+  _monsterCane: {fileID: 3650833269785551419, guid: d30e6d30282ff4514a1f646e3f6b173f,
+    type: 3}
+  _monsterConcentrate: {fileID: 3033686775468499890, guid: ea274a532ce044f2eb3976334aec84f7,
     type: 3}
   _radius: 10
 --- !u!1 &1286846485
