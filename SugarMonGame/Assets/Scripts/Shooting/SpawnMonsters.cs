@@ -14,7 +14,7 @@ public class SpawnMonsters : MonoBehaviour
         [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterDonut;
         [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterCan;
         [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterConcentrate;
-       //[Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterGlucose;
+       [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterGlucose;
         [Tooltip("The max distance from the camera a monster can get")] public float _radius = 10;
         #endregion
 
@@ -60,7 +60,7 @@ public class SpawnMonsters : MonoBehaviour
                     monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
                     _monsters.Add(monster);
                 }
-                if (monType == 2)
+                else if (monType == 2)
                 {
                     GameObject monster = Instantiate(_monsterCane, transform.position, Quaternion.identity);
                     Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
@@ -68,7 +68,7 @@ public class SpawnMonsters : MonoBehaviour
                     monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
                     _monsters.Add(monster);
                 }
-                if (monType == 3)
+                else if (monType == 3)
                 {
                     GameObject monster = Instantiate(_monsterDonut, transform.position, Quaternion.identity);
                     Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
@@ -76,22 +76,22 @@ public class SpawnMonsters : MonoBehaviour
                     monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
                     _monsters.Add(monster);
                 }
-                if (monType == 4)
+                else if (monType == 4)
                 {
                     GameObject monster = Instantiate(_monsterCan, transform.position, Quaternion.identity);
                     Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
                     monster.GetComponent<Rigidbody>().velocity = vel;
                     monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
                     _monsters.Add(monster);
-                }/*
-                if (monType == 5)
+                }
+                else if (monType == 5)
                 {
                     GameObject monster = Instantiate(_monsterGlucose, transform.position, Quaternion.identity);
                     Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
                     monster.GetComponent<Rigidbody>().velocity = vel;
                     monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
                     _monsters.Add(monster);
-                }*/
+                }
                 else
                 {
                     GameObject monster = Instantiate(_monsterConcentrate, transform.position, Quaternion.identity);
