@@ -11,7 +11,7 @@ public class SpawnMonsters : MonoBehaviour
 
         [Tooltip("The minions prefab of a monster")] public GameObject _monsterPrefab;
         [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterCane;
-       // [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterDonut;
+        [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterDonut;
        // [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterCan;
         [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterConcentrate;
        //[Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterGlucose;
@@ -68,14 +68,14 @@ public class SpawnMonsters : MonoBehaviour
                     monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
                     _monsters.Add(monster);
                 }
-              /*  if (monType == 3)
+                if (monType == 3)
                 {
                     GameObject monster = Instantiate(_monsterDonut, transform.position, Quaternion.identity);
                     Vector3 vel = Random.onUnitSphere * Random.Range(2, 10);
                     monster.GetComponent<Rigidbody>().velocity = vel;
                     monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
                     _monsters.Add(monster);
-                }
+                }/*
                 if (monType == 4)
                 {
                     GameObject monster = Instantiate(_monsterCan, transform.position, Quaternion.identity);
