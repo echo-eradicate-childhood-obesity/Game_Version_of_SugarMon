@@ -12,7 +12,7 @@ public class SpawnMonsters : MonoBehaviour
         [Tooltip("The minions prefab of a monster")] public GameObject _monsterPrefab;
         [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterCane;
         [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterDonut;
-       // [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterCan;
+        [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterCan;
         [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterConcentrate;
        //[Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterGlucose;
         [Tooltip("The max distance from the camera a monster can get")] public float _radius = 10;
@@ -75,7 +75,7 @@ public class SpawnMonsters : MonoBehaviour
                     monster.GetComponent<Rigidbody>().velocity = vel;
                     monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
                     _monsters.Add(monster);
-                }/*
+                }
                 if (monType == 4)
                 {
                     GameObject monster = Instantiate(_monsterCan, transform.position, Quaternion.identity);
@@ -83,7 +83,7 @@ public class SpawnMonsters : MonoBehaviour
                     monster.GetComponent<Rigidbody>().velocity = vel;
                     monster.GetComponent<ChargingMonsterScript>().InitMonster(_cameraTransform.position, _radius);
                     _monsters.Add(monster);
-                }
+                }/*
                 if (monType == 5)
                 {
                     GameObject monster = Instantiate(_monsterGlucose, transform.position, Quaternion.identity);
