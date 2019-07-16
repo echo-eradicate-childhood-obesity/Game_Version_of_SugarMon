@@ -18,7 +18,18 @@ public abstract class MonsterScript : MonoBehaviour
     protected int _chargeAtMove;              // The number of boucnes off the edgge of the movement space before charging the player
     protected float _health;                  // The current health of the monster
     protected float _maxHealth;               // The max health of the monster
-    protected float _damage;                  //The damage given to the player
+    protected float _damage;                  // The damage given to the player
+    protected int _coins;                     // Coins to give to the player on death
+    protected int _xp;                        // Xp to give to the player on death
+
+    public float _startingDamage = 25;                  // The damage of the monster at level 0
+    public float _startingHealth = 100;                 // The health of the monster at level 0
+    public int _startingXP = 50;                        // The xp to give to the player on death at level 0
+    public int _startingCoins = 50;                     // The coins to give to the player on death at level 0
+    protected float _damageMultiplierPerLevel = 1.5f;   // Multiplier of damage per the level in sugar group
+    protected float _healthMultiplierPreLevel = 1.5f;   // Multiplier of health per the level in sugar group
+    protected float _XPMultiplierPreLevel = 1.5f;       // Multiplier of xp per the level in sugar group
+    protected float _CoinsMultiplierPreLevel = 1.5f;    // Multiplier of coins per the level in sugar group
 
     protected SpawnMonsters _sm;              // The instance to the SpawnMonster script
     protected Rigidbody _rigid;               // The Rigid body of this gameobject
@@ -29,7 +40,9 @@ public abstract class MonsterScript : MonoBehaviour
 
     protected PlayerScript _player;           // Singleton of the player script
     protected Camera _camera;                 // A reference to the main camera
-    protected GameObject _canvas;
+    protected GameObject _canvas;             // A reference to the canvas
+
+    protected bool _didDealDamage = false;    // A check to see if the monster has dealt damage to the player or not
     #endregion
 
     public void Start()
@@ -50,7 +63,7 @@ public abstract class MonsterScript : MonoBehaviour
     ///  monster.
     /// </summary>
     /// -This file gets called from the SpawnMonsters script-
-    public void InitMonster(Vector3 pos, float radius, GameObject canvas, float health = 100.0f, float damage = 25f)
+    public void InitMonster(Vector3 pos, float radius, GameObject canvas, int level)
     {
         _cameraPosition = pos;
 
@@ -63,8 +76,11 @@ public abstract class MonsterScript : MonoBehaviour
 
         _radius = radius;
 
-        _health = _maxHealth = health;
-        _damage = damage;
+        _health = _maxHealth = _startingHealth * Mathf.Pow(_healthMultiplierPreLevel, level);
+        _damage = _startingDamage * Mathf.Pow(_damageMultiplierPerLevel, level); 
+        _coins = (int)(_startingCoins * Mathf.Pow(_CoinsMultiplierPreLevel, level));
+        _xp = (int)(_startingXP * Mathf.Pow(_XPMultiplierPreLevel, level));
+
         _canvas = canvas;
     }
 
@@ -142,7 +158,23 @@ public abstract class MonsterScript : MonoBehaviour
             _redFill.transform.localScale = new Vector3(_health / _maxHealth, 1,1);
     }
     
-    private void OnDestroy() { _sm.RemoveMonster(gameObject); }
+    private void OnDestroy() {
+        if (!_didDealDamage)
+        {
+            PlayerInfoScript info = PlayerInfoScript.instance;
+            if (info) //If the PlayerInfoScript exists (ran game from main menu) add proper xp/coins
+            {
+                info.AddCoinsInLevel(_coins);
+                info.AddXPInLevel(_xp);
+            }
+            else //For testing when running the game from this scene
+            {
+                info.AddCoinsInLevel(_startingCoins);
+                info.AddXPInLevel(_startingXP);
+            }
+        }       
+        _sm.RemoveMonster(gameObject);
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Bullet")
@@ -166,4 +198,8 @@ public abstract class MonsterScript : MonoBehaviour
     /// <returns></returns>
     public float GetDamage() { return _damage; }
 
+    /// <summary>
+    /// Set the check to see if the monster has dealt damage before. 
+    /// </summary>
+    public void SetDidDealDamage() { _didDealDamage = true; }
 }

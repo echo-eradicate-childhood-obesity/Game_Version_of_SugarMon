@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SpawnMonsters : MonoBehaviour
 {
@@ -43,7 +44,16 @@ public class SpawnMonsters : MonoBehaviour
             GameObject monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
             Vector3 vel = Random.onUnitSphere * Random.Range(2, 5);
             monster.GetComponent<Rigidbody>().velocity = vel;
-            monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius, _canvas);
+            PlayerInfoScript player = PlayerInfoScript.instance;
+            //If the PlayerInfoScript exists (started game from menu)
+            if (player)
+            {
+                //Each level is offset but 10 levels to make it more challenging in other groups
+                int level = player.GetCurrentGroup() * 25 + player.GetLevelInSugarGroup(player.GetCurrentGroup());
+                monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius, _canvas, level);
+            }else //For testing purposes 
+                monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius, _canvas, 0);
+
             monster.transform.LookAt(_cameraTransform.position);
             _monsters.Add(monster);
             yield return null;
@@ -81,11 +91,15 @@ public class SpawnMonsters : MonoBehaviour
         _monsters.Remove(obj);
         if (_monsters.Count <= 0 && !PlayerScript.instance.IsDead())
         {
+            PlayerInfoScript info = PlayerInfoScript.instance;
             if (PlayerScript.instance._IsTesting) //If you are using a computer, lock the mouse to the middle of the Game window
                 Cursor.lockState = CursorLockMode.None;
 
-            PlayerInfoScript.instance.AddLevelInSugarGroup();
-            _winPanel.SetActive(true);
+            //Update the stats of the player
+            info.AddLevelInSugarGroup();
+            _winPanel.SetActive(true); //Display win screen 
+            string stats = "Coins: " + info.GetCoinsFromLevel().ToString("00000000") + "\nXP: " + info.GetXpFromLevel(); 
+            _winPanel.transform.Find("Stats").GetComponent<TextMeshProUGUI>().text = stats; //Update stats
         }
             
     }

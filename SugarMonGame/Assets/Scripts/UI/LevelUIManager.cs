@@ -41,9 +41,9 @@ public class LevelUIManager : MonoBehaviour
     #endregion
 
     #region PUBLIC_VARS
-    public List<Powers> powers;
-    public TextMeshProUGUI tempCoins;
-    public TextMeshProUGUI tempLevel;
+    public List<Powers> powers;             //A list of powerup
+    public TextMeshProUGUI tempCoins;       // A reference to the coins text in the main menu
+    public TextMeshProUGUI tempLevel;       // A reference to the level text in the main menu 
     #endregion
 
     #region PRIVATE_VARS
@@ -54,16 +54,16 @@ public class LevelUIManager : MonoBehaviour
     private GameObject _currentLevels;                                  // This is a reference to the current active panel 
     private GameObject _buttonPanel;                                    // This is a reference to the back button in the scene
     private GameObject _selectionPanel;                                 // This is a reference to the selection panel in the scene
-    private GameObject _skillsPanel;
-    private GameObject _mainMenuPanel;
+    private GameObject _skillsPanel;                                    // This is a reference to the skills panel in the scene
+    private GameObject _mainMenuPanel;                                  // This is a reference to the main menu panel in the scene
 
-    private int _currentSelection = 0;                                          // This is a current button index that is showing on screen
-    private float _selectionOffset;                                             // This is the offset position of the first button
-    private float _targetLocation;                                              // This is the current target position       
-    private Coroutine _selectionAnim = null;                                    // This is a reference to the current coroutine running the animation
-    private Image _xpSlider;
+    private int _currentSelection = 0;                                  // This is a current button index that is showing on screen
+    private float _selectionOffset;                                     // This is the offset position of the first button
+    private float _targetLocation;                                      // This is the current target position       
+    private Coroutine _selectionAnim = null;                            // This is a reference to the current coroutine running the animation
+    private Image _xpSlider;                                            // A reference to the xp slider in the scene
 
-    private PlayerInfoScript info;
+    private PlayerInfoScript info;                                      // A reference to the PlayerInfoScript singleton 
     #endregion
 
     private void Start()
@@ -83,7 +83,10 @@ public class LevelUIManager : MonoBehaviour
         _skillsPanel.SetActive(false);   
 
         info = PlayerInfoScript.instance;
-        _xpSlider.fillAmount = info.GetPercentageToNextLevel() ;
+        tempCoins.text = info.GetCoinCount().ToString("00000000");
+        _xpSlider.fillAmount = info.GetPercentageToNextLevel();
+        tempLevel.text = "" + info.GetLevel(); 
+        UpdatePowers(info.GetLevel());
 
         _currentLevels = _mainMenuPanel;
 
@@ -241,7 +244,7 @@ public class LevelUIManager : MonoBehaviour
             {
                 string name = powers[i]._powerup.name;
                 powers[i]._powerup.interactable = true;
-                powers[i]._powerup.transform.Find("Level").GetComponent<TextMeshProUGUI>().text = "Level 0" + " \n(<color=green>" + info.GetBuyAmmount(name) + "</color>)";
+                powers[i]._powerup.transform.Find("Level").GetComponent<TextMeshProUGUI>().text = "Level " + info.GetPowerLevel(name) + " \n(<color=green>" + info.GetBuyAmmount(name) + "</color>)";
                 powers.RemoveAt(i);
                 i--;
             }
