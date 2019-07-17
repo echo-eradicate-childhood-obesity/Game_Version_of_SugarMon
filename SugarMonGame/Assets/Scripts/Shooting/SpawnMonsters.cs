@@ -51,7 +51,7 @@ public class SpawnMonsters : MonoBehaviour
             if (_monsters.Count < 10)
             {
                 System.Random rnd = new System.Random();
-                int monType = rnd.Next(1, 6);
+                int monType = rnd.Next(1, 7);
                 if (monType == 1)
                 {
                     GameObject monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);

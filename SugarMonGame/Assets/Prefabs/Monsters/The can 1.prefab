@@ -28,7 +28,7 @@ RectTransform:
   m_GameObject: {fileID: 352905421626311014}
   m_LocalRotation: {x: -0, y: 0.7071704, z: -0, w: 0.7070431}
   m_LocalPosition: {x: 0, y: 0, z: -0.16956554}
-  m_LocalScale: {x: 0.00039999982, y: 0.0004, z: 0.19999996}
+  m_LocalScale: {x: 0.0002, y: 0.0002, z: 0.1}
   m_Children:
   - {fileID: 920768870343946971}
   - {fileID: 8499542958634640570}
@@ -129,8 +129,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745880418907196420}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.027, y: -0.19, z: 1.655}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 30, y: 30, z: 30}
   m_Children:
   - {fileID: 4001590571667813027}
   - {fileID: 6814167212453920368}
@@ -169,8 +169,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.03
-  m_Center: {x: 0, y: 0.03, z: -0.17}
+  m_Radius: 0.025
+  m_Center: {x: 0, y: 0.028, z: -0.17}
 --- !u!23 &8752758367370171649
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -267,7 +267,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.57022476
+        value: 0.92736816
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -306,15 +306,15 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.6509434, g: 0.4452207, b: 0.4452207, a: 1}
-      key1: {r: 0.31132078, g: 0.11894804, b: 0.11894804, a: 1}
+      key0: {r: 0.098967604, g: 0.13639016, b: 0.1509434, a: 1}
+      key1: {r: 0.085617654, g: 0.36908144, b: 0.49056602, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
+      ctime0: 17155
       ctime1: 65535
       ctime2: 0
       ctime3: 0
