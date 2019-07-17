@@ -11,10 +11,10 @@ public class SpawnMonsters : MonoBehaviour
 
         [Tooltip("The minions prefab of a monster")] public GameObject _monsterPrefab;
         [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterCane;
-        [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterDonut;
-        [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterCan;
-        [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterConcentrate;
-       [Tooltip("The minions prefab of a monster v 2")] public GameObject _monsterGlucose;
+        [Tooltip("The minions prefab of a monster v 3")] public GameObject _monsterDonut;
+        [Tooltip("The minions prefab of a monster v 4")] public GameObject _monsterCan;
+        [Tooltip("The minions prefab of a monster v 5")] public GameObject _monsterConcentrate;
+       [Tooltip("The minions prefab of a monster v 6")] public GameObject _monsterGlucose;
         [Tooltip("The max distance from the camera a monster can get")] public float _radius = 10;
         #endregion
 
