@@ -159,7 +159,7 @@ public class PlayerScript : MonoBehaviour
             _health = 0;
 
             PlayerInfoScript info = PlayerInfoScript.instance;
-            string stats = "Coins: " + info.GetCoinsFromLevel().ToString("00000000") + "\nXP: " + info.GetXpFromLevel();
+            string stats = "Coins: " + info.GetCoinsFromLevel() + "\nXP: " + info.GetXpFromLevel();
             _deathPanel.transform.Find("Stats").GetComponent<TextMeshProUGUI>().text = stats;
 
         }

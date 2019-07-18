@@ -50,6 +50,7 @@ public class SpawnMonsters : MonoBehaviour
             {
                 //Each level is offset but 10 levels to make it more challenging in other groups
                 int level = player.GetCurrentGroup() * 25 + player.GetLevelInSugarGroup(player.GetCurrentGroup());
+                print("Level " + level);
                 monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius, _canvas, level);
             }else //For testing purposes 
                 monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius, _canvas, 0);
@@ -98,7 +99,7 @@ public class SpawnMonsters : MonoBehaviour
             //Update the stats of the player
             info.AddLevelInSugarGroup();
             _winPanel.SetActive(true); //Display win screen 
-            string stats = "Coins: " + info.GetCoinsFromLevel().ToString("00000000") + "\nXP: " + info.GetXpFromLevel(); 
+            string stats = "Coins: " + info.GetCoinsFromLevel() + "\nXP: " + info.GetXpFromLevel(); 
             _winPanel.transform.Find("Stats").GetComponent<TextMeshProUGUI>().text = stats; //Update stats
         }
             
