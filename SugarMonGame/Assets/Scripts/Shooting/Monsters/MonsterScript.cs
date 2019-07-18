@@ -169,8 +169,8 @@ public abstract class MonsterScript : MonoBehaviour
             }
             else //For testing when running the game from this scene
             {
-                info.AddCoinsInLevel(_startingCoins);
-                info.AddXPInLevel(_startingXP);
+                //info.AddCoinsInLevel(_startingCoins);
+                //info.AddXPInLevel(_startingXP);
             }
         }       
         _sm.RemoveMonster(gameObject);
