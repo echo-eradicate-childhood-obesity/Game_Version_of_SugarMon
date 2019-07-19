@@ -3,21 +3,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class SpawnMonsters : MonoBehaviour
 {
     #region PUBLIC_VARS
     public static SpawnMonsters instance;
 
-    [Tooltip("The minions prefab of a monster")]                        public GameObject _monsterPrefab;
-    [Tooltip("The max distance from the camera a monster can get")]     public float _radius = 10;
-    [Tooltip("Win Panel reference")]                                    public GameObject _winPanel;
+    [Tooltip("The minions prefab of a monster")]                    public List<GameObject> _monsterPrefabs;
+    [Tooltip("The max distance from the camera a monster can get")] public float _radius = 10;
+    [Tooltip("Win Panel reference")]                                public GameObject _winPanel;
     #endregion
 
     #region PRIVATE_VARS
     private Transform _cameraTransform;                              // The transfrom of the camera in the scene
-    private List<GameObject> _monsters = new List<GameObject>();     // The list of monsters    
-    private GameObject _canvas;                                      // A reference to the canvas
+    private List<GameObject> _monsters = new List<GameObject>();     // The list of monsters
+    private GameObject _canvas;
     #endregion
 
     private void Awake()
@@ -38,16 +39,27 @@ public class SpawnMonsters : MonoBehaviour
     /// </summary>
     IEnumerator SpawnEnemies(int num)
     {
-        while(_monsters.Count < num)
+        while (_monsters.Count < num)
         {
-            GameObject monster = Instantiate(_monsterPrefab, transform.position, Quaternion.identity);
+            GameObject monster = Instantiate(_monsterPrefabs[Random.Range(0, _monsterPrefabs.Count)], transform.position, Quaternion.identity);
             Vector3 vel = Random.onUnitSphere * Random.Range(2, 5);
             monster.GetComponent<Rigidbody>().velocity = vel;
-            monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius, _canvas);
+            PlayerInfoScript player = PlayerInfoScript.instance;
+            //If the PlayerInfoScript exists (started game from menu)
+            if (player)
+            {
+                //Each level is offset but 10 levels to make it more challenging in other groups
+                int level = player.GetCurrentGroup() * 25 + player.GetLevelInSugarGroup(player.GetCurrentGroup());
+                print("Level " + level);
+                monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius, _canvas, level);
+            }
+            else //For testing purposes 
+                monster.GetComponent<MonsterScript>().InitMonster(_cameraTransform.position, _radius, _canvas, 0);
+
             monster.transform.LookAt(_cameraTransform.position);
             _monsters.Add(monster);
             yield return null;
-        }       
+        }
     }
 
     /// <summary>
@@ -67,27 +79,30 @@ public class SpawnMonsters : MonoBehaviour
         }
         else
             newObj = gameObject;
-        
 
         return newObj.transform.position;
-
     }
 
     /// <summary>
     /// This function is used to remove a destroyed monster from the list.
     /// </summary>
     /// -This function gets called from the MonterScript-
-    public void RemoveMonster(GameObject obj){
+    public void RemoveMonster(GameObject obj)
+    {
         _monsters.Remove(obj);
         if (_monsters.Count <= 0 && !PlayerScript.instance.IsDead())
         {
+            PlayerInfoScript info = PlayerInfoScript.instance;
             if (PlayerScript.instance._IsTesting) //If you are using a computer, lock the mouse to the middle of the Game window
                 Cursor.lockState = CursorLockMode.None;
 
-            PlayerInfoScript.instance.AddLevelInSugarGroup();
-            _winPanel.SetActive(true);
+            //Update the stats of the player
+            info.AddLevelInSugarGroup();
+            _winPanel.SetActive(true); //Display win screen 
+            string stats = "Coins: " + info.GetCoinsFromLevel() + "\nXP: " + info.GetXpFromLevel();
+            _winPanel.transform.Find("Stats").GetComponent<TextMeshProUGUI>().text = stats; //Update stats
         }
-            
+
     }
 
     /// <summary>

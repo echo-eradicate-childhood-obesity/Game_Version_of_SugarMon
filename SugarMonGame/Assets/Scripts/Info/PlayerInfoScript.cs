@@ -52,9 +52,12 @@ public class PlayerInfoScript : MonoBehaviour
     private float _nextLevelXPMultiplier = 1.3f;    // The multiplier to determine the xp needed for the next level
 
     private Dictionary<string, int> powerupsDict = new Dictionary<string, int>(); // A dictionary from name to index in the powerup list
+
+    //While playing each level
     private int[] _currentLevelInGroup = {0,0,0,0,0,0,0};                         // The current level of each sugar group in the game
     private int _currentSugarGroup = 0;                                           // The current sugar group the player is playing
-
+    private int _coinsFromLevel = 0;                                              // The amount of coins gained from the current level
+    private int _xpFromLevel = 0;                                                 // The amount of xp gain from the current level
     #endregion
      
     private void Awake()
@@ -63,6 +66,9 @@ public class PlayerInfoScript : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
+
+        _coinsFromLevel = 0;
+        _xpFromLevel = 0;
 
         int size = powerGroup.Count;
         for (int i = 0; i < size; i++)
@@ -241,7 +247,11 @@ public class PlayerInfoScript : MonoBehaviour
     public void SetXP(int xp) { _xp = xp; }
     public void SetCoins(int coins) { _coins = coins; }
     public void SetPrevXp(int xp) { _prevXP = xp; }
-    public void SetCurrentSugarGroup(int level) { _currentSugarGroup = level; }
+    public void SetCurrentSugarGroup(int level) {
+        _currentSugarGroup = level;
+        _coinsFromLevel = 0;
+        _xpFromLevel = 0;
+    }
 
     public void AddCoins(int coins) { _coins += coins; }
     public void AddXp(int xp)
@@ -255,10 +265,15 @@ public class PlayerInfoScript : MonoBehaviour
         }
     }
     public void AddLevelInSugarGroup() { _currentLevelInGroup[_currentSugarGroup]++; }
+    public void AddCoinsInLevel(int coins) { _coinsFromLevel += coins; AddCoins(coins); }
+    public void AddXPInLevel(int xp) { _xpFromLevel += xp; AddXp(xp); }
 
     public int GetCoinCount(){return _coins;}
     public int GetLevel() { return _level; }
     public int GetXp() { return _xp; }
     public float GetPercentageToNextLevel() { return ((float)(_xp - _prevXP)) / ((float)(_xpForNextLevel - _prevXP)); }
     public int GetLevelInSugarGroup(int index) { return _currentLevelInGroup[index]; }
+    public int GetCurrentGroup() { return _currentSugarGroup; }
+    public int GetXpFromLevel() { return _xpFromLevel; }
+    public int GetCoinsFromLevel() { return _coinsFromLevel; }
 }

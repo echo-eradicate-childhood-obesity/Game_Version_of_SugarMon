@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -127,8 +128,11 @@ public class PlayerScript : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
 
-        if(collision.gameObject.tag == "Monster")     //If the collider belongs to a monster deal damage    
-           TakeDamage( collision.gameObject.GetComponent<MonsterScript>().GetDamage(), collision.gameObject);
+        if (collision.gameObject.tag == "Monster") //If the collider belongs to a monster deal damage    
+        {
+            TakeDamage(collision.gameObject.GetComponent<MonsterScript>().GetDamage(), collision.gameObject);
+            collision.gameObject.GetComponent<MonsterScript>().SetDidDealDamage();
+        }           
         if(collision.gameObject.tag == "EnemyBullet") //If the collider belongs to an enemy bullet deal damage
             TakeDamage(collision.gameObject.GetComponent<EnemyBulletScript>()._damage, collision.gameObject);              
     }
@@ -153,11 +157,15 @@ public class PlayerScript : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
             this.enabled = false;
             _health = 0;
+
+            PlayerInfoScript info = PlayerInfoScript.instance;
+            string stats = "Coins: " + info.GetCoinsFromLevel() + "\nXP: " + info.GetXpFromLevel();
+            _deathPanel.transform.Find("Stats").GetComponent<TextMeshProUGUI>().text = stats;
+
         }
         StartCoroutine(Damage()); //flash red on screen
         _redHealthImage.transform.localScale = new Vector3(_health / _startingHealth, 1, 1); //Update the x scale of health bar
     }
-
 
     /// <summary>
     /// This function is used to remove all monsters in the scene. MUST BE TAGGED -Monster-
