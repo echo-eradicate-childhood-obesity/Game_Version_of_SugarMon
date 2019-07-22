@@ -1,11 +1,15 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - CanvasScript
+    - ChargingMonsterScript
     - GoogleARCore.ARCoreBackgroundRenderer
     - GoogleARCore.ARCoreSession
     - GoogleARCore.ARCoreSessionConfig
-    - MonsterScript
+    - LevelUIManager
+    - PlayerInfoScript
     - PlayerScript
+    - PrototypeMenuScript
     - SpawnMonsters
     Unity.TextMeshPro.dll:
     - TMPro.TMP_FontAsset
@@ -13,6 +17,9 @@ ScriptsOnlyBuild:
     - TMPro.TMP_SpriteAsset
     - TMPro.TMP_StyleSheet
     - TMPro.TextMeshPro
+    - TMPro.TextMeshProUGUI
+    UnityEditor.TestRunner.dll:
+    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.SpatialTracking.dll:
     - UnityEngine.SpatialTracking.TrackedPoseDriver
     UnityEngine.UI.dll:
@@ -22,10 +29,14 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.Mask
     - UnityEngine.UI.RawImage
+    - UnityEngine.UI.ScrollRect
     - UnityEngine.UI.Text
+    com.unity.multiplayer-hlapi.Runtime.dll:
+    - UnityEngine.Networking.NetworkCallbacks
   sceneClasses:
-    Assets/Scenes/SampleScene.unity:
+    Assets/Scenes/Prototypes/SampleScene.unity:
     - Class: 1
       Script: {instanceID: 0}
     - Class: 4
@@ -44,60 +55,56 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
-    - Class: 49
-      Script: {instanceID: 0}
     - Class: 54
       Script: {instanceID: 0}
     - Class: 65
       Script: {instanceID: 0}
     - Class: 89
       Script: {instanceID: 0}
+    - Class: 96
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
       Script: {instanceID: 0}
-    - Class: 109
-      Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 9406}
+      Script: {instanceID: 9410}
     - Class: 114
-      Script: {instanceID: 9492}
-    - Class: 114
-      Script: {instanceID: 9494}
+      Script: {instanceID: 9498}
     - Class: 114
       Script: {instanceID: 9500}
     - Class: 114
       Script: {instanceID: 9506}
     - Class: 114
-      Script: {instanceID: 9514}
+      Script: {instanceID: 9512}
     - Class: 114
-      Script: {instanceID: 9536}
+      Script: {instanceID: 9520}
     - Class: 114
-      Script: {instanceID: 9550}
+      Script: {instanceID: 9542}
     - Class: 114
-      Script: {instanceID: 9552}
+      Script: {instanceID: 9556}
     - Class: 114
-      Script: {instanceID: 9714}
+      Script: {instanceID: 9558}
     - Class: 114
-      Script: {instanceID: 9828}
+      Script: {instanceID: 9838}
     - Class: 114
-      Script: {instanceID: 9940}
+      Script: {instanceID: 9868}
     - Class: 114
-      Script: {instanceID: 10024}
+      Script: {instanceID: 9954}
     - Class: 114
-      Script: {instanceID: 10148}
+      Script: {instanceID: 10052}
     - Class: 114
-      Script: {instanceID: 10548}
+      Script: {instanceID: 10166}
     - Class: 114
-      Script: {instanceID: 10562}
+      Script: {instanceID: 10574}
     - Class: 114
-      Script: {instanceID: 10570}
+      Script: {instanceID: 10596}
     - Class: 114
-      Script: {instanceID: 10664}
+      Script: {instanceID: 10696}
     - Class: 114
-      Script: {instanceID: 11076}
+      Script: {instanceID: 10794}
     - Class: 114
-      Script: {instanceID: 11176}
+      Script: {instanceID: 11312}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -115,6 +122,85 @@ ScriptsOnlyBuild:
     - Class: 224
       Script: {instanceID: 0}
     - Class: 258
+      Script: {instanceID: 0}
+    Assets/Scenes/Prototypes/UIScene.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 49
+      Script: {instanceID: 0}
+    - Class: 54
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 109
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 9498}
+    - Class: 114
+      Script: {instanceID: 9500}
+    - Class: 114
+      Script: {instanceID: 9506}
+    - Class: 114
+      Script: {instanceID: 9512}
+    - Class: 114
+      Script: {instanceID: 9520}
+    - Class: 114
+      Script: {instanceID: 9528}
+    - Class: 114
+      Script: {instanceID: 9542}
+    - Class: 114
+      Script: {instanceID: 9548}
+    - Class: 114
+      Script: {instanceID: 9556}
+    - Class: 114
+      Script: {instanceID: 9558}
+    - Class: 114
+      Script: {instanceID: 10038}
+    - Class: 114
+      Script: {instanceID: 10222}
+    - Class: 114
+      Script: {instanceID: 10346}
+    - Class: 114
+      Script: {instanceID: 10574}
+    - Class: 114
+      Script: {instanceID: 10588}
+    - Class: 114
+      Script: {instanceID: 10794}
+    - Class: 114
+      Script: {instanceID: 11110}
+    - Class: 114
+      Script: {instanceID: 11210}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
       Script: {instanceID: 0}
   scriptHashData:
   - hash:
@@ -161,13 +247,25 @@ ScriptsOnlyBuild:
     className: TMP_ScrollbarEventHandler
   - hash:
       serializedVersion: 2
+      Hash: 919d18d939c393d00fa79210cacf6067
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MonsterHealthOptions
+  - hash:
+      serializedVersion: 2
       Hash: 04e4a8b0447477cc4e933d9e5311188f
     assemblyName: UnityEngine.XR.LegacyInputHelpers.dll
     namespaceName: UnityEngine.XR.LegacyInputHelpers
     className: ArmModel
   - hash:
       serializedVersion: 2
-      Hash: 55c8ded3222fe5e71c3b5d3fa5ab9b51
+      Hash: 34de7d5e5be09398f03a1245b23ab850
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Hearts
+  - hash:
+      serializedVersion: 2
+      Hash: cb27e73f9ae7459b1b5bd3afb191d663
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerScript
@@ -183,6 +281,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: ActivationTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 946ba6d4a5bcec9d6a0f4f14b020563d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: IconPreview
   - hash:
       serializedVersion: 2
       Hash: eafb77726b67b7571818a7210a3ce11e
@@ -389,22 +493,16 @@ ScriptsOnlyBuild:
     className: TMP_InputField
   - hash:
       serializedVersion: 2
+      Hash: 0329e686b87e4832ce903256604b427d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MonsterHealthNumbers
+  - hash:
+      serializedVersion: 2
       Hash: ad9173d3a69d99153f38ed4b62226129
     assemblyName: com.unity.multiplayer-hlapi.Runtime.dll
     namespaceName: UnityEngine.Networking
     className: NetworkTransform
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: UnityEngine.Advertisements.dll
-    namespaceName: UnityEngine.Advertisements
-    className: CallbackExecutor
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: UnityEngine.Advertisements.dll
-    namespaceName: UnityEngine.Advertisements.Editor
-    className: Placeholder
   - hash:
       serializedVersion: 2
       Hash: cf9f5cf2c3145a37ac07f00e50e460f9
@@ -600,15 +698,15 @@ ScriptsOnlyBuild:
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: MonsterScript
-  - hash:
-      serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NumberUpgradeScreen
   - hash:
       serializedVersion: 2
       Hash: f08a111e17bb701f9c9ec57bb78d9920
@@ -623,7 +721,7 @@ ScriptsOnlyBuild:
     className: NetworkProximityChecker
   - hash:
       serializedVersion: 2
-      Hash: 4b36e1112c317f3f5a8ccca15530ec4a
+      Hash: d83f834a2591514c7a14da81fb941696
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: SpawnMonsters
@@ -641,10 +739,22 @@ ScriptsOnlyBuild:
     className: TransitionArmModel
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PrototypeMenuScript
+  - hash:
+      serializedVersion: 2
       Hash: 780e8f682b3221346c034a6712a0fd25
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: AnimationPlayableAsset
+  - hash:
+      serializedVersion: 2
+      Hash: 74ecc3e75aac4e2714d2310348d5a768
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MonsterHealthShading
   - hash:
       serializedVersion: 2
       Hash: d251bf88db6c95a6b1aa0b69298da9ef
@@ -683,6 +793,18 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAsset
   - hash:
       serializedVersion: 2
+      Hash: 36a31ccee11b7871899f240958cf874e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: CanvasScript
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: UpgradeTesting
+  - hash:
+      serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
@@ -707,13 +829,25 @@ ScriptsOnlyBuild:
     className: ARCoreBackgroundRenderer
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: LevelUpgradeScreen
+  - hash:
+      serializedVersion: 2
       Hash: b3ab2106268377ffe25dd18ac23dca28
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_Asset
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 3b81451eb3daf1cb0bb59ecbaf9bc966
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: EnemyBulletScript
+  - hash:
+      serializedVersion: 2
+      Hash: 7aec756b1d6ce5b3fbc1414d7a895480
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LevelUIManager
@@ -723,6 +857,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalTrack
+  - hash:
+      serializedVersion: 2
+      Hash: b7a108520a30711ba17af27368822e81
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: HealthBar
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -747,6 +887,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_SpriteAnimator
+  - hash:
+      serializedVersion: 2
+      Hash: 5b7c752109ab74443e68eabb09776859
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerInfoScript
   - hash:
       serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
@@ -797,10 +943,28 @@ ScriptsOnlyBuild:
     className: ARCoreSession
   - hash:
       serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ReturnToMenu
+  - hash:
+      serializedVersion: 2
       Hash: 318c6c13a19c9fac98135ae14889de1b
     assemblyName: com.unity.multiplayer-hlapi.Runtime.dll
     namespaceName: UnityEngine.Networking
     className: NetworkMigrationManager
+  - hash:
+      serializedVersion: 2
+      Hash: 13ab4f75d2bdec14f97d6b9034e29732
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Upgrades
+  - hash:
+      serializedVersion: 2
+      Hash: 7151abb97cc99e12c15d81fd2fd2820b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ShootingMonsterScript
   - hash:
       serializedVersion: 2
       Hash: 88cc9df3c6fc697bfbeacd24c0d6f2d7
@@ -881,6 +1045,12 @@ ScriptsOnlyBuild:
     className: AudioTrack
   - hash:
       serializedVersion: 2
+      Hash: b7a108520a30711ba17af27368822e81
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: MonsterHealthBar
+  - hash:
+      serializedVersion: 2
       Hash: 1dcb82730d983b77cec736c6ef19f814
     assemblyName: com.unity.multiplayer-hlapi.Runtime.dll
     namespaceName: UnityEngine.Networking
@@ -941,10 +1111,34 @@ ScriptsOnlyBuild:
     className: TMP_SubMesh
   - hash:
       serializedVersion: 2
+      Hash: 0329e686b87e4832ce903256604b427d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: HealthNumbers
+  - hash:
+      serializedVersion: 2
+      Hash: 919d18d939c393d00fa79210cacf6067
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: HealthOptions
+  - hash:
+      serializedVersion: 2
+      Hash: 04dba640a878295edeb2b9bf01601db4
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: ChargingMonsterScript
+  - hash:
+      serializedVersion: 2
       Hash: 8220b46879dc5e37db1b940c938f5744
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalEmitter
+  - hash:
+      serializedVersion: 2
+      Hash: 74723bdfbeb459dd88f4d570b92e02bb
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerGold
   - hash:
       serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
@@ -953,5 +1147,6 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   platform: 13
   scenePathNames:
-  - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/markb/Desktop/WorkBuilds/4Prototype.apk
+  - Assets/Scenes/Prototypes/UIScene.unity
+  - Assets/Scenes/Prototypes/SampleScene.unity
+  playerPath: C:/Users/markb/Desktop/WorkBuilds/GameTest.apk
