@@ -682,7 +682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66adba5130b976244b421612e0af41d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _IsTesting: 1
+  _IsTesting: 0
   _mouseSensitivityX: 3
   _mouseSensitivityY: 3
   _projectile: {fileID: 981997401250377981, guid: b21135089ae2cf44c8a87c9f7b602029,
