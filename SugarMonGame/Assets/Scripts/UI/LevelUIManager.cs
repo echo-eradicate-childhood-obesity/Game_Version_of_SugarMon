@@ -44,6 +44,9 @@ public class LevelUIManager : MonoBehaviour
     public List<Powers> powers;             //A list of powerup
     public TextMeshProUGUI tempCoins;       // A reference to the coins text in the main menu
     public TextMeshProUGUI tempLevel;       // A reference to the level text in the main menu 
+
+    public GameObject _leftArrow;           // A reference to the selection screen left arrow
+    public GameObject _rightArrow;          // A reference to the selection screen right arrow
     #endregion
 
     #region PRIVATE_VARS
@@ -75,6 +78,7 @@ public class LevelUIManager : MonoBehaviour
         _selectionPanel = GameObject.Find("Selection");
         _skillsPanel = GameObject.Find("SkillsPanel");
         _mainMenuPanel = GameObject.Find("MainMenu");
+        _leftArrow.SetActive(false);
 
         _xpSlider = tempLevel.transform.parent.transform.Find("Fill").GetChild(0).GetComponent<Image>();
 
@@ -186,6 +190,19 @@ public class LevelUIManager : MonoBehaviour
         dir = (dir / Mathf.Abs(dir)); //Ensure that die is either -1 or 1
         int prev = _currentSelection; //Get the currently selected
         _currentSelection = Mathf.Clamp(_currentSelection + dir, 0, buttonGroups.Count - 1); //Change selection but clamp the values
+
+        print(_currentSelection);
+        if (!_leftArrow.activeSelf && _currentSelection > 0)
+            _leftArrow.SetActive(true);
+
+        if (_leftArrow.activeSelf && _currentSelection <= 0)
+            _leftArrow.SetActive(false);
+
+        if (_rightArrow.activeSelf && _currentSelection >= buttonGroups.Count - 1)
+            _rightArrow.SetActive(false);
+
+        if (!_rightArrow.activeSelf && _currentSelection < buttonGroups.Count - 1)
+            _rightArrow.SetActive(true);
 
         if (prev != _currentSelection) //If the two selections are different move the panel
         {

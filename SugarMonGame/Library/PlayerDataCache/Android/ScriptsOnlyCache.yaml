@@ -9,7 +9,6 @@ ScriptsOnlyBuild:
     - LevelUIManager
     - PlayerInfoScript
     - PlayerScript
-    - PrototypeMenuScript
     - SpawnMonsters
     Unity.TextMeshPro.dll:
     - TMPro.TMP_FontAsset
@@ -87,8 +86,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 9558}
     - Class: 114
       Script: {instanceID: 9838}
-    - Class: 114
-      Script: {instanceID: 9868}
     - Class: 114
       Script: {instanceID: 9954}
     - Class: 114
@@ -847,7 +844,7 @@ ScriptsOnlyBuild:
     className: EnemyBulletScript
   - hash:
       serializedVersion: 2
-      Hash: 7aec756b1d6ce5b3fbc1414d7a895480
+      Hash: da56ca858b7ce95d0f2653573911ac42
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: LevelUIManager
@@ -1149,4 +1146,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Scenes/Prototypes/UIScene.unity
   - Assets/Scenes/Prototypes/SampleScene.unity
-  playerPath: C:/Users/markb/Desktop/WorkBuilds/GameTest.apk
+  playerPath: C:/Users/markb/Desktop/WorkBuilds/GameTest-7-26-19.apk
