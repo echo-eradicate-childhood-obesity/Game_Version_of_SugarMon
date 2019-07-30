@@ -21,7 +21,6 @@ public class PlayerScript : MonoBehaviour
     [Header("Shooting Settings")]
     [Tooltip("The projectile prefab")]                      public GameObject _projectile;                        
     [Tooltip("How fast the projectile is shot")]            public float _projectileSpeed = 10;        
-    [Tooltip("The delay between shots")]                    public float _bulletDelay = 0.15f;
 
     [Header("UI")]
     [Tooltip("The Health bar image")]                       public GameObject _redHealthImage;
@@ -39,9 +38,12 @@ public class PlayerScript : MonoBehaviour
     private float _mouseY = 0.0f;                   // The current y rotation based on the mouse movement
 
     private float _health;                          // The current Health of the player from the PlayerInfoScript
-    private float _startingHealth;
+    private float _startingHealth;                  // The startng health of the player
     private float _damage;                          // The current Damage of the player from the PlayerInfoScript
-    private bool _hasDied = false;
+    private float _armour;                          // The current armour of the player from the PlayerInfoScript
+    private float _rapidDelay;                      // The current delay between bullets from the PlayerInfoScript
+
+    private bool _hasDied = false;                  // A check to see if the player is dead or not 
     #endregion
 
     private void Awake()
@@ -59,6 +61,8 @@ public class PlayerScript : MonoBehaviour
         {
             _health = PlayerInfoScript.instance.GetPowerValue("Health");
             _damage = PlayerInfoScript.instance.GetPowerValue("Damage");
+            _armour = PlayerInfoScript.instance.GetPowerValue("Armour");
+            _rapidDelay = PlayerInfoScript.instance.GetPowerValue("Rapid");
         }
         else
         {
@@ -68,6 +72,8 @@ public class PlayerScript : MonoBehaviour
             //Default values 
             _health = 100.0f; 
             _damage = 25.0f;
+            _armour = 1.0f;
+            _rapidDelay = 0.15f;
         }
         _startingHealth = _health;
     }
@@ -100,7 +106,7 @@ public class PlayerScript : MonoBehaviour
         {
             _bulletTimer += Time.deltaTime;
             //If the timer is about the delay time, enable the ability to shoot
-            if (_bulletTimer > _bulletDelay)
+            if (_bulletTimer > _rapidDelay)
                 _canShoot = true;
         }
 
@@ -145,7 +151,7 @@ public class PlayerScript : MonoBehaviour
     /// <param name="obj"></param>
     private void TakeDamage(float damage, GameObject obj)
     {
-        _health -= damage;
+        _health -= (damage * _armour);
         
         Destroy(obj);
         if (_health <= 0) //If dead

@@ -166,11 +166,11 @@ public abstract class MonsterScript : MonoBehaviour
             {
                 info.AddCoinsInLevel(_coins);
                 info.AddXPInLevel(_xp);
+                info.AddToTotalKills();
             }
             else //For testing when running the game from this scene
             {
-                //info.AddCoinsInLevel(_startingCoins);
-                //info.AddXPInLevel(_startingXP);
+                Debug.Log("No PlayerInfoScript found!");
             }
         }       
         _sm.RemoveMonster(gameObject);

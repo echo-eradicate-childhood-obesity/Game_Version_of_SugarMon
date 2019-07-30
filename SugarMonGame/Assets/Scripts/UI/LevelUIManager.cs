@@ -59,6 +59,7 @@ public class LevelUIManager : MonoBehaviour
     private GameObject _selectionPanel;                                 // This is a reference to the selection panel in the scene
     private GameObject _skillsPanel;                                    // This is a reference to the skills panel in the scene
     private GameObject _mainMenuPanel;                                  // This is a reference to the main menu panel in the scene
+    private GameObject _achievementPanel;                               // This is a reference to the achievements panel in the scene
 
     private int _currentSelection = 0;                                  // This is a current button index that is showing on screen
     private float _selectionOffset;                                     // This is the offset position of the first button
@@ -78,13 +79,15 @@ public class LevelUIManager : MonoBehaviour
         _selectionPanel = GameObject.Find("Selection");
         _skillsPanel = GameObject.Find("SkillsPanel");
         _mainMenuPanel = GameObject.Find("MainMenu");
+        _achievementPanel = GameObject.Find("AchievementsPanel");
         _leftArrow.SetActive(false);
 
         _xpSlider = tempLevel.transform.parent.transform.Find("Fill").GetChild(0).GetComponent<Image>();
 
         _allPanels.SetActive(false);   
         _selectionPanel.SetActive(false);        
-        _skillsPanel.SetActive(false);   
+        _skillsPanel.SetActive(false);
+        _achievementPanel.SetActive(false);
 
         info = PlayerInfoScript.instance;
         tempCoins.text = info.GetCoinCount().ToString("00000000");
@@ -191,7 +194,6 @@ public class LevelUIManager : MonoBehaviour
         int prev = _currentSelection; //Get the currently selected
         _currentSelection = Mathf.Clamp(_currentSelection + dir, 0, buttonGroups.Count - 1); //Change selection but clamp the values
 
-        print(_currentSelection);
         if (!_leftArrow.activeSelf && _currentSelection > 0)
             _leftArrow.SetActive(true);
 
@@ -221,8 +223,15 @@ public class LevelUIManager : MonoBehaviour
 
         if(coins > 0)
         {
-            text.text = "Level " + info.GetPowerLevel(name) + " \n(<color=green>"+ info.GetBuyAmmount(name) + "</color>)";
+            if (info.GetMaxPowerLevel(name) == info.GetPowerLevel(name))
+                text.text = "MAXED";
+            else
+                text.text = info.GetPowerLevel(name) + "/" + info.GetMaxPowerLevel(name) + "\n" + info.GetBuyAmmount(name);
             tempCoins.text = info.GetCoinCount().ToString("00000000");
+        }else if (coins == 0)
+        {
+            print("MAX LEVEL");
+            text.text = "MAXED";
         }
         else
         {
@@ -245,9 +254,24 @@ public class LevelUIManager : MonoBehaviour
         _currentLevels.SetActive(true);
     }
 
+    public void GoToAchievementScreen()
+    {
+        _currentLevels.SetActive(false);
+        _currentLevels = _achievementPanel;
+        _currentLevels.SetActive(true);
+    }
+
+    public void UpdateUIStats()
+    {
+        PlayerInfoScript play = PlayerInfoScript.instance;
+        tempCoins.text = play.GetCoinCount().ToString("00000000");
+        tempLevel.transform.parent.transform.Find("Fill").GetChild(0).GetComponent<Image>().fillAmount = play.GetPercentageToNextLevel();
+        tempLevel.text = "" + play.GetLevel();
+    }
+
     #endregion
 
-    #region PRIVATE FUNCTIONS
+    #region PRIVATE FUNCTIONS   
 
     /// <summary>
     /// This function is used to check to see if buttons need to be unlocked.
@@ -261,7 +285,10 @@ public class LevelUIManager : MonoBehaviour
             {
                 string name = powers[i]._powerup.name;
                 powers[i]._powerup.interactable = true;
-                powers[i]._powerup.transform.Find("Level").GetComponent<TextMeshProUGUI>().text = "Level " + info.GetPowerLevel(name) + " \n(<color=green>" + info.GetBuyAmmount(name) + "</color>)";
+                if (info.GetMaxPowerLevel(name) == info.GetPowerLevel(name))
+                    powers[i]._powerup.transform.Find("Level").GetComponent<TextMeshProUGUI>().text = "MAXED";
+                else
+                    powers[i]._powerup.transform.Find("Level").GetComponent<TextMeshProUGUI>().text = info.GetPowerLevel(name) + "/" + info.GetMaxPowerLevel(name) + "\n" + info.GetBuyAmmount(name);
                 powers.RemoveAt(i);
                 i--;
             }

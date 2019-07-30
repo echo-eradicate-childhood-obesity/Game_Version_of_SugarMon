@@ -20,12 +20,16 @@ public class PlayerInfoScript : MonoBehaviour
         public float _startingValue;        // This is the starting value of the powerup
         public float _increasePreLevel;     // This is the value that will increase the current value after a level up (additive or multiplicative)
         public bool _isAdditive;            // A Check to see if the _increasePreLevel is additive or multiplicative
+
+        [Header("-----------------------------")]
         public int _level;                  // The current level of the powerup
+        public int _maxLevel;               // The max level this powerup can have 
+        [Header("-----------------------------")]
 
         //Buying
-        public int _coinValue;
-        public float _increaseCoinValue;
-        public bool isCoinAdditive;
+        public int _coinValue;              // The current coin cost to level up 
+        public float _increaseCoinValue;     // This is the value that will increase the current value after a level up (additive or multiplicative)
+        public bool isCoinAdditive;          // A Check to see if the _increaseCoinValue is additive or multiplicative
 
         private float _currentValue;        // The current value of the powerup 
 
@@ -58,6 +62,12 @@ public class PlayerInfoScript : MonoBehaviour
     private int _currentSugarGroup = 0;                                           // The current sugar group the player is playing
     private int _coinsFromLevel = 0;                                              // The amount of coins gained from the current level
     private int _xpFromLevel = 0;                                                 // The amount of xp gain from the current level
+
+    private bool _hasAchievementBeenLoaded = false;
+    private int _levelAchievementIndex = 1;
+    private int _killAchievementIndex = 1;
+
+    private int _numberOfEnemiesKilled = 0;
     #endregion
      
     private void Awake()
@@ -137,9 +147,13 @@ public class PlayerInfoScript : MonoBehaviour
     /// <param name="level"></param>
     public int BuyLevel(string name, int level = 1)
     {
+
         if (powerupsDict.ContainsKey(name))
         {
             PowerUpGroup power = powerGroup[powerupsDict[name]];
+
+            if (power._level >= power._maxLevel)
+                return 0;
 
             if (_coins < power._coinValue)
                 return -1;
@@ -240,6 +254,25 @@ public class PlayerInfoScript : MonoBehaviour
         return -1;
     }
 
+    /// <summary>
+    /// This function is used to get the max power level of a power up
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public int GetMaxPowerLevel(string name)
+    {
+        if (powerupsDict.ContainsKey(name))
+        {
+            PowerUpGroup power = powerGroup[powerupsDict[name]];
+            return power._maxLevel;
+        }
+        else
+        {
+            Debug.LogError("The key <" + name + "> does not exist in the current dictionary");
+        }
+        return -1;
+    }
+
     #endregion
 
 
@@ -252,6 +285,9 @@ public class PlayerInfoScript : MonoBehaviour
         _coinsFromLevel = 0;
         _xpFromLevel = 0;
     }
+    public void setAchievementLoaded(bool tof) { _hasAchievementBeenLoaded = tof; }
+    public void SetAchievementLevel(int level) { _levelAchievementIndex = level; }
+    public void SetAchievementKillLevel(int level) { _killAchievementIndex = level; }
 
     public void AddCoins(int coins) { _coins += coins; }
     public void AddXp(int xp)
@@ -267,6 +303,7 @@ public class PlayerInfoScript : MonoBehaviour
     public void AddLevelInSugarGroup() { _currentLevelInGroup[_currentSugarGroup]++; }
     public void AddCoinsInLevel(int coins) { _coinsFromLevel += coins; AddCoins(coins); }
     public void AddXPInLevel(int xp) { _xpFromLevel += xp; AddXp(xp); }
+    public void AddToTotalKills() { _numberOfEnemiesKilled++; }
 
     public int GetCoinCount(){return _coins;}
     public int GetLevel() { return _level; }
@@ -276,4 +313,8 @@ public class PlayerInfoScript : MonoBehaviour
     public int GetCurrentGroup() { return _currentSugarGroup; }
     public int GetXpFromLevel() { return _xpFromLevel; }
     public int GetCoinsFromLevel() { return _coinsFromLevel; }
+    public bool HasAchievementBeenLoaded() { return _hasAchievementBeenLoaded; }
+    public int GetLevelAchievementIndex() { return _levelAchievementIndex; }
+    public int GetKillAchievementIndex() { return _killAchievementIndex; }
+    public int GetTotalKills() { return _numberOfEnemiesKilled; }
 }

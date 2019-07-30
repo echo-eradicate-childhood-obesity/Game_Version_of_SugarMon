@@ -209,6 +209,7 @@
     <Compile Include="Assets\Scripts\Health\Player Health\HealthNumbers.cs" />
     <Compile Include="Assets\Scripts\Health\Player Health\HealthOptions.cs" />
     <Compile Include="Assets\Scripts\Health\Player Health\Hearts.cs" />
+    <Compile Include="Assets\Scripts\Info\AchievementsScript.cs" />
     <Compile Include="Assets\Scripts\Info\CanvasScript.cs" />
     <Compile Include="Assets\Scripts\Info\PlayerInfoScript.cs" />
     <Compile Include="Assets\Scripts\Shooting\Monsters\ChargingMonsterScript.cs" />
