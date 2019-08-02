@@ -63,11 +63,11 @@ public class PlayerInfoScript : MonoBehaviour
     private int _coinsFromLevel = 0;                                              // The amount of coins gained from the current level
     private int _xpFromLevel = 0;                                                 // The amount of xp gain from the current level
 
-    private bool _hasAchievementBeenLoaded = false;
-    private int _levelAchievementIndex = 1;
-    private int _killAchievementIndex = 1;
+    private bool _hasAchievementBeenLoaded = false;                               // A check to see if the game has been just loaded
+    private int _levelAchievementIndex = 1;                                       // The current completed achievement index for the level achievements
+    private int _killAchievementIndex = 1;                                        // The current completed achievement index for the kills achievements
 
-    private int _numberOfEnemiesKilled = 0;
+    private int _numberOfEnemiesKilled = 0;                                       // The total number of enemies killed
     #endregion
      
     private void Awake()
@@ -275,7 +275,7 @@ public class PlayerInfoScript : MonoBehaviour
 
     #endregion
 
-
+    //Setters
     public void SetLevel(int level) { _level = level; _xpForNextLevel = (int)(_xpForNextLevel * Mathf.Pow(_nextLevelXPMultiplier, _level)); }
     public void SetXP(int xp) { _xp = xp; }
     public void SetCoins(int coins) { _coins = coins; }
@@ -289,6 +289,7 @@ public class PlayerInfoScript : MonoBehaviour
     public void SetAchievementLevel(int level) { _levelAchievementIndex = level; }
     public void SetAchievementKillLevel(int level) { _killAchievementIndex = level; }
 
+    //Changers 
     public void AddCoins(int coins) { _coins += coins; }
     public void AddXp(int xp)
     {
@@ -305,6 +306,7 @@ public class PlayerInfoScript : MonoBehaviour
     public void AddXPInLevel(int xp) { _xpFromLevel += xp; AddXp(xp); }
     public void AddToTotalKills() { _numberOfEnemiesKilled++; }
 
+    //Getters
     public int GetCoinCount(){return _coins;}
     public int GetLevel() { return _level; }
     public int GetXp() { return _xp; }

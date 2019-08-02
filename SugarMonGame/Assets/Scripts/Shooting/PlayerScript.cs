@@ -59,10 +59,11 @@ public class PlayerScript : MonoBehaviour
 
         if(PlayerInfoScript.instance != null)
         {
-            _health = PlayerInfoScript.instance.GetPowerValue("Health");
-            _damage = PlayerInfoScript.instance.GetPowerValue("Damage");
-            _armour = PlayerInfoScript.instance.GetPowerValue("Armour");
-            _rapidDelay = PlayerInfoScript.instance.GetPowerValue("Rapid");
+            PlayerInfoScript info = PlayerInfoScript.instance;
+            _health = info.GetPowerValue("Health");
+            _damage = info.GetPowerValue("Damage");
+            _armour = info.GetPowerValue("Armour");
+            _rapidDelay = info.GetPowerValue("Rapid");
         }
         else
         {

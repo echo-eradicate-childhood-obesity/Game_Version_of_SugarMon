@@ -41,12 +41,12 @@ public class LevelUIManager : MonoBehaviour
     #endregion
 
     #region PUBLIC_VARS
-    public List<Powers> powers;             //A list of powerup
-    public TextMeshProUGUI tempCoins;       // A reference to the coins text in the main menu
-    public TextMeshProUGUI tempLevel;       // A reference to the level text in the main menu 
+    [Tooltip("A list of powerup")]public List<Powers> powers;          
+    [Tooltip("A reference to the coins text in the main menu")] public TextMeshProUGUI tempCoins;       
+    [Tooltip("A reference to the level text in the main menu ")] public TextMeshProUGUI tempLevel;      
 
-    public GameObject _leftArrow;           // A reference to the selection screen left arrow
-    public GameObject _rightArrow;          // A reference to the selection screen right arrow
+    [Tooltip("A reference to the selection screen left arrow")] public GameObject _leftArrow;           
+    [Tooltip("A reference to the selection screen right arrow")] public GameObject _rightArrow;         
     #endregion
 
     #region PRIVATE_VARS
@@ -216,6 +216,12 @@ public class LevelUIManager : MonoBehaviour
 
     }
 
+
+    /// <summary>
+    /// This function is used to increase the power level of a talent. This function also checks 
+    /// if the taletn can be bought or not.
+    /// </summary>
+    /// <param name="text"></param>
     public void IncreasePowerLevel(TextMeshProUGUI text)
     {
         string name = text.gameObject.transform.parent.name;
@@ -240,6 +246,9 @@ public class LevelUIManager : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// This function is used to go to the map selection screen.
+    /// </summary>
     public void GoToLevelSelectScreen()
     {
         _currentLevels.SetActive(false);
@@ -247,6 +256,9 @@ public class LevelUIManager : MonoBehaviour
         _currentLevels.SetActive(true);
     }
 
+    /// <summary>
+    /// This function is used to go to the talent screen. 
+    /// </summary>
     public void GoToSkillsScreen()
     {
         _currentLevels.SetActive(false);
@@ -254,6 +266,9 @@ public class LevelUIManager : MonoBehaviour
         _currentLevels.SetActive(true);
     }
 
+    /// <summary>
+    /// This fucntion is used to go to the achievement screen 
+    /// </summary>
     public void GoToAchievementScreen()
     {
         _currentLevels.SetActive(false);
@@ -261,6 +276,9 @@ public class LevelUIManager : MonoBehaviour
         _currentLevels.SetActive(true);
     }
 
+    /// <summary>
+    /// This fucntion is used to update the coins and xp bars on the stats panel.
+    /// </summary>
     public void UpdateUIStats()
     {
         PlayerInfoScript play = PlayerInfoScript.instance;
