@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -531,7 +531,6 @@ MonoBehaviour:
   _projectile: {fileID: 981997401250377981, guid: b21135089ae2cf44c8a87c9f7b602029,
     type: 3}
   _projectileSpeed: 20
-  _bulletDelay: 0.15
   _redHealthImage: {fileID: 1457194883}
   _damageHealthImage: {fileID: 1302929729}
   _deathPanel: {fileID: 704686277}
@@ -1354,6 +1353,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _monsterPrefabs:
   - {fileID: 5311621072671175626, guid: f875b0a18aa1640739b306b5f9279104, type: 3}
+  - {fileID: 3650833269785551419, guid: d30e6d30282ff4514a1f646e3f6b173f, type: 3}
+  - {fileID: 3033686775468499890, guid: ea274a532ce044f2eb3976334aec84f7, type: 3}
+  - {fileID: 4286824325088411841, guid: de4b101cdcf0c48568a95c84e538542d, type: 3}
+  - {fileID: 1841709307030692380, guid: 2532f44ddaa534cf4b28ab76c4ce14cd, type: 3}
+  - {fileID: 3057234713603134301, guid: 7a5deda10e69c4220a3ae8b97a2ee6bf, type: 3}
   _radius: 10
   _winPanel: {fileID: 218472793}
 --- !u!1 &1061038743
