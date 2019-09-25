@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
-using System;
 
 public class LevelUIManager : MonoBehaviour
 {
@@ -116,16 +115,16 @@ public class LevelUIManager : MonoBehaviour
             
             if (group._currentButton)
             {
-                group._currentButton.onClick.AddListener(() => PlayLevel(panel.GetSiblingIndex())); //Set the current button to be active
-                print(panel.GetSiblingIndex() + "\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+                group._currentButton.onClick.AddListener(() => PlayLevel(panel.parent.GetSiblingIndex())); //Set the current button to be active
                 group._currentButton.interactable = true;
                 child.GetComponent<Text>().text = buttonGroups[i]._name + " - " + (buttonGroups[i]._currentButtonIndex) + "/" + buttonGroups[i]._buttonCount;
             }
             else
             {
                 child.GetComponent<Text>().text = buttonGroups[i]._name + " - " + (buttonGroups[i]._buttonCount) + "/" + buttonGroups[i]._buttonCount;
-            }
-            
+            }       
+        
+
             //Update the buttons to be at the location last saved (Future: From the save file)
             UpdateButtons(buttonGroups[i]);
 
@@ -376,6 +375,7 @@ public class LevelUIManager : MonoBehaviour
 
         if (powers.Count > 0 && prevLevel < currentLevel)
             UpdatePowers(currentLevel);
+
     }
 
     /// <summary>

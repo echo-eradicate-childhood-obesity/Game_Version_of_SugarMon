@@ -290,7 +290,7 @@ public class PlayerInfoScript : MonoBehaviour
     public void SetAchievementKillLevel(int level) { _killAchievementIndex = level; }
 
     //Changers 
-    public void AddCoins(int coins) { _coins += coins; print(_coins + " coins \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"); }
+    public void AddCoins(int coins) { _coins += coins; }
     public void AddXp(int xp)
     {
         _xp += xp;
@@ -300,7 +300,6 @@ public class PlayerInfoScript : MonoBehaviour
             _level++;
             _xpForNextLevel = (int)(_xpForNextLevel * _nextLevelXPMultiplier);
         }
-        print(_xp + " XPs \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
     public void AddLevelInSugarGroup() { _currentLevelInGroup[_currentSugarGroup]++; }
     public void AddCoinsInLevel(int coins) { _coinsFromLevel += coins; AddCoins(coins); }
