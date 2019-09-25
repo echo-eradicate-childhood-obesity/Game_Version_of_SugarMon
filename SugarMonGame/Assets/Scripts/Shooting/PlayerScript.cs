@@ -87,6 +87,13 @@ public class PlayerScript : MonoBehaviour
             _mouseY -= Input.GetAxis("Mouse Y") * _mouseSensitivityY;
 
             transform.eulerAngles = new Vector3(_mouseY, _mouseX, 0.0f);
+            
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(10, null);
+            print("I am dying, health:"+_health);
         }
         Shoot();
     }
@@ -155,6 +162,8 @@ public class PlayerScript : MonoBehaviour
         _health -= (damage * _armour);
         
         Destroy(obj);
+
+
         if (_health <= 0) //If dead
         {
             RemoveAllEnemies();
