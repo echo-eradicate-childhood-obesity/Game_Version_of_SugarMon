@@ -88,6 +88,13 @@ public class PlayerScript : MonoBehaviour
 
             transform.eulerAngles = new Vector3(_mouseY, _mouseX, 0.0f);
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            TakeDamage(10,null);
+            print("I AM DYING, Health = " + _health);
+        }
+
         Shoot();
     }
 
