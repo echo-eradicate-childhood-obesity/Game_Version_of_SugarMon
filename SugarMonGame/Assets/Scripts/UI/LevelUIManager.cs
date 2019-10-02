@@ -395,13 +395,13 @@ public class LevelUIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
             print("ADDING COINS");
-            IncreaseCoinCount(100);
+            IncreaseCoinCount(100000);
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
             print("ADDING XP");
-            IncreaseXP(100);
+            IncreaseXP(10000);
         }
     }
 

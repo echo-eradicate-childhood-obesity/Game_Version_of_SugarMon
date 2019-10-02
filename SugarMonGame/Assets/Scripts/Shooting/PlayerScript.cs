@@ -9,6 +9,8 @@ public class PlayerScript : MonoBehaviour
 {
     //Singleton instance
     public static PlayerScript instance;
+    public AudioSource playerAdio;
+    public AudioClip laserSound;
 
     #region PUBLIC_VARS
     [Header("Testing")]
@@ -74,7 +76,7 @@ public class PlayerScript : MonoBehaviour
             _health = 100.0f; 
             _damage = 25.0f;
             _armour = 1.0f;
-            _rapidDelay = 0.15f;
+            _rapidDelay = 0.20f;
         }
         _startingHealth = _health;
     }
@@ -114,8 +116,10 @@ public class PlayerScript : MonoBehaviour
         //If you can shoot and you are holding the left mouse button down
         if (_canShoot && (Input.touchCount > 0 || Input.GetMouseButton(0))) 
         {
+            playerAdio.PlayOneShot(laserSound, 0.5f);
             Vector3 shootPos = trans.position - trans.up * 0.1f + trans.forward * 0.1f; //Shooting the projectile slightly below and infront of the camera
             GameObject obj = Instantiate(_projectile, shootPos, Quaternion.identity); //Spawn the projectile
+
 
             //This makes it look like the projectile it moving at the crosshair location
             if (Physics.Raycast(trans.position, trans.forward, out RaycastHit hit, Mathf.Infinity, 9)) //If the crosshair hits something move the projectile to that postion
